@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Glith · Entrar / Criar conta</title>
+    <title>Glith · Rede Social</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
@@ -16,69 +16,146 @@
         }
 
         body {
-            background: #f7f5f2;
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+            background: #f7f5f2;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ============================================ */
+        /* TELA DE ESCOLHA DE IDIOMA */
+        /* ============================================ */
+        #languageScreen {
+            position: fixed;
+            inset: 0;
+            background: #f7f5f2;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            z-index: 1000;
+            flex-direction: column;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        .auth-wrapper {
-            background: #ffffff;
-            max-width: 480px;
-            width: 100%;
-            border-radius: 56px;
-            padding: 2.8rem 2rem 2.5rem;
-            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(0, 0, 0, 0.02);
-            border: 1px solid #eeeae5;
-            text-align: center;
-            transition: all 0.2s;
-            position: relative;
+        #languageScreen.hidden {
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
         }
 
-        .brand-header {
-            margin-bottom: 1.2rem;
-        }
-
-        .brand-name {
+        .lang-brand {
             font-family: 'Playfair Display', 'Georgia', serif;
             font-weight: 700;
             font-style: italic;
-            font-size: 3.2rem;
+            font-size: 5rem;
+            letter-spacing: -2px;
+            background: linear-gradient(145deg, #1e1e1e 0%, #4a4a4a 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulseGlow 2.5s ease-in-out infinite alternate;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 2px 8px rgba(0,0,0,0.02)); }
+            100% { filter: drop-shadow(0 12px 24px rgba(0,0,0,0.06)); }
+        }
+
+        .lang-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .lang-btn {
+            padding: 0.8rem 2.2rem;
+            border-radius: 60px;
+            border: 1px solid #d6d0c9;
+            background: #ffffff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            min-width: 100px;
+        }
+
+        .lang-btn:hover {
+            background: #1e1e1e;
+            color: white;
+            border-color: #1e1e1e;
+            transform: scale(1.03);
+        }
+
+        /* ============================================ */
+        /* TELA DE LOGIN + CADASTRO */
+        /* ============================================ */
+        #loginScreen {
+            position: fixed;
+            inset: 0;
+            background: #f7f5f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 900;
+            transition: opacity 0.5s ease;
+        }
+
+        #loginScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-wrapper {
+            background: #ffffff;
+            max-width: 460px;
+            width: 100%;
+            border-radius: 56px;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eeeae5;
+            text-align: center;
+        }
+
+        .login-brand {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 3rem;
             letter-spacing: -1px;
             background: linear-gradient(145deg, #1e1e1e 0%, #4a4a4a 90%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            line-height: 1.1;
+            margin-bottom: 0.2rem;
         }
 
-        .brand-sub {
+        .login-sub {
             font-size: 0.8rem;
             color: #9b9289;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: -4px;
+            margin-bottom: 1.5rem;
         }
 
-        /* ===== TABS ===== */
-        .tabs {
+        /* Tabs */
+        .auth-tabs {
             display: flex;
             gap: 0.5rem;
-            margin: 1.2rem 0 1.8rem;
+            margin-bottom: 1.5rem;
             background: #f3f0ec;
             border-radius: 60px;
             padding: 0.3rem;
         }
 
-        .tab-btn {
+        .auth-tab {
             flex: 1;
-            padding: 0.7rem;
+            padding: 0.6rem;
             border: none;
             border-radius: 40px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
@@ -87,36 +164,31 @@
             color: #5f5a54;
         }
 
-        .tab-btn.active {
+        .auth-tab.active {
             background: #ffffff;
             color: #1e1e1e;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
-        .tab-btn:hover:not(.active) {
+        .auth-tab:hover:not(.active) {
             background: #e8e3dd;
         }
 
-        /* ===== FORMULÁRIOS ===== */
-        .form-container {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .form-container.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .auth-form {
-            display: flex;
+            display: none;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
             text-align: left;
+            animation: fadeForm 0.3s ease;
+        }
+
+        .auth-form.active {
+            display: flex;
+        }
+
+        @keyframes fadeForm {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .input-group {
@@ -129,42 +201,34 @@
             font-size: 0.85rem;
             font-weight: 500;
             color: #3d3d3d;
-            letter-spacing: -0.2px;
             margin-left: 0.2rem;
         }
 
         .input-group input {
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             border-radius: 60px;
             border: 1px solid #ddd8d1;
             background: #fcfaf8;
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
-            transition: border 0.15s, box-shadow 0.15s;
+            transition: border 0.15s;
             outline: none;
             width: 100%;
         }
 
         .input-group input:focus {
             border-color: #8f8a82;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.02);
             background: #ffffff;
-        }
-
-        .input-group input::placeholder {
-            color: #b1aaa2;
-            font-weight: 300;
-            font-size: 0.95rem;
         }
 
         .btn-submit {
             background: #1e1e1e;
             border: none;
-            padding: 0.9rem;
+            padding: 0.8rem;
             border-radius: 60px;
             color: white;
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
             font-family: 'Inter', sans-serif;
@@ -172,31 +236,84 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-submit:hover {
             background: #333;
         }
+
         .btn-submit:active {
             transform: scale(0.97);
         }
 
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .auth-feedback {
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            color: #4f7b6a;
+            min-height: 1.4rem;
         }
 
-        /* ===== LINK "ESQUECEU A SENHA?" ===== */
-        .form-options {
+        .auth-feedback.error {
+            color: #b15e5e;
+        }
+
+        /* CAPTCHA */
+        .captcha-area {
+            background: #f3f0ec;
+            border-radius: 60px;
+            padding: 0.6rem 1rem;
             display: flex;
-            justify-content: flex-end;
-            margin-top: -0.2rem;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .captcha-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            color: #1e1e1e;
+            background: #e8e3dd;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            user-select: none;
+        }
+
+        .captcha-input {
+            flex: 1;
+            min-width: 80px;
+            padding: 0.5rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid #d6cec6;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            outline: none;
+        }
+
+        .captcha-input:focus {
+            border-color: #8f8a82;
+        }
+
+        .captcha-refresh {
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            color: #5f5a54;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 30px;
+            transition: background 0.2s;
+        }
+
+        .captcha-refresh:hover {
+            background: #e0dad4;
         }
 
         .forgot-link {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #6b635b;
             text-decoration: none;
             border-bottom: 1px dashed #d6cec6;
@@ -207,395 +324,845 @@
             border-left: none;
             border-right: none;
             font-family: 'Inter', sans-serif;
-            transition: color 0.15s, border-color 0.15s;
+            transition: color 0.15s;
+            text-align: right;
+            display: inline-block;
         }
 
         .forgot-link:hover {
             color: #1e1e1e;
-            border-bottom-color: #8a8177;
         }
 
-        /* ===== CAPTCHA ===== */
-        .captcha-area {
-            background: #f3f0ec;
-            border-radius: 60px;
-            padding: 0.8rem 1.2rem;
+        /* ============================================ */
+        /* TELA PRINCIPAL (FEED + CHAT) */
+        /* ============================================ */
+        #mainScreen {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            background: #f7f5f2;
+        }
+
+        #mainScreen.active {
+            display: flex;
+        }
+
+        .main-header {
+            background: #ffffff;
+            padding: 0.7rem 2rem;
+            border-bottom: 1px solid #eae6e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .main-brand {
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 1.8rem;
+            background: linear-gradient(145deg, #1e1e1e 0%, #4a4a4a 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
             display: flex;
             align-items: center;
+            gap: 1rem;
+        }
+
+        .header-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            color: #2c2c2c;
+            cursor: pointer;
+            padding: 0.4rem 0.7rem;
+            border-radius: 30px;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .header-btn:hover {
+            background: #f0eeeb;
+        }
+
+        .header-btn .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #b15e5e;
+            color: white;
+            font-size: 0.6rem;
+            border-radius: 50%;
+            padding: 0.1rem 0.45rem;
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #3a3a3a;
+            border: 1px solid #d6d0c9;
+            cursor: pointer;
+        }
+
+        .main-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .feed-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .create-post {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #eeebe7;
+        }
+
+        .create-post textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            padding: 0.3rem 0;
+            min-height: 50px;
+            background: transparent;
+        }
+
+        .post-actions {
+            display: flex;
             justify-content: space-between;
-            gap: 0.8rem;
+            align-items: center;
+            margin-top: 0.6rem;
             flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .post-media-btns {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .post-media-btns label {
+            background: #f3f0ec;
+            padding: 0.4rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-media-btns label:hover {
+            background: #e8e3dd;
+        }
+
+        .post-media-btns input[type="file"] {
+            display: none;
+        }
+
+        .btn-post {
+            background: #1e1e1e;
+            border: none;
+            padding: 0.4rem 1.6rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-post:hover {
+            background: #333;
+        }
+
+        .file-info {
+            font-size: 0.75rem;
+            color: #8a8177;
             margin-top: 0.2rem;
         }
 
-        .captcha-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 4px;
-            color: #1e1e1e;
-            background: #e8e3dd;
-            padding: 0.2rem 1rem;
-            border-radius: 40px;
-            user-select: none;
-        }
-
-        .captcha-input {
-            flex: 1;
-            min-width: 100px;
-            padding: 0.6rem 1rem;
-            border-radius: 40px;
-            border: 1px solid #d6cec6;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
+        .post-card {
             background: #ffffff;
-            outline: none;
-            transition: border 0.15s;
+            border-radius: 32px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #eeebe7;
         }
 
-        .captcha-input:focus {
-            border-color: #8f8a82;
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
-        .captcha-refresh {
-            background: transparent;
+        .post-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #3a3a3a;
+            font-size: 0.9rem;
+        }
+
+        .post-user {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .post-time {
+            font-size: 0.7rem;
+            color: #9b9289;
+        }
+
+        .post-content {
+            font-size: 0.95rem;
+            color: #2b2b2b;
+            margin-bottom: 0.6rem;
+            line-height: 1.5;
+        }
+
+        .post-media {
+            max-width: 100%;
+            border-radius: 16px;
+            margin: 0.4rem 0;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-media video {
+            max-width: 100%;
+            border-radius: 16px;
+            max-height: 400px;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 0.6rem;
+            color: #8a8177;
+            font-size: 0.8rem;
+        }
+
+        /* CHAT */
+        .chat-panel {
+            width: 0;
+            background: #ffffff;
+            border-left: 1px solid #eae6e1;
+            overflow: hidden;
+            transition: width 0.35s ease;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-panel.open {
+            width: 340px;
+        }
+
+        .chat-header {
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid #eae6e1;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 0.95rem;
+        }
+
+        .chat-close {
+            background: none;
             border: none;
-            font-size: 1.2rem;
-            color: #5f5a54;
+            font-size: 1.1rem;
             cursor: pointer;
-            padding: 0.3rem 0.6rem;
-            border-radius: 30px;
+            color: #8a8177;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chat-msg {
+            padding: 0.5rem 0.9rem;
+            border-radius: 20px;
+            max-width: 85%;
+            font-size: 0.85rem;
+            word-wrap: break-word;
+        }
+
+        .chat-msg.received {
+            background: #f3f0ec;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-msg.sent {
+            background: #1e1e1e;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-msg .msg-user {
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #6b635b;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .chat-msg.sent .msg-user {
+            color: #b0b0b0;
+        }
+
+        .chat-input-area {
+            padding: 0.6rem 0.8rem;
+            border-top: 1px solid #eae6e1;
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #ddd8d1;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .chat-input-area button {
+            background: #1e1e1e;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
             transition: background 0.2s;
         }
 
-        .captcha-refresh:hover {
-            background: #e0dad4;
+        .chat-input-area button:hover {
+            background: #333;
         }
 
-        /* ===== MENSAGENS ===== */
-        .feedback-message {
-            margin-top: 0.8rem;
-            font-size: 0.9rem;
-            color: #4f7b6a;
-            min-height: 1.6rem;
-            transition: opacity 0.2s;
-        }
-
-        .feedback-message.error {
-            color: #b15e5e;
-        }
-
-        .feedback-message.success {
-            color: #2d7a5a;
-        }
-
-        .feedback-message.info {
-            color: #4f6b8a;
-        }
-
-        /* responsivo */
-        @media (max-width: 480px) {
-            .auth-wrapper {
-                padding: 2rem 1.2rem;
+        @media (max-width: 768px) {
+            .chat-panel.open {
+                width: 100%;
+                position: fixed;
+                inset: 0;
+                z-index: 100;
+                border-left: none;
+            }
+            .feed-container {
+                padding: 0.8rem 1rem;
+            }
+            .main-header {
+                padding: 0.5rem 1rem;
+            }
+            .lang-brand {
+                font-size: 3.5rem;
+            }
+            .login-wrapper {
+                padding: 1.5rem 1.2rem;
                 border-radius: 40px;
-            }
-            .brand-name {
-                font-size: 2.6rem;
-            }
-            .captcha-area {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .captcha-text {
-                text-align: center;
+                margin: 1rem;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="auth-wrapper">
-    <!-- Cabeçalho -->
-    <div class="brand-header">
-        <div class="brand-name">Glith</div>
-        <div class="brand-sub">rede social</div>
+    <!-- ========================================== -->
+    <!-- TELA DE ESCOLHA DE IDIOMA -->
+    <!-- ========================================== -->
+    <div id="languageScreen">
+        <div class="lang-brand">Glith</div>
+        <div class="lang-options">
+            <button class="lang-btn" data-lang="pt">🇧🇷 Português</button>
+            <button class="lang-btn" data-lang="en">🇺🇸 English</button>
+            <button class="lang-btn" data-lang="es">🇪🇸 Español</button>
+            <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+        </div>
     </div>
 
-    <!-- TABS: Entrar / Criar conta -->
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="login" id="tabLogin">
-            <i class="fas fa-sign-in-alt" style="margin-right: 6px;"></i> Entrar
-        </button>
-        <button class="tab-btn" data-tab="signup" id="tabSignup">
-            <i class="fas fa-user-plus" style="margin-right: 6px;"></i> Criar conta
-        </button>
-    </div>
+    <!-- ========================================== -->
+    <!-- TELA DE LOGIN + CADASTRO -->
+    <!-- ========================================== -->
+    <div id="loginScreen">
+        <div class="login-wrapper">
+            <div class="login-brand">Glith</div>
+            <div class="login-sub">rede social</div>
 
-    <!-- ============================================ -->
-    <!-- FORMULÁRIO DE LOGIN -->
-    <!-- ============================================ -->
-    <div class="form-container active" id="formLogin">
-        <form class="auth-form" id="loginForm">
-            <div class="input-group">
-                <label for="loginEmail">E-mail ou usuário</label>
-                <input type="text" id="loginEmail" placeholder="exemplo@email.com ou @usuario" required />
-            </div>
-            <div class="input-group">
-                <label for="loginSenha">Senha</label>
-                <input type="password" id="loginSenha" placeholder="••••••••" required />
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Entrar</button>
+                <button class="auth-tab" data-tab="signup">Criar conta</button>
             </div>
 
-            <div class="form-options">
-                <button type="button" class="forgot-link" id="forgotPasswordBtn">
-                    <i class="far fa-question-circle" style="margin-right: 4px;"></i> Esqueceu a senha?
+            <!-- FORMULÁRIO DE LOGIN -->
+            <form class="auth-form active" id="loginForm">
+                <div class="input-group">
+                    <label for="loginEmailUser">E-mail ou usuário</label>
+                    <input type="text" id="loginEmailUser" placeholder="exemplo@email.com ou @usuario" required />
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required />
+                </div>
+                <div style="text-align: right;">
+                    <button type="button" class="forgot-link" id="forgotBtn">Esqueceu a senha?</button>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-arrow-right"></i> Entrar
                 </button>
-            </div>
+                <div class="auth-feedback" id="loginFeedback"></div>
+            </form>
 
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-arrow-right"></i> Entrar
-            </button>
-        </form>
-        <div class="feedback-message" id="loginFeedback"></div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- FORMULÁRIO DE CADASTRO (com CAPTCHA) -->
-    <!-- ============================================ -->
-    <div class="form-container" id="formSignup">
-        <form class="auth-form" id="signupForm">
-            <div class="input-group">
-                <label for="signupNome">Nome</label>
-                <input type="text" id="signupNome" placeholder="Seu nome completo" required />
-            </div>
-            <div class="input-group">
-                <label for="signupEmail">E-mail</label>
-                <input type="email" id="signupEmail" placeholder="exemplo@email.com" required />
-            </div>
-            <div class="input-group">
-                <label for="signupSenha">Senha</label>
-                <input type="password" id="signupSenha" placeholder="•••••••• (mín. 6)" required minlength="6" />
-            </div>
-
-            <!-- CAPTCHA -->
-            <div class="captcha-area">
-                <span class="captcha-text" id="captchaDisplay">12 + 34</span>
-                <input type="text" class="captcha-input" id="captchaInput" placeholder="Resultado" autocomplete="off" />
-                <button type="button" class="captcha-refresh" id="captchaRefresh" title="Atualizar CAPTCHA">
-                    <i class="fas fa-sync-alt"></i>
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <form class="auth-form" id="signupForm">
+                <div class="input-group">
+                    <label for="signupName">Nome</label>
+                    <input type="text" id="signupName" placeholder="Seu nome completo" required />
+                </div>
+                <div class="input-group">
+                    <label for="signupEmail">E-mail</label>
+                    <input type="email" id="signupEmail" placeholder="exemplo@email.com" required />
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">Senha</label>
+                    <input type="password" id="signupPassword" placeholder="•••••••• (mín. 6)" required minlength="6" />
+                </div>
+                <!-- CAPTCHA -->
+                <div class="captcha-area">
+                    <span class="captcha-text" id="captchaDisplay">12 + 34</span>
+                    <input type="text" class="captcha-input" id="captchaInput" placeholder="Resultado" autocomplete="off" />
+                    <button type="button" class="captcha-refresh" id="captchaRefresh"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-user-plus"></i> Criar conta
                 </button>
+                <div class="auth-feedback" id="signupFeedback"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TELA PRINCIPAL (FEED + CHAT) -->
+    <!-- ========================================== -->
+    <div id="mainScreen">
+        <header class="main-header">
+            <span class="main-brand">Glith</span>
+            <div class="header-actions">
+                <button class="header-btn" id="chatToggleBtn">
+                    <i class="fas fa-comment-dots"></i>
+                    <span class="badge" id="chatBadge">3</span>
+                </button>
+                <div class="user-avatar"><i class="fas fa-user"></i></div>
+            </div>
+        </header>
+
+        <div class="main-body">
+            <!-- FEED -->
+            <div class="feed-container" id="feedContainer">
+                <div class="create-post">
+                    <textarea id="postText" placeholder="O que você está pensando?"></textarea>
+                    <div class="post-actions">
+                        <div class="post-media-btns">
+                            <label for="photoInput"><i class="fas fa-image"></i> Foto
+                                <input type="file" id="photoInput" accept="image/*" />
+                            </label>
+                            <label for="videoInput"><i class="fas fa-video"></i> Vídeo
+                                <input type="file" id="videoInput" accept="video/*" />
+                            </label>
+                        </div>
+                        <button class="btn-post" id="postBtn">Publicar</button>
+                    </div>
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">A</div>
+                        <div><div class="post-user">Ana Silva</div><div class="post-time">2h atrás</div></div>
+                    </div>
+                    <div class="post-content">Bem-vindos ao Glith! 🎉</div>
+                    <div class="post-stats"><span><i class="far fa-heart"></i> 12</span><span><i class="far fa-comment"></i> 5</span></div>
+                </div>
+
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">M</div>
+                        <div><div class="post-user">Marcos Lima</div><div class="post-time">4h atrás</div></div>
+                    </div>
+                    <div class="post-content">Alguém mais animado para o lançamento? 🚀</div>
+                    <div class="post-stats"><span><i class="far fa-heart"></i> 8</span><span><i class="far fa-comment"></i> 3</span></div>
+                </div>
             </div>
 
-            <button type="submit" class="btn-submit" id="signupBtn">
-                <i class="fas fa-user-plus"></i> Criar conta
-            </button>
-        </form>
-        <div class="feedback-message" id="signupFeedback"></div>
+            <!-- CHAT -->
+            <div class="chat-panel" id="chatPanel">
+                <div class="chat-header">
+                    <span><i class="fas fa-comment-dots" style="margin-right: 8px;"></i>Chat</span>
+                    <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-msg received"><span class="msg-user">João</span>Olá! Alguém online?</div>
+                    <div class="chat-msg received"><span class="msg-user">Maria</span>Sim! Tudo bem?</div>
+                    <div class="chat-msg sent"><span class="msg-user">Você</span>Oi pessoal! 👋</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Digite uma mensagem..." />
+                    <button id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    (function() {
-        // ===== ELEMENTOS =====
-        const tabLogin = document.getElementById('tabLogin');
-        const tabSignup = document.getElementById('tabSignup');
-        const formLogin = document.getElementById('formLogin');
-        const formSignup = document.getElementById('formSignup');
+    <script>
+        // =============================================
+        // IDIOMA
+        // =============================================
+        const languageScreen = document.getElementById('languageScreen');
+        const loginScreen = document.getElementById('loginScreen');
+        const mainScreen = document.getElementById('mainScreen');
 
-        const loginForm = document.getElementById('loginForm');
-        const loginFeedback = document.getElementById('loginFeedback');
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                languageScreen.classList.add('hidden');
+                setTimeout(() => {
+                    languageScreen.style.display = 'none';
+                    loginScreen.classList.remove('hidden');
+                }, 600);
+            });
+        });
 
-        const signupForm = document.getElementById('signupForm');
-        const signupFeedback = document.getElementById('signupFeedback');
-        const signupBtn = document.getElementById('signupBtn');
+        // =============================================
+        // TABS (Login / Cadastro)
+        // =============================================
+        const tabs = document.querySelectorAll('.auth-tab');
+        const forms = document.querySelectorAll('.auth-form');
 
-        const captchaDisplay = document.getElementById('captchaDisplay');
-        const captchaInput = document.getElementById('captchaInput');
-        const captchaRefresh = document.getElementById('captchaRefresh');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                forms.forEach(f => f.classList.remove('active'));
+                document.getElementById(this.dataset.tab + 'Form').classList.add('active');
+                // Limpa feedbacks
+                document.getElementById('loginFeedback').textContent = '';
+                document.getElementById('signupFeedback').textContent = '';
+                // Se for cadastro, gera CAPTCHA
+                if (this.dataset.tab === 'signup') generateCaptcha();
+            });
+        });
 
-        const forgotBtn = document.getElementById('forgotPasswordBtn');
+        // =============================================
+        // LOGIN
+        // =============================================
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmailUser').value.trim();
+            const senha = document.getElementById('loginPassword').value.trim();
+            const feedback = document.getElementById('loginFeedback');
 
-        // ===== ESTADO DO CAPTCHA =====
+            if (!email || !senha) {
+                feedback.textContent = '⚠️ Preencha todos os campos.';
+                feedback.className = 'auth-feedback error';
+                return;
+            }
+
+            feedback.textContent = '✅ Entrando...';
+            feedback.className = 'auth-feedback';
+
+            setTimeout(() => {
+                loginScreen.classList.add('hidden');
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    mainScreen.classList.add('active');
+                    mainScreen.style.display = 'flex';
+                }, 500);
+            }, 700);
+        });
+
+        // Esqueceu a senha
+        document.getElementById('forgotBtn').addEventListener('click', function() {
+            const feedback = document.getElementById('loginFeedback');
+            feedback.textContent = '📧 Instruções enviadas para seu e-mail (demo)';
+            feedback.className = 'auth-feedback';
+            setTimeout(() => { feedback.textContent = ''; }, 3000);
+        });
+
+        // =============================================
+        // CADASTRO com CAPTCHA
+        // =============================================
         let captchaResult = 0;
 
         function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            const operators = ['+', '-'];
-            const op = operators[Math.floor(Math.random() * operators.length)];
-
+            const n1 = Math.floor(Math.random() * 10) + 1;
+            const n2 = Math.floor(Math.random() * 10) + 1;
+            const op = Math.random() > 0.5 ? '+' : '-';
             let result;
-            let display;
-
             if (op === '+') {
-                result = num1 + num2;
-                display = `${num1} + ${num2}`;
+                result = n1 + n2;
+                document.getElementById('captchaDisplay').textContent = `${n1} + ${n2}`;
             } else {
-                // Garantir que o resultado seja positivo
-                const bigger = Math.max(num1, num2);
-                const smaller = Math.min(num1, num2);
+                const bigger = Math.max(n1, n2);
+                const smaller = Math.min(n1, n2);
                 result = bigger - smaller;
-                display = `${bigger} - ${smaller}`;
+                document.getElementById('captchaDisplay').textContent = `${bigger} - ${smaller}`;
             }
-
             captchaResult = result;
-            captchaDisplay.textContent = display;
-            captchaInput.value = '';
-            captchaInput.focus();
+            document.getElementById('captchaInput').value = '';
         }
 
-        // ===== TABS =====
-        function switchTab(tab) {
-            // Atualiza botões
-            tabLogin.classList.toggle('active', tab === 'login');
-            tabSignup.classList.toggle('active', tab === 'signup');
+        document.getElementById('captchaRefresh').addEventListener('click', generateCaptcha);
 
-            // Mostra/oculta formulários
-            formLogin.classList.toggle('active', tab === 'login');
-            formSignup.classList.toggle('active', tab === 'signup');
-
-            // Limpa feedbacks
-            loginFeedback.textContent = '';
-            loginFeedback.className = 'feedback-message';
-            signupFeedback.textContent = '';
-            signupFeedback.className = 'feedback-message';
-
-            // Se for cadastro, gera novo CAPTCHA
-            if (tab === 'signup') {
-                generateCaptcha();
-            }
-        }
-
-        tabLogin.addEventListener('click', () => switchTab('login'));
-        tabSignup.addEventListener('click', () => switchTab('signup'));
-
-        // ===== LOGIN =====
-        loginForm.addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const senha = document.getElementById('loginSenha').value.trim();
-
-            if (!email || !senha) {
-                loginFeedback.textContent = '⚠️ Preencha e-mail/usuário e senha.';
-                loginFeedback.className = 'feedback-message error';
-                return;
-            }
-
-            loginFeedback.textContent = '✅ Login bem-sucedido! (demo)';
-            loginFeedback.className = 'feedback-message success';
-            setTimeout(() => {
-                alert('👋 Bem-vindo ao Glith! (demo)');
-            }, 300);
-        });
-
-        // ===== ESQUECEU A SENHA =====
-        forgotBtn.addEventListener('click', function() {
-            loginFeedback.textContent = '📧 Instruções de redefinição enviadas (demo)';
-            loginFeedback.className = 'feedback-message info';
-            setTimeout(() => {
-                if (loginFeedback.textContent.includes('redefinição')) {
-                    loginFeedback.textContent = '';
-                    loginFeedback.className = 'feedback-message';
-                }
-            }, 3500);
-        });
-
-        // ===== CADASTRO com CAPTCHA =====
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const nome = document.getElementById('signupNome').value.trim();
+            const nome = document.getElementById('signupName').value.trim();
             const email = document.getElementById('signupEmail').value.trim();
-            const senha = document.getElementById('signupSenha').value.trim();
-            const captchaResposta = captchaInput.value.trim();
+            const senha = document.getElementById('signupPassword').value.trim();
+            const captcha = document.getElementById('captchaInput').value.trim();
+            const feedback = document.getElementById('signupFeedback');
 
-            // Validações
             if (!nome || !email || !senha) {
-                signupFeedback.textContent = '⚠️ Preencha todos os campos.';
-                signupFeedback.className = 'feedback-message error';
+                feedback.textContent = '⚠️ Preencha todos os campos.';
+                feedback.className = 'auth-feedback error';
                 return;
             }
-
             if (senha.length < 6) {
-                signupFeedback.textContent = '⚠️ A senha deve ter pelo menos 6 caracteres.';
-                signupFeedback.className = 'feedback-message error';
+                feedback.textContent = '⚠️ Senha deve ter no mínimo 6 caracteres.';
+                feedback.className = 'auth-feedback error';
+                return;
+            }
+            if (!email.includes('@')) {
+                feedback.textContent = '⚠️ E-mail inválido.';
+                feedback.className = 'auth-feedback error';
+                return;
+            }
+            if (!captcha || parseInt(captcha) !== captchaResult) {
+                feedback.textContent = '❌ CAPTCHA incorreto. Tente novamente.';
+                feedback.className = 'auth-feedback error';
+                generateCaptcha();
                 return;
             }
 
-            if (!email.includes('@') || !email.includes('.')) {
-                signupFeedback.textContent = '⚠️ Insira um e-mail válido.';
-                signupFeedback.className = 'feedback-message error';
-                return;
-            }
-
-            // Valida CAPTCHA
-            if (!captchaResposta) {
-                signupFeedback.textContent = '⚠️ Digite o resultado do CAPTCHA.';
-                signupFeedback.className = 'feedback-message error';
-                return;
-            }
-
-            if (parseInt(captchaResposta) !== captchaResult) {
-                signupFeedback.textContent = '❌ CAPTCHA incorreto. Tente novamente.';
-                signupFeedback.className = 'feedback-message error';
-                generateCaptcha(); // renova
-                return;
-            }
-
-            // Sucesso!
-            signupFeedback.textContent = `✅ Conta criada com sucesso! Bem-vindo(a), ${nome}!`;
-            signupFeedback.className = 'feedback-message success';
-
-            // Desabilita botão e campos (simulação)
-            signupBtn.disabled = true;
-            document.querySelectorAll('#signupForm input').forEach(inp => inp.disabled = true);
-            captchaRefresh.disabled = true;
+            feedback.textContent = `✅ Conta criada! Bem-vindo(a), ${nome}!`;
+            feedback.className = 'auth-feedback';
 
             setTimeout(() => {
-                alert('🎉 Cadastro concluído! (demo)');
-                // Restaura para nova tentativa
-                signupBtn.disabled = false;
-                document.querySelectorAll('#signupForm input').forEach(inp => inp.disabled = false);
-                captchaRefresh.disabled = false;
-                signupForm.reset();
-                generateCaptcha();
-                signupFeedback.textContent = '';
-                signupFeedback.className = 'feedback-message';
-            }, 3000);
+                // Muda para login e preenche email
+                tabs[0].click();
+                document.getElementById('loginEmailUser').value = email;
+                document.getElementById('loginPassword').value = '';
+                feedback.textContent = 'Conta criada! Faça login.';
+                feedback.className = 'auth-feedback';
+                setTimeout(() => { feedback.textContent = ''; }, 3000);
+            }, 1500);
         });
 
-        // ===== ATUALIZAR CAPTCHA =====
-        captchaRefresh.addEventListener('click', generateCaptcha);
+        // =============================================
+        // CHAT
+        // =============================================
+        const chatPanel = document.getElementById('chatPanel');
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+        const chatCloseBtn = document.getElementById('chatCloseBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const chatBadge = document.getElementById('chatBadge');
 
-        // ===== ENTER no campo CAPTCHA envia o formulário =====
-        captchaInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                signupForm.dispatchEvent(new Event('submit'));
+        const fakeUsers = ['João', 'Maria', 'Carlos', 'Julia', 'Rafael'];
+
+        function toggleChat(open) {
+            if (open === undefined) {
+                chatPanel.classList.toggle('open');
+            } else if (open) {
+                chatPanel.classList.add('open');
+            } else {
+                chatPanel.classList.remove('open');
+            }
+            if (chatPanel.classList.contains('open')) {
+                chatBadge.style.display = 'none';
+                chatMessages.querySelectorAll('.chat-msg.received').forEach(el => el.classList.add('read'));
+            } else {
+                const unread = chatMessages.querySelectorAll('.chat-msg.received:not(.read)').length;
+                if (unread > 0) {
+                    chatBadge.style.display = 'inline';
+                    chatBadge.textContent = unread;
+                } else {
+                    chatBadge.style.display = 'none';
+                }
+            }
+        }
+
+        chatToggleBtn.addEventListener('click', () => toggleChat());
+        chatCloseBtn.addEventListener('click', () => toggleChat(false));
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg sent';
+            msg.innerHTML = `<span class="msg-user">Você</span> ${text}`;
+            chatMessages.appendChild(msg);
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+                const replies = ['Legal!', 'Interessante.', 'Verdade!', 'Não sabia disso.', 'Concordo!', 'Hmm...', 'Que bacana!', '😂'];
+                const reply = replies[Math.floor(Math.random() * replies.length)];
+
+                const r = document.createElement('div');
+                r.className = 'chat-msg received';
+                r.innerHTML = `<span class="msg-user">${user}</span> ${reply}`;
+                chatMessages.appendChild(r);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                if (!chatPanel.classList.contains('open')) {
+                    const unread = chatMessages.querySelectorAll('.chat-msg.received:not(.read)').length;
+                    chatBadge.style.display = 'inline';
+                    chatBadge.textContent = unread;
+                }
+            }, 600 + Math.random() * 1000);
+        }
+
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendMessage(); } });
+
+        // =============================================
+        // POSTAGEM
+        // =============================================
+        const postText = document.getElementById('postText');
+        const photoInput = document.getElementById('photoInput');
+        const videoInput = document.getElementById('videoInput');
+        const postBtn = document.getElementById('postBtn');
+        const fileInfo = document.getElementById('fileInfo');
+        const feedContainer = document.getElementById('feedContainer');
+
+        let selectedFile = null;
+        let fileType = null;
+
+        photoInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                if (file.size > 50 * 1024 * 1024) {
+                    fileInfo.textContent = '❌ Foto excede 50MB!';
+                    this.value = '';
+                    return;
+                }
+                selectedFile = file;
+                fileType = 'image';
+                fileInfo.textContent = `📷 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`;
+                videoInput.value = '';
             }
         });
 
-        // ===== GERAR CAPTCHA INICIAL =====
+        videoInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const video = document.createElement('video');
+                video.preload = 'metadata';
+                video.onloadedmetadata = function() {
+                    if (video.duration > 30) {
+                        fileInfo.textContent = '❌ Vídeo deve ter até 30 segundos!';
+                        videoInput.value = '';
+                        return;
+                    }
+                    if (file.size > 50 * 1024 * 1024) {
+                        fileInfo.textContent = '❌ Vídeo excede 50MB!';
+                        videoInput.value = '';
+                        return;
+                    }
+                    selectedFile = file;
+                    fileType = 'video';
+                    fileInfo.textContent = `🎬 ${file.name} (${video.duration.toFixed(1)}s, ${(file.size / 1024 / 1024).toFixed(2)}MB)`;
+                    photoInput.value = '';
+                };
+                video.src = URL.createObjectURL(file);
+            }
+        });
+
+        postBtn.addEventListener('click', function() {
+            const text = postText.value.trim();
+            if (!text && !selectedFile) {
+                alert('Escreva algo ou selecione uma mídia.');
+                return;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            const mediaHTML = selectedFile ? (fileType === 'image' ?
+                `<img src="${URL.createObjectURL(selectedFile)}" class="post-media" />` :
+                `<video src="${URL.createObjectURL(selectedFile)}" class="post-media" controls></video>`) : '';
+
+            card.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">V</div>
+                    <div><div class="post-user">Você</div><div class="post-time">Agora</div></div>
+                </div>
+                <div class="post-content">${text || ''}</div>
+                ${mediaHTML}
+                <div class="post-stats"><span><i class="far fa-heart"></i> 0</span><span><i class="far fa-comment"></i> 0</span></div>
+            `;
+
+            feedContainer.insertBefore(card, feedContainer.firstChild);
+
+            postText.value = '';
+            selectedFile = null;
+            fileType = null;
+            fileInfo.textContent = '';
+            photoInput.value = '';
+            videoInput.value = '';
+        });
+
+        // =============================================
+        // INICIALIZAÇÃO
+        // =============================================
         generateCaptcha();
-
-        // ===== AO MUDAR PARA CADASTRO, gera novo CAPTCHA =====
-        // Já fazemos no switchTab, mas garantimos
-        const origSwitch = switchTab;
-        switchTab = function(tab) {
-            origSwitch(tab);
-            if (tab === 'signup') {
-                generateCaptcha();
-            }
-        };
-        // Reatribui os listeners para usar a nova função
-        tabLogin.removeEventListener('click', () => {});
-        tabSignup.removeEventListener('click', () => {});
-        tabLogin.addEventListener('click', () => switchTab('login'));
-        tabSignup.addEventListener('click', () => switchTab('signup'));
-
-        // Inicializa com login ativo
-        switchTab('login');
-    })();
-</script>
+        console.log('🚀 Glith iniciado!');
+    </script>
 
 </body>
 </html>
