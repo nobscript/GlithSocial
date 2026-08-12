@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>glitch - P2P Chat</title>
+    <title>glitch - Chat</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -18,7 +18,6 @@
             --border: #e0e0e0;
             --shadow: rgba(0, 0, 0, 0.08);
             --error: #ff4757;
-            --success: #00d4aa;
         }
 
         [data-theme="dark"] {
@@ -33,11 +32,12 @@
             --shadow: rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        [data-accent="blue"] { --accent: #0066ff; --accent-hover: #0052cc; }
+        [data-accent="green"] { --accent: #00cc66; --accent-hover: #00a352; }
+        [data-accent="red"] { --accent: #ff3333; --accent-hover: #cc0000; }
+        [data-accent="purple"] { --accent: #9933ff; --accent-hover: #7a00cc; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -47,76 +47,121 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
 
         .toast {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #00d4aa;
-            color: white;
+            background: var(--accent);
+            color: var(--bg-primary);
             padding: 15px 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 2000;
             animation: slideInRight 0.3s ease;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .toast.hide {
-            animation: slideOutRight 0.3s ease forwards;
-        }
+        .toast.hide { animation: slideOutRight 0.3s ease forwards; }
+        @keyframes slideOutRight { to { opacity: 0; transform: translateX(100px); } }
 
-        @keyframes slideOutRight {
-            to {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-        }
-
-        .auth-screen {
+        .welcome-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 300;
+        }
+
+        .welcome-container {
+            background: var(--bg-primary);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .welcome-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .welcome-tagline {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .language-selector { margin-bottom: 30px; }
+
+        .language-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .language-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .language-select:focus { outline: none; }
+
+        .continue-button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .continue-button:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .continue-button:active { transform: translateY(0); }
+
+        .auth-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            display: none;
+            align-items: center;
+            justify-content: center;
             z-index: 100;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .auth-container {
@@ -124,25 +169,17 @@
             border-radius: 30px;
             padding: 50px 40px;
             width: 90%;
-            max-width: 420px;
+            max-width: 400px;
             box-shadow: 0 20px 60px var(--shadow);
-            position: relative;
-            animation: slideUp 0.5s ease;
             border: 1px solid var(--border);
         }
 
         .auth-logo {
             font-family: 'Pacifico', cursive;
             font-size: 4rem;
-            color: var(--text-primary);
+            color: var(--accent);
             text-align: center;
             margin-bottom: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .auth-logo:hover {
-            transform: scale(1.05);
         }
 
         .auth-subtitle {
@@ -159,7 +196,6 @@
             background: var(--bg-secondary);
             border-radius: 15px;
             padding: 5px;
-            position: relative;
         }
 
         .auth-tab {
@@ -171,34 +207,16 @@
             font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-secondary);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             border-radius: 10px;
             font-family: 'Inter', sans-serif;
         }
 
-        .auth-tab.active {
-            background: var(--accent);
-            color: var(--bg-primary);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
+        .auth-tab.active { background: var(--accent); color: var(--bg-primary); }
 
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .form-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-label { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
 
         .form-input {
             padding: 12px 16px;
@@ -206,21 +224,12 @@
             border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             background: var(--bg-input);
             color: var(--text-primary);
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg-primary);
-            box-shadow: 0 0 0 3px var(--shadow);
-        }
-
-        .form-input.error {
-            border-color: var(--error);
-        }
+        .form-input:focus { outline: none; border-color: var(--accent); }
 
         .auth-button {
             background: var(--accent);
@@ -231,190 +240,117 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.5px;
             margin-top: 10px;
         }
 
-        .auth-button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px var(--shadow);
-        }
+        .auth-button:hover { background: var(--accent-hover); }
 
-        .error-message {
-            color: var(--error);
-            font-size: 0.75rem;
-            margin-top: 2px;
-            display: none;
-        }
+        .error-message { color: var(--error); font-size: 0.75rem; display: none; }
+        .error-message.show { display: block; }
 
-        .error-message.show {
+        .back-to-welcome {
             display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+            border: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
         }
 
-        .welcome-modal {
+        .onboarding-modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
-            animation: modalFadeIn 0.3s ease;
         }
 
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .welcome-overlay {
+        .onboarding-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
         }
 
-        .welcome-content {
+        .onboarding-content {
             position: relative;
             background: var(--bg-primary);
             border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: contentSlideUp 0.4s ease;
-            max-width: 400px;
+            padding: 30px;
+            max-width: 420px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        @keyframes contentSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .welcome-logo {
-            font-family: 'Pacifico', cursive;
-            font-size: 3.5rem;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-        }
-
-        .welcome-message {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .welcome-user {
-            font-size: 1.3rem;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .welcome-button {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 32px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .welcome-button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .home-screen {
+        .home-screen, .phone-screen, .chat-screen, .settings-screen, .profile-screen {
             display: none;
             height: 100%;
             flex-direction: column;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            position: relative;
-        }
-
-        .home-screen.active {
-            display: flex;
-        }
-
-        .home-header {
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
             background: var(--bg-primary);
         }
 
-        .home-logo {
-            font-family: 'Pacifico', cursive;
-            font-size: 2.5rem;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .home-screen.active, .phone-screen.active, .chat-screen.active, .settings-screen.active, .profile-screen.active {
+            display: flex;
         }
 
-        .home-logo:hover {
-            transform: scale(1.05);
+        .screen-header, .home-header {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .header-logo, .home-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8rem;
+            color: var(--accent);
+            cursor: pointer;
+            background: none;
+            border: none;
         }
 
         .home-content {
             flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            position: relative;
         }
 
         .home-title {
             font-family: 'Pacifico', cursive;
-            font-size: 6rem;
-            color: var(--text-primary);
-            text-align: center;
-            text-shadow: 3px 3px 6px var(--shadow);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            margin-bottom: 40px;
-        }
-
-        .home-title:hover {
-            transform: scale(1.05);
+            font-size: 5rem;
+            color: var(--accent);
         }
 
         .bottom-nav {
             position: fixed;
-            bottom: 30px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--bg-primary);
-            border-radius: 30px;
-            box-shadow: 0 10px 40px var(--shadow);
+            border-radius: 25px;
+            box-shadow: 0 8px 30px var(--shadow);
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 20px;
+            gap: 15px;
+            padding: 10px 18px;
             z-index: 50;
             border: 1px solid var(--border);
         }
@@ -423,46 +359,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 10px 15px;
-            border-radius: 15px;
-            border: 2px solid transparent;
-            position: relative;
-            min-width: 70px;
-            color: var(--text-primary);
-        }
-
-        .nav-item:hover {
-            background: var(--bg-secondary);
-            border-color: var(--border);
-        }
-
-        .nav-item.active {
-            background: var(--bg-secondary);
-            border-color: var(--accent);
-        }
-
-        .nav-icon {
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .nav-label {
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 12px;
             color: var(--text-secondary);
-            text-align: center;
+            background: none;
+            border: none;
         }
+
+        .nav-icon { font-size: 1.4rem; }
+        .nav-label { font-size: 0.7rem; font-weight: 600; }
 
         .nav-g-logo {
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--accent);
             color: var(--bg-primary);
@@ -470,50 +380,24 @@
             align-items: center;
             justify-content: center;
             font-family: 'Pacifico', cursive;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid var(--accent);
-            box-shadow: 0 4px 12px var(--shadow);
+            border: none;
         }
 
-        .nav-g-logo:hover {
-            transform: scale(1.1);
-        }
-
-        .phone-screen {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-        }
-
-        .phone-screen.active {
-            display: flex;
-        }
-
-        .phone-header, .header {
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-primary);
-        }
-
-        .back-button {
-            background: transparent;
+        .settings-fab {
+            position: fixed;
+            bottom: 85px;
+            right: 25px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg-primary);
             border: none;
             cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 8px;
-        }
-
-        .back-button:hover {
-            background: var(--bg-secondary);
+            z-index: 40;
+            font-size: 1.1rem;
         }
 
         .dialer-container {
@@ -522,1264 +406,941 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            gap: 30px;
-            padding-bottom: 120px;
+            gap: 25px;
+            padding-bottom: 90px;
         }
 
         .dialer-display {
-            width: 100%;
-            max-width: 300px;
-            height: 60px;
-            background: var(--bg-primary);
-            border: 2px solid var(--accent);
+            width: 280px;
+            height: 50px;
+            background: var(--bg-secondary);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
-            letter-spacing: 3px;
-            color: var(--text-primary);
+            color: var(--accent);
         }
 
-        .dialer-pad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 300px;
-            width: 100%;
-        }
+        .dialer-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
         .dialer-button {
-            width: 80px;
-            height: 80px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             border: 2px solid var(--accent);
             background: var(--bg-primary);
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--accent);
         }
 
-        .dialer-button:hover {
-            background: var(--accent);
-            color: var(--bg-primary);
-            transform: scale(1.1);
-        }
-
-        .dialer-button .sub-text {
-            font-size: 0.6rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-        }
-
-        .dialer-actions {
-            display: flex;
-            gap: 30px;
-        }
-
+        .dialer-actions { display: flex; gap: 25px; }
         .call-button, .clear-button {
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            font-size: 1.2rem;
         }
-
-        .call-button {
-            background: #00d4aa;
-            color: white;
-        }
-
-        .call-button:hover {
-            background: #00c49a;
-            transform: scale(1.1);
-        }
-
-        .clear-button {
-            background: #ff4757;
-            color: white;
-        }
-
-        .clear-button:hover {
-            background: #ff3747;
-            transform: scale(1.1);
-        }
-
-        .chat-screen {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-        }
-
-        .chat-screen.active {
-            display: flex;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            font-family: 'Pacifico', cursive;
-            font-size: 3rem;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .status-online {
-            background: #00d4aa;
-            box-shadow: 0 0 10px rgba(0, 212, 170, 0.6);
-        }
-
-        .status-offline {
-            background: #ff4757;
-            box-shadow: 0 0 10px rgba(255, 71, 87, 0.6);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
+        .call-button { background: var(--accent); color: var(--bg-primary); }
+        .clear-button { background: #ff4757; color: white; }
 
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 30px;
-            padding-bottom: 120px;
-            scroll-behavior: smooth;
-            background: var(--bg-primary);
+            padding: 20px;
+            padding-bottom: 90px;
         }
 
-        .message {
-            margin-bottom: 20px;
-            animation: fadeIn 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .message { margin-bottom: 15px; display: flex; flex-direction: column; }
         .message-content {
             max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 16px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 0.9rem;
         }
-
-        .message-sent {
-            align-items: flex-end;
-        }
-
-        .message-sent .message-content {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border-bottom-right-radius: 4px;
-        }
-
-        .message-received {
-            align-items: flex-start;
-        }
-
-        .message-received .message-content {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .message-meta {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            padding: 0 4px;
-            font-weight: 500;
-        }
+        .message-sent { align-items: flex-end; }
+        .message-sent .message-content { background: var(--accent); color: var(--bg-primary); }
+        .message-received { align-items: flex-start; }
+        .message-received .message-content { background: var(--bg-secondary); color: var(--text-primary); }
+        .message-meta { font-size: 0.65rem; color: var(--text-secondary); margin-top: 3px; }
 
         .input-container {
-            padding: 20px 30px;
-            padding-bottom: 100px;
-            background: var(--bg-primary);
+            padding: 15px 20px;
+            padding-bottom: 85px;
             border-top: 1px solid var(--border);
             display: flex;
-            gap: 12px;
-            position: relative;
-            z-index: 10;
+            gap: 10px;
         }
 
         .message-input {
             flex: 1;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 25px;
-            padding: 12px 20px;
+            border-radius: 20px;
+            padding: 10px 16px;
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
             resize: none;
-            max-height: 120px;
-            min-height: 46px;
-        }
-
-        .message-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg-primary);
+            min-height: 40px;
         }
 
         .send-button {
             background: var(--accent);
             color: var(--bg-primary);
             border: none;
-            border-radius: 25px;
-            padding: 0 24px;
+            border-radius: 20px;
+            padding: 0 18px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .send-button:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .settings-screen {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-            background: var(--bg-primary);
-        }
-
-        .settings-screen.active {
-            display: flex;
         }
 
         .settings-content {
             flex: 1;
             overflow-y: auto;
-            padding: 30px;
-            max-width: 500px;
+            padding: 25px;
+            max-width: 450px;
             margin: 0 auto;
             width: 100%;
-        }
-
-        .settings-profile {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin: 0 auto 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 3px solid var(--accent);
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.1);
-        }
-
-        .profile-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-        }
-
-        .profile-username {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
         }
 
         .settings-section {
             background: var(--bg-secondary);
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             border: 1px solid var(--border);
         }
 
         .settings-title {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
+            color: var(--accent);
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .settings-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border);
-        }
-
-        .settings-item:last-child {
-            border-bottom: none;
-        }
-
-        .settings-label {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-primary);
         }
 
         .toggle-switch {
             position: relative;
-            width: 50px;
-            height: 26px;
+            width: 45px;
+            height: 24px;
             background: var(--border);
-            border-radius: 13px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-
-        .toggle-switch.active {
-            background: var(--accent);
-        }
-
+        .toggle-switch.active { background: var(--accent); }
         .toggle-switch::after {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
+            top: 3px; left: 3px;
+            width: 18px; height: 18px;
             background: white;
             border-radius: 50%;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+        }
+        .toggle-switch.active::after { left: 24px; }
+
+        .color-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--border);
+        }
+        .color-option.active { border-color: var(--accent); }
+
+        .server-option {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .server-option.active { border-color: var(--accent); background: var(--bg-input); }
+
+        .profile-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .toggle-switch.active::after {
-            left: 27px;
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            cursor: pointer;
+            font-size: 2.5rem;
+        }
+        .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .profile-info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 768px) {
-            .home-title {
-                font-size: 4rem;
-            }
-
-            .bottom-nav {
-                bottom: 20px;
-                padding: 10px 15px;
-            }
-
-            .settings-content {
-                padding: 20px;
-            }
+        .edit-button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-logo">glitch</div>
+            <div class="welcome-tagline" id="welcomeTagline">Your Chat Experience</div>
+            <div class="language-selector">
+                <label class="language-label" id="languageLabel">Choose Language</label>
+                <select class="language-select" id="languageSelect">
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="hi">🇮🇳 हिन्दी</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="tr">🇹🇷 Türkçe</option>
+                    <option value="nl">🇳🇱 Nederlands</option>
+                    <option value="pl">🇵🇱 Polski</option>
+                    <option value="sv">🇸🇪 Svenska</option>
+                    <option value="no">🇳🇴 Norsk</option>
+                    <option value="da">🇩🇰 Dansk</option>
+                    <option value="fi">🇫🇮 Suomi</option>
+                    <option value="el">🇬🇷 Ελληνικά</option>
+                    <option value="cs">🇨🇿 Čeština</option>
+                    <option value="hu">🇭🇺 Magyar</option>
+                    <option value="ro">🇷🇴 Română</option>
+                    <option value="uk">🇺🇦 Українська</option>
+                    <option value="th">🇹🇭 ไทย</option>
+                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                    <option value="id">🇮🇩 Indonesia</option>
+                    <option value="ms">🇲🇾 Melayu</option>
+                    <option value="fa">🇮🇷 فارسی</option>
+                    <option value="he">🇮🇱 עברית</option>
+                    <option value="sw">🇰🇪 Kiswahili</option>
+                </select>
+            </div>
+            <button class="continue-button" id="continueButton" type="button">Continue</button>
+        </div>
+    </div>
+
     <!-- Auth Screen -->
     <div class="auth-screen" id="authScreen">
         <div class="auth-container">
             <div class="auth-logo">glitch</div>
-            <div class="auth-subtitle">Your P2P Chat Experience</div>
-            
+            <div class="auth-subtitle" id="authSubtitle">Your Chat Experience</div>
             <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="login">Login</button>
-                <button class="auth-tab" data-tab="register">Create Account</button>
+                <button class="auth-tab active" data-tab="login" type="button" id="loginTab">Login</button>
+                <button class="auth-tab" data-tab="register" type="button" id="registerTab">Register</button>
             </div>
-
             <form class="auth-form" id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="loginUsername" placeholder="Enter your username">
-                    <div class="error-message" id="loginUsernameError"></div>
+                    <label class="form-label" id="loginUsernameLabel">Username</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="Enter username">
                 </div>
-                
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
-                    <div class="error-message" id="loginPasswordError"></div>
+                    <label class="form-label" id="loginPasswordLabel">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter password">
                 </div>
-
                 <button type="submit" class="auth-button" id="loginButton">Login</button>
             </form>
-
-            <form class="auth-form" id="registerForm" style="display: none;">
+            <form class="auth-form" id="registerForm" style="display:none;">
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="registerName" placeholder="Enter your full name">
-                    <div class="error-message" id="registerNameError"></div>
+                    <label class="form-label" id="registerUsernameLabel">Username</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="Choose username">
                 </div>
-
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="registerUsername" placeholder="Choose a username">
-                    <div class="error-message" id="registerUsernameError"></div>
+                    <label class="form-label" id="registerPasswordLabel">Password</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="Create password">
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="registerPassword" placeholder="Create a password">
-                    <div class="error-message" id="registerPasswordError"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-input" id="registerConfirmPassword" placeholder="Confirm your password">
-                    <div class="error-message" id="registerConfirmPasswordError"></div>
-                </div>
-
-                <button type="submit" class="auth-button" id="registerButton">Create Account</button>
+                <button type="submit" class="auth-button" id="registerButton">Register</button>
             </form>
+            <button class="back-to-welcome" id="backToWelcome" type="button">← Change Language</button>
         </div>
     </div>
 
-    <!-- Welcome Modal -->
-    <div class="welcome-modal" id="welcomeModal">
-        <div class="welcome-overlay"></div>
-        <div class="welcome-content">
-            <div class="welcome-logo">glitch</div>
-            <div class="welcome-message">Welcome to glitch!</div>
-            <div class="welcome-user" id="welcomeUserName"></div>
-            <button class="welcome-button" id="welcomeButton">Start Chatting</button>
+    <!-- Onboarding Modal -->
+    <div class="onboarding-modal" id="onboardingModal">
+        <div class="onboarding-overlay"></div>
+        <div class="onboarding-content">
+            <div style="font-family:'Pacifico',cursive;font-size:2.5rem;color:var(--accent);text-align:center;margin-bottom:15px;">glitch</div>
+            <div style="text-align:center;font-size:0.85rem;color:var(--text-secondary);margin-bottom:20px;" id="onboardingText">
+                👋 Welcome! Complete your profile
+            </div>
+            <form class="auth-form" id="onboardingForm" style="gap:12px;">
+                <div style="text-align:center;">
+                    <div class="profile-photo" id="photoPreview" style="display:inline-flex;">📷</div>
+                    <input type="file" id="photoInput" accept="image/*" style="display:none;">
+                    <div><span class="edit-button" id="photoLabel" style="display:inline-block;margin-top:5px;cursor:pointer;">Add Photo</span></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="obNameLabel">Full Name *</label>
+                    <input type="text" class="form-input" id="onboardName" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="obBirthLabel">Birth Date *</label>
+                    <input type="date" class="form-input" id="onboardBirthDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="obCityLabel">City *</label>
+                    <input type="text" class="form-input" id="onboardCity" placeholder="Your city">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="obCountryLabel">Country (optional)</label>
+                    <input type="text" class="form-input" id="onboardCountry" placeholder="Your country">
+                </div>
+                <button type="submit" class="auth-button" id="obSubmit">Complete Profile</button>
+            </form>
         </div>
     </div>
 
     <!-- Home Screen -->
     <div class="home-screen" id="homeScreen">
         <div class="home-header">
-            <span class="home-logo" id="homeLogoSettings">glitch</span>
-            <button class="back-button" id="homeBackButton">←</button>
+            <button class="home-logo" id="homeLogoSettings" type="button">glitch</button>
         </div>
         <div class="home-content">
-            <div class="home-title" id="homeLogo">glitch</div>
+            <div class="home-title">glitch</div>
         </div>
-        
         <div class="bottom-nav">
-            <div class="nav-item" id="phoneOption">
-                <div class="nav-icon">
-                    <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                </div>
-                <span class="nav-label">Phone</span>
+            <button class="nav-item" id="phoneOption" type="button"><span class="nav-icon">📞</span><span class="nav-label" id="phoneLabel">Phone</span></button>
+            <button class="nav-g-logo" id="navGLogo" type="button">g</button>
+            <button class="nav-item" id="chatOption" type="button"><span class="nav-icon">💬</span><span class="nav-label" id="chatLabel">Chat</span></button>
+        </div>
+        <button class="settings-fab" id="settingsFab" type="button">⚙️</button>
+    </div>
+
+    <!-- Profile Screen -->
+    <div class="profile-screen" id="profileScreen">
+        <div class="screen-header">
+            <button class="back-button" id="profileBackButton" type="button">←</button>
+            <button class="header-logo" type="button">glitch</button>
+        </div>
+        <div class="profile-content">
+            <div style="text-align:center;margin-bottom:20px;">
+                <div class="profile-photo" id="profilePhotoDisplay">👤</div>
+                <span class="edit-button" id="changePhotoLabel" style="cursor:pointer;margin-top:5px;display:inline-block;">Change</span>
+                <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
             </div>
-            
-            <div class="nav-g-logo" id="navGLogo">g</div>
-            
-            <div class="nav-item" id="chatOption">
-                <div class="nav-icon">
-                    <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
-                </div>
-                <span class="nav-label">Chat</span>
-            </div>
+            <div class="profile-info-item"><span id="nameLabel">Name</span><span id="profileNameValue">-</span><button class="edit-button" id="editNameButton">Edit</button></div>
+            <div class="profile-info-item"><span id="birthLabel">Birth Date</span><span id="profileBirthValue">-</span><button class="edit-button" id="editBirthButton">Edit</button></div>
+            <div class="profile-info-item"><span id="cityLabel">City</span><span id="profileCityValue">-</span></div>
+            <div class="profile-info-item"><span id="countryLabel">Country</span><span id="profileCountryValue">-</span></div>
+            <div class="profile-info-item"><span id="usernameLabel">Username</span><span id="profileUsernameValue">-</span></div>
         </div>
     </div>
 
     <!-- Phone Screen -->
     <div class="phone-screen" id="phoneScreen">
-        <div class="phone-header">
-            <button class="back-button" id="phoneBackButton">←</button>
-            <span class="home-logo" id="phoneLogoSettings">glitch</span>
-            <div style="width: 40px;"></div>
+        <div class="screen-header">
+            <button class="back-button" id="phoneBackButton" type="button">←</button>
+            <button class="header-logo" id="phoneLogoSettings" type="button">glitch</button>
         </div>
         <div class="dialer-container">
             <div class="dialer-display" id="dialerDisplay"></div>
             <div class="dialer-pad" id="dialerPad"></div>
             <div class="dialer-actions">
-                <button class="call-button" id="callButton">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                </button>
-                <button class="clear-button" id="clearButton">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                </button>
+                <button class="call-button" id="callButton" type="button">📞</button>
+                <button class="clear-button" id="clearButton" type="button">✕</button>
             </div>
         </div>
     </div>
 
     <!-- Chat Screen -->
     <div class="chat-screen" id="chatScreen">
-        <div class="header">
-            <div class="header-left">
-                <button class="back-button" id="chatBackButton">←</button>
-                <span class="logo" id="chatLogoSettings">glitch</span>
-                <span class="status-indicator status-offline" id="statusIndicator"></span>
-            </div>
+        <div class="screen-header">
+            <button class="back-button" id="chatBackButton" type="button">←</button>
+            <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
         </div>
-
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received">
-                <div class="message-content">
-                    Welcome to glitch! Start a conversation...
-                </div>
-                <div class="message-meta">system • just now</div>
-            </div>
+            <div class="message message-received"><div class="message-content" id="welcomeMsg">Welcome!</div><div class="message-meta">system</div></div>
         </div>
-
         <div class="input-container">
-            <textarea 
-                class="message-input" 
-                id="messageInput" 
-                placeholder="Type your message..."
-                rows="1"
-                maxlength="1000"
-            ></textarea>
-            <button class="send-button" id="sendButton">
-                <span>Send</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <path d="M22 2L11 13"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                </svg>
-            </button>
+            <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
+            <button class="send-button" id="sendButton" type="button" id="sendLabel">Send</button>
         </div>
     </div>
 
     <!-- Settings Screen -->
     <div class="settings-screen" id="settingsScreen">
-        <div class="header">
-            <div class="header-left">
-                <button class="back-button" id="settingsBackButton">←</button>
-                <span class="logo">Settings</span>
-            </div>
+        <div class="screen-header">
+            <button class="back-button" id="settingsBackButton" type="button">←</button>
+            <button class="header-logo" type="button">glitch</button>
         </div>
-        
         <div class="settings-content">
-            <div class="settings-profile">
-                <div class="profile-avatar" id="profileAvatar">G</div>
-                <div class="profile-name" id="profileName">User Name</div>
-                <div class="profile-username" id="profileUsername">@username</div>
-            </div>
-
             <div class="settings-section">
-                <div class="settings-title">Preferences</div>
-                <div class="settings-item">
-                    <span class="settings-label">Dark Mode</span>
-                    <div class="toggle-switch" id="darkModeToggle"></div>
+                <div class="settings-title" id="appearanceTitle">Appearance</div>
+                <div class="settings-item"><span id="darkModeLabel">Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
+                <div class="settings-item"><span id="accentColorLabel">Accent Color</span></div>
+                <div class="color-options">
+                    <div class="color-option" data-color="black" style="background:#000;"></div>
+                    <div class="color-option" data-color="blue" style="background:#06f;"></div>
+                    <div class="color-option" data-color="green" style="background:#0c6;"></div>
+                    <div class="color-option" data-color="red" style="background:#f33;"></div>
+                    <div class="color-option" data-color="purple" style="background:#93f;"></div>
                 </div>
             </div>
-
             <div class="settings-section">
-                <div class="settings-title">Account</div>
-                <div class="settings-item">
-                    <span class="settings-label">Logout</span>
-                    <button class="back-button" id="settingsLogoutButton">→</button>
-                </div>
+                <div class="settings-title" id="serversTitle">Servers</div>
+                <div class="server-option active" data-server="wss://echo.websocket.org">🌍 Global</div>
+                <div class="server-option" data-server="wss://ws.postman-echo.com/raw">🇪🇺 EU</div>
+                <div class="server-option" data-server="wss://socketsbay.com/wss/v2/1/demo/">🧪 Demo</div>
+            </div>
+            <div class="settings-section">
+                <div class="settings-title" id="accountTitle">Account</div>
+                <div class="settings-item"><span id="logoutLabel">Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
             </div>
         </div>
     </div>
 
     <script>
-        class GlitchApp {
-            constructor() {
-                this.users = JSON.parse(localStorage.getItem('glitchUsers') || '{}');
-                this.currentUser = null;
-                this.phoneNumber = '';
-                this.isFirstLogin = false;
-                this.darkMode = localStorage.getItem('glitchDarkMode') === 'true';
-                
-                this.init();
+        // Translations
+        const I18N = {
+            pt: {
+                tagline: 'Sua Experiência de Chat',
+                languageLabel: 'Escolha o Idioma',
+                continueBtn: 'Continuar',
+                login: 'Entrar',
+                register: 'Cadastrar',
+                username: 'Usuário',
+                password: 'Senha',
+                loginBtn: 'Entrar',
+                registerBtn: 'Cadastrar',
+                backToLang: '← Mudar Idioma',
+                onboardingText: '👋 Bem-vindo! Complete seu perfil:<br>📸 Foto • 👤 Nome • 🎂 Data de Nascimento • 📍 Cidade',
+                fullName: 'Nome Completo *',
+                birthDate: 'Data de Nascimento *',
+                city: 'Cidade *',
+                country: 'País (opcional)',
+                addPhoto: 'Adicionar Foto',
+                completeProfile: 'Completar Perfil',
+                phone: 'Telefone',
+                chat: 'Chat',
+                name: 'Nome',
+                birth: 'Data de Nascimento',
+                change: 'Trocar',
+                edit: 'Editar',
+                welcome: 'Bem-vindo!',
+                send: 'Enviar',
+                appearance: 'Aparência',
+                darkMode: 'Modo Escuro',
+                accentColor: 'Cor de Destaque',
+                servers: 'Servidores',
+                account: 'Conta',
+                logout: 'Sair',
+                typePlaceholder: 'Digite...',
+                usernamePlaceholder: 'Digite o usuário',
+                passwordPlaceholder: 'Digite a senha',
+                chooseUsername: 'Escolha um usuário',
+                createPassword: 'Crie uma senha',
+                yourName: 'Seu nome',
+                yourCity: 'Sua cidade',
+                yourCountry: 'Seu país'
+            },
+            en: {
+                tagline: 'Your Chat Experience',
+                languageLabel: 'Choose Language',
+                continueBtn: 'Continue',
+                login: 'Login',
+                register: 'Register',
+                username: 'Username',
+                password: 'Password',
+                loginBtn: 'Login',
+                registerBtn: 'Register',
+                backToLang: '← Change Language',
+                onboardingText: '👋 Welcome! Complete your profile:<br>📸 Photo • 👤 Name • 🎂 Birth Date • 📍 City',
+                fullName: 'Full Name *',
+                birthDate: 'Birth Date *',
+                city: 'City *',
+                country: 'Country (optional)',
+                addPhoto: 'Add Photo',
+                completeProfile: 'Complete Profile',
+                phone: 'Phone',
+                chat: 'Chat',
+                name: 'Name',
+                birth: 'Birth Date',
+                change: 'Change',
+                edit: 'Edit',
+                welcome: 'Welcome!',
+                send: 'Send',
+                appearance: 'Appearance',
+                darkMode: 'Dark Mode',
+                accentColor: 'Accent Color',
+                servers: 'Servers',
+                account: 'Account',
+                logout: 'Logout',
+                typePlaceholder: 'Type...',
+                usernamePlaceholder: 'Enter username',
+                passwordPlaceholder: 'Enter password',
+                chooseUsername: 'Choose username',
+                createPassword: 'Create password',
+                yourName: 'Your name',
+                yourCity: 'Your city',
+                yourCountry: 'Your country'
+            },
+            ru: {
+                tagline: 'Ваш чат',
+                languageLabel: 'Выберите язык',
+                continueBtn: 'Продолжить',
+                login: 'Вход',
+                register: 'Регистрация',
+                username: 'Имя пользователя',
+                password: 'Пароль',
+                loginBtn: 'Войти',
+                registerBtn: 'Зарегистрироваться',
+                backToLang: '← Сменить язык',
+                onboardingText: '👋 Добро пожаловать! Заполните профиль:<br>📸 Фото • 👤 Имя • 🎂 Дата рождения • 📍 Город',
+                fullName: 'Полное имя *',
+                birthDate: 'Дата рождения *',
+                city: 'Город *',
+                country: 'Страна (необязательно)',
+                addPhoto: 'Добавить фото',
+                completeProfile: 'Завершить',
+                phone: 'Телефон',
+                chat: 'Чат',
+                name: 'Имя',
+                birth: 'Дата рождения',
+                change: 'Сменить',
+                edit: 'Изменить',
+                welcome: 'Добро пожаловать!',
+                send: 'Отправить',
+                appearance: 'Внешний вид',
+                darkMode: 'Тёмный режим',
+                accentColor: 'Цвет акцента',
+                servers: 'Серверы',
+                account: 'Аккаунт',
+                logout: 'Выйти',
+                typePlaceholder: 'Введите...',
+                usernamePlaceholder: 'Введите имя',
+                passwordPlaceholder: 'Введите пароль',
+                chooseUsername: 'Выберите имя',
+                createPassword: 'Создайте пароль',
+                yourName: 'Ваше имя',
+                yourCity: 'Ваш город',
+                yourCountry: 'Ваша страна'
+            },
+            hi: {
+                tagline: 'आपका चैट अनुभव',
+                languageLabel: 'भाषा चुनें',
+                continueBtn: 'जारी रखें',
+                login: 'लॉगिन',
+                register: 'पंजीकरण',
+                username: 'उपयोगकर्ता नाम',
+                password: 'पासवर्ड',
+                loginBtn: 'लॉगिन',
+                registerBtn: 'पंजीकरण',
+                backToLang: '← भाषा बदलें',
+                onboardingText: '👋 स्वागत है! अपनी प्रोफ़ाइल पूरी करें:<br>📸 फोटो • 👤 नाम • 🎂 जन्म तिथि • 📍 शहर',
+                fullName: 'पूरा नाम *',
+                birthDate: 'जन्म तिथि *',
+                city: 'शहर *',
+                country: 'देश (वैकल्पिक)',
+                addPhoto: 'फोटो जोड़ें',
+                completeProfile: 'प्रोफ़ाइल पूरी करें',
+                phone: 'फ़ोन',
+                chat: 'चैट',
+                name: 'नाम',
+                birth: 'जन्म तिथि',
+                change: 'बदलें',
+                edit: 'संपादित',
+                welcome: 'स्वागत है!',
+                send: 'भेजें',
+                appearance: 'दिखावट',
+                darkMode: 'डार्क मोड',
+                accentColor: 'एक्सेंट रंग',
+                servers: 'सर्वर',
+                account: 'खाता',
+                logout: 'लॉगआउट',
+                typePlaceholder: 'लिखें...',
+                usernamePlaceholder: 'उपयोगकर्ता नाम दर्ज करें',
+                passwordPlaceholder: 'पासवर्ड दर्ज करें',
+                chooseUsername: 'उपयोगकर्ता नाम चुनें',
+                createPassword: 'पासवर्ड बनाएं',
+                yourName: 'आपका नाम',
+                yourCity: 'आपका शहर',
+                yourCountry: 'आपका देश'
             }
+        };
 
-            init() {
-                this.setupTheme();
-                this.setupTabs();
-                this.setupForms();
-                this.setupNavigation();
-                this.setupDialer();
-                this.setupSettings();
-                this.setupWelcomeModal();
-                
-                const savedUser = localStorage.getItem('glitchCurrentUser');
-                if (savedUser) {
-                    this.currentUser = JSON.parse(savedUser);
-                    this.showHomeScreen();
-                }
-            }
+        const $ = (id) => document.getElementById(id);
+        let currentLang = 'pt';
 
-            setupTheme() {
-                if (this.darkMode) {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                }
-            }
-
-            toggleDarkMode() {
-                this.darkMode = !this.darkMode;
-                localStorage.setItem('glitchDarkMode', this.darkMode);
-                this.setupTheme();
-                this.updateToggleSwitch();
-            }
-
-            updateToggleSwitch() {
-                const toggle = document.getElementById('darkModeToggle');
-                if (toggle) {
-                    if (this.darkMode) {
-                        toggle.classList.add('active');
-                    } else {
-                        toggle.classList.remove('active');
-                    }
-                }
-            }
-
-            setupTabs() {
-                const tabs = document.querySelectorAll('.auth-tab');
-                const loginForm = document.getElementById('loginForm');
-                const registerForm = document.getElementById('registerForm');
-
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        tabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-
-                        if (tab.dataset.tab === 'login') {
-                            loginForm.style.display = 'flex';
-                            registerForm.style.display = 'none';
-                            this.clearErrors();
-                        } else {
-                            loginForm.style.display = 'none';
-                            registerForm.style.display = 'flex';
-                            this.clearErrors();
-                        }
-                    });
-                });
-            }
-
-            setupForms() {
-                const loginForm = document.getElementById('loginForm');
-                if (loginForm) {
-                    loginForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleLogin();
-                    });
-                }
-
-                const registerForm = document.getElementById('registerForm');
-                if (registerForm) {
-                    registerForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        this.handleRegister();
-                    });
-                }
-            }
-
-            setupWelcomeModal() {
-                const welcomeButton = document.getElementById('welcomeButton');
-                if (welcomeButton) {
-                    welcomeButton.addEventListener('click', () => {
-                        this.closeWelcomeModal();
-                    });
-                }
-                
-                const welcomeOverlay = document.querySelector('.welcome-overlay');
-                if (welcomeOverlay) {
-                    welcomeOverlay.addEventListener('click', () => {
-                        this.closeWelcomeModal();
-                    });
-                }
-            }
-
-            handleLogin() {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                
-                let isValid = true;
-
-                if (!username) {
-                    this.showError('loginUsernameError', 'Username is required');
-                    document.getElementById('loginUsername').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('loginUsernameError');
-                    document.getElementById('loginUsername').classList.remove('error');
-                }
-
-                if (!password) {
-                    this.showError('loginPasswordError', 'Password is required');
-                    document.getElementById('loginPassword').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('loginPasswordError');
-                    document.getElementById('loginPassword').classList.remove('error');
-                }
-
-                if (!isValid) return;
-
-                const user = this.users[username];
-                if (!user) {
-                    this.showError('loginUsernameError', 'User not found');
-                    document.getElementById('loginUsername').classList.add('error');
-                    return;
-                }
-
-                if (user.password !== password) {
-                    this.showError('loginPasswordError', 'Invalid password');
-                    document.getElementById('loginPassword').classList.add('error');
-                    return;
-                }
-
-                this.isFirstLogin = !user.hasLoggedIn;
-                
-                user.hasLoggedIn = true;
-                this.users[username] = user;
-                localStorage.setItem('glitchUsers', JSON.stringify(this.users));
-
-                this.currentUser = { username, name: user.name };
-                localStorage.setItem('glitchCurrentUser', JSON.stringify(this.currentUser));
-                
-                document.getElementById('loginForm').reset();
-                
-                this.showHomeScreen();
-                
-                if (this.isFirstLogin) {
-                    this.showWelcomeModal();
-                }
-            }
-
-            handleRegister() {
-                const name = document.getElementById('registerName').value.trim();
-                const username = document.getElementById('registerUsername').value.trim();
-                const password = document.getElementById('registerPassword').value;
-                const confirmPassword = document.getElementById('registerConfirmPassword').value;
-                
-                let isValid = true;
-
-                if (!name) {
-                    this.showError('registerNameError', 'Full name is required');
-                    document.getElementById('registerName').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('registerNameError');
-                    document.getElementById('registerName').classList.remove('error');
-                }
-
-                if (!username) {
-                    this.showError('registerUsernameError', 'Username is required');
-                    document.getElementById('registerUsername').classList.add('error');
-                    isValid = false;
-                } else if (this.users[username]) {
-                    this.showError('registerUsernameError', 'Username already exists');
-                    document.getElementById('registerUsername').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('registerUsernameError');
-                    document.getElementById('registerUsername').classList.remove('error');
-                }
-
-                if (!password) {
-                    this.showError('registerPasswordError', 'Password is required');
-                    document.getElementById('registerPassword').classList.add('error');
-                    isValid = false;
-                } else if (password.length < 6) {
-                    this.showError('registerPasswordError', 'Password must be at least 6 characters');
-                    document.getElementById('registerPassword').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('registerPasswordError');
-                    document.getElementById('registerPassword').classList.remove('error');
-                }
-
-                if (password !== confirmPassword) {
-                    this.showError('registerConfirmPasswordError', 'Passwords do not match');
-                    document.getElementById('registerConfirmPassword').classList.add('error');
-                    isValid = false;
-                } else {
-                    this.hideError('registerConfirmPasswordError');
-                    document.getElementById('registerConfirmPassword').classList.remove('error');
-                }
-
-                if (!isValid) return;
-
-                this.users[username] = { 
-                    name, 
-                    password,
-                    hasLoggedIn: false 
-                };
-                localStorage.setItem('glitchUsers', JSON.stringify(this.users));
-                
-                document.getElementById('registerForm').reset();
-                
-                const tabs = document.querySelectorAll('.auth-tab');
-                tabs.forEach(t => t.classList.remove('active'));
-                tabs[0].classList.add('active');
-                document.getElementById('loginForm').style.display = 'flex';
-                document.getElementById('registerForm').style.display = 'none';
-                
-                document.getElementById('loginUsername').value = username;
-                document.getElementById('loginPassword').focus();
-                
-                this.showToast('Account created successfully! Please login.');
-            }
-
-            setupNavigation() {
-                const phoneOption = document.getElementById('phoneOption');
-                if (phoneOption) {
-                    phoneOption.addEventListener('click', () => {
-                        this.showPhoneScreen();
-                        this.setActiveNav('phoneOption');
-                    });
-                }
-
-                const chatOption = document.getElementById('chatOption');
-                if (chatOption) {
-                    chatOption.addEventListener('click', () => {
-                        this.showChatScreen();
-                        this.setActiveNav('chatOption');
-                    });
-                }
-
-                const navGLogo = document.getElementById('navGLogo');
-                if (navGLogo) {
-                    navGLogo.addEventListener('click', () => {
-                        this.showHomeScreen();
-                        this.setActiveNav(null);
-                    });
-                }
-
-                const phoneBackButton = document.getElementById('phoneBackButton');
-                if (phoneBackButton) {
-                    phoneBackButton.addEventListener('click', () => {
-                        this.showHomeScreen();
-                    });
-                }
-
-                const chatBackButton = document.getElementById('chatBackButton');
-                if (chatBackButton) {
-                    chatBackButton.addEventListener('click', () => {
-                        this.showHomeScreen();
-                    });
-                }
-
-                const homeBackButton = document.getElementById('homeBackButton');
-                if (homeBackButton) {
-                    homeBackButton.addEventListener('click', () => {
-                        this.logout();
-                    });
-                }
-            }
-
-            setActiveNav(activeId) {
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                if (activeId) {
-                    document.getElementById(activeId).classList.add('active');
-                }
-            }
-
-            setupDialer() {
-                const dialerPad = document.getElementById('dialerPad');
-                const dialerDisplay = document.getElementById('dialerDisplay');
-                
-                if (!dialerPad || !dialerDisplay) return;
-                
-                const buttons = [
-                    { number: '1', sub: '' },
-                    { number: '2', sub: 'ABC' },
-                    { number: '3', sub: 'DEF' },
-                    { number: '4', sub: 'GHI' },
-                    { number: '5', sub: 'JKL' },
-                    { number: '6', sub: 'MNO' },
-                    { number: '7', sub: 'PQRS' },
-                    { number: '8', sub: 'TUV' },
-                    { number: '9', sub: 'WXYZ' },
-                    { number: '*', sub: '' },
-                    { number: '0', sub: '+' },
-                    { number: '#', sub: '' }
-                ];
-
-                buttons.forEach(btn => {
-                    const button = document.createElement('button');
-                    button.className = 'dialer-button';
-                    button.innerHTML = `
-                        ${btn.number}
-                        ${btn.sub ? `<span class="sub-text">${btn.sub}</span>` : ''}
-                    `;
-                    button.addEventListener('click', () => {
-                        this.phoneNumber += btn.number;
-                        dialerDisplay.textContent = this.phoneNumber;
-                    });
-                    dialerPad.appendChild(button);
-                });
-
-                const clearButton = document.getElementById('clearButton');
-                if (clearButton) {
-                    clearButton.addEventListener('click', () => {
-                        this.phoneNumber = '';
-                        dialerDisplay.textContent = '';
-                    });
-                }
-
-                const callButton = document.getElementById('callButton');
-                if (callButton) {
-                    callButton.addEventListener('click', () => {
-                        if (this.phoneNumber) {
-                            alert(`Calling ${this.phoneNumber}...`);
-                        }
-                    });
-                }
-            }
-
-            setupSettings() {
-                const darkModeToggle = document.getElementById('darkModeToggle');
-                if (darkModeToggle) {
-                    darkModeToggle.addEventListener('click', () => {
-                        this.toggleDarkMode();
-                    });
-                    this.updateToggleSwitch();
-                }
-
-                const settingsLogoutButton = document.getElementById('settingsLogoutButton');
-                if (settingsLogoutButton) {
-                    settingsLogoutButton.addEventListener('click', () => {
-                        this.logout();
-                    });
-                }
-
-                const settingsBackButton = document.getElementById('settingsBackButton');
-                if (settingsBackButton) {
-                    settingsBackButton.addEventListener('click', () => {
-                        this.showHomeScreen();
-                    });
-                }
-
-                const logoElements = ['homeLogoSettings', 'phoneLogoSettings', 'chatLogoSettings'];
-                logoElements.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.addEventListener('click', () => {
-                            this.showSettingsScreen();
-                        });
-                    }
-                });
-            }
-
-            showSettingsScreen() {
-                this.homeScreen.classList.remove('active');
-                this.phoneScreen.classList.remove('active');
-                this.chatScreen.classList.remove('active');
-                this.settingsScreen.classList.add('active');
-                
-                if (this.currentUser) {
-                    document.getElementById('profileName').textContent = this.currentUser.name;
-                    document.getElementById('profileUsername').textContent = '@' + this.currentUser.username;
-                    document.getElementById('profileAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
-                }
-                
-                this.updateToggleSwitch();
-            }
-
-            logout() {
-                this.currentUser = null;
-                localStorage.removeItem('glitchCurrentUser');
-                this.showAuthScreen();
-            }
-
-            showError(elementId, message) {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.textContent = message;
-                    element.classList.add('show');
-                }
-            }
-
-            hideError(elementId) {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.textContent = '';
-                    element.classList.remove('show');
-                }
-            }
-
-            clearErrors() {
-                document.querySelectorAll('.error-message').forEach(el => {
-                    el.classList.remove('show');
-                    el.textContent = '';
-                });
-                document.querySelectorAll('.form-input').forEach(el => {
-                    el.classList.remove('error');
-                });
-            }
-
-            showToast(message) {
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.innerHTML = `✓ ${message}`;
-                document.body.appendChild(toast);
-                
-                setTimeout(() => {
-                    toast.classList.add('hide');
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 300);
-                }, 3000);
-            }
-
-            showHomeScreen() {
-                this.authScreen.style.display = 'none';
-                this.phoneScreen.classList.remove('active');
-                this.chatScreen.classList.remove('active');
-                this.settingsScreen.classList.remove('active');
-                this.homeScreen.classList.add('active');
-            }
-
-            showPhoneScreen() {
-                this.homeScreen.classList.remove('active');
-                this.chatScreen.classList.remove('active');
-                this.settingsScreen.classList.remove('active');
-                this.phoneScreen.classList.add('active');
-            }
-
-            showChatScreen() {
-                this.homeScreen.classList.remove('active');
-                this.phoneScreen.classList.remove('active');
-                this.settingsScreen.classList.remove('active');
-                this.chatScreen.classList.add('active');
-                
-                if (!window.p2pChat) {
-                    window.p2pChat = new P2PChat(this.currentUser);
-                }
-            }
-
-            showWelcomeModal() {
-                const welcomeUserName = document.getElementById('welcomeUserName');
-                if (welcomeUserName) {
-                    welcomeUserName.textContent = this.currentUser.name;
-                }
-                this.welcomeModal.style.display = 'flex';
-            }
-
-            closeWelcomeModal() {
-                this.welcomeModal.classList.add('closing');
-                setTimeout(() => {
-                    this.welcomeModal.style.display = 'none';
-                    this.welcomeModal.classList.remove('closing');
-                }, 300);
-            }
-
-            showAuthScreen() {
-                this.homeScreen.classList.remove('active');
-                this.phoneScreen.classList.remove('active');
-                this.chatScreen.classList.remove('active');
-                this.settingsScreen.classList.remove('active');
-                this.authScreen.style.display = 'flex';
-                
-                document.getElementById('loginForm').reset();
-                document.getElementById('registerForm').reset();
-                this.clearErrors();
-            }
+        function applyLanguage(lang) {
+            const t = I18N[lang] || I18N.en;
+            currentLang = lang;
+            
+            // Welcome
+            $('welcomeTagline').textContent = t.tagline;
+            $('languageLabel').textContent = t.languageLabel;
+            $('continueButton').textContent = t.continueBtn;
+            
+            // Auth
+            $('authSubtitle').textContent = t.tagline;
+            $('loginTab').textContent = t.login;
+            $('registerTab').textContent = t.register;
+            $('loginUsernameLabel').textContent = t.username;
+            $('loginPasswordLabel').textContent = t.password;
+            $('registerUsernameLabel').textContent = t.username;
+            $('registerPasswordLabel').textContent = t.password;
+            $('loginButton').textContent = t.loginBtn;
+            $('registerButton').textContent = t.registerBtn;
+            $('backToWelcome').textContent = t.backToLang;
+            
+            // Placeholders
+            $('loginUsername').placeholder = t.usernamePlaceholder;
+            $('loginPassword').placeholder = t.passwordPlaceholder;
+            $('registerUsername').placeholder = t.chooseUsername;
+            $('registerPassword').placeholder = t.createPassword;
+            
+            // Onboarding
+            $('onboardingText').innerHTML = t.onboardingText;
+            $('obNameLabel').textContent = t.fullName;
+            $('obBirthLabel').textContent = t.birthDate;
+            $('obCityLabel').textContent = t.city;
+            $('obCountryLabel').textContent = t.country;
+            $('obSubmit').textContent = t.completeProfile;
+            $('photoLabel').textContent = t.addPhoto;
+            $('onboardName').placeholder = t.yourName;
+            $('onboardCity').placeholder = t.yourCity;
+            $('onboardCountry').placeholder = t.yourCountry;
+            
+            // Nav
+            $('phoneLabel').textContent = t.phone;
+            $('chatLabel').textContent = t.chat;
+            
+            // Profile
+            $('nameLabel').textContent = t.name;
+            $('birthLabel').textContent = t.birth;
+            $('cityLabel').textContent = t.city;
+            $('countryLabel').textContent = t.country;
+            $('usernameLabel').textContent = t.username;
+            $('editNameButton').textContent = t.edit;
+            $('editBirthButton').textContent = t.edit;
+            $('changePhotoLabel').textContent = t.change;
+            
+            // Chat
+            $('welcomeMsg').textContent = t.welcome;
+            $('sendButton').textContent = t.send;
+            $('messageInput').placeholder = t.typePlaceholder;
+            
+            // Settings
+            $('appearanceTitle').textContent = t.appearance;
+            $('darkModeLabel').textContent = t.darkMode;
+            $('accentColorLabel').textContent = t.accentColor;
+            $('serversTitle').textContent = t.servers;
+            $('accountTitle').textContent = t.account;
+            $('logoutLabel').textContent = t.logout;
         }
 
-        class P2PChat {
-            constructor(user) {
-                this.user = user;
-                this.peer = null;
-                this.connections = new Map();
-                this.messageInput = document.getElementById('messageInput');
-                this.sendButton = document.getElementById('sendButton');
-                this.chatContainer = document.getElementById('chatContainer');
-                this.statusIndicator = document.getElementById('statusIndicator');
-                
-                this.init();
-            }
+        // Language change
+        $('languageSelect').addEventListener('change', function() {
+            applyLanguage(this.value);
+        });
 
-            async init() {
-                await this.loadPeerJS();
-                
-                const peerId = 'glitch-' + Math.random().toString(36).substring(7);
-                
-                this.peer = new Peer(peerId);
-                
-                this.peer.on('open', (id) => {
-                    console.log('Connected with ID:', id);
-                    this.updateStatus(true);
-                });
-                
-                this.peer.on('connection', (conn) => {
-                    this.setupConnection(conn);
-                });
-                
-                this.peer.on('error', (err) => {
-                    console.error('PeerJS error:', err);
-                    this.updateStatus(false);
-                });
-                
-                this.setupEventListeners();
-            }
+        // Continue button
+        $('continueButton').addEventListener('click', function() {
+            const lang = $('languageSelect').value;
+            applyLanguage(lang);
+            localStorage.setItem('glang', lang);
+            $('welcomeScreen').style.display = 'none';
+            $('authScreen').style.display = 'flex';
+        });
 
-            loadPeerJS() {
-                return new Promise((resolve, reject) => {
-                    if (window.Peer) {
-                        resolve();
-                        return;
-                    }
-                    
-                    const script = document.createElement('script');
-                    script.src = 'https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js';
-                    script.onload = resolve;
-                    script.onerror = reject;
-                    document.head.appendChild(script);
-                });
-            }
+        // Back to welcome
+        $('backToWelcome').addEventListener('click', function() {
+            $('authScreen').style.display = 'none';
+            $('welcomeScreen').style.display = 'flex';
+        });
 
-            setupEventListeners() {
-                if (this.sendButton) {
-                    this.sendButton.addEventListener('click', () => this.sendMessage());
-                }
-                
-                if (this.messageInput) {
-                    this.messageInput.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            this.sendMessage();
-                        }
-                    });
-                    
-                    this.messageInput.addEventListener('input', () => {
-                        this.autoResizeInput();
-                    });
-                }
-            }
-
-            autoResizeInput() {
-                this.messageInput.style.height = 'auto';
-                this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
-            }
-
-            setupConnection(conn) {
-                conn.on('open', () => {
-                    this.connections.set(conn.peer, conn);
-                    console.log('Connected to:', conn.peer);
-                    
-                    conn.on('data', (data) => {
-                        this.receiveMessage(data);
-                    });
-                    
-                    conn.on('close', () => {
-                        this.connections.delete(conn.peer);
-                        console.log('Disconnected from:', conn.peer);
-                    });
-                });
-            }
-
-            connectToPeer(peerId) {
-                if (peerId && peerId !== this.peer.id) {
-                    const conn = this.peer.connect(peerId, {
-                        reliable: true
-                    });
-                    this.setupConnection(conn);
-                }
-            }
-
-            sendMessage() {
-                const content = this.messageInput.value.trim();
-                if (!content) return;
-                
-                this.displayMessage(content, true);
-                
-                const messageData = {
-                    content: content,
-                    timestamp: Date.now(),
-                    sender: this.user ? this.user.name : 'Anonymous',
-                    senderId: this.peer.id
-                };
-                
-                this.connections.forEach((conn) => {
-                    if (conn.open) {
-                        conn.send(messageData);
-                    }
-                });
-                
-                this.messageInput.value = '';
-                this.messageInput.style.height = 'auto';
-            }
-
-            receiveMessage(data) {
-                if (data && data.content) {
-                    this.displayMessage(data.content, false, data.sender);
-                }
-            }
-
-            displayMessage(content, isSent, senderName = null) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isSent ? 'message-sent' : 'message-received'}`;
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'message-content';
-                contentDiv.textContent = content;
-                
-                const metaDiv = document.createElement('div');
-                metaDiv.className = 'message-meta';
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                });
-                
-                const sender = isSent ? 'You' : (senderName || 'Peer');
-                metaDiv.textContent = `${sender} • ${timeString}`;
-                
-                messageDiv.appendChild(contentDiv);
-                messageDiv.appendChild(metaDiv);
-                
-                this.chatContainer.appendChild(messageDiv);
-                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-            }
-
-            updateStatus(isOnline) {
-                if (isOnline) {
-                    this.statusIndicator.className = 'status-indicator status-online';
+        // Auth tabs
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                if (this.dataset.tab === 'login') {
+                    $('loginForm').style.display = 'flex';
+                    $('registerForm').style.display = 'none';
                 } else {
-                    this.statusIndicator.className = 'status-indicator status-offline';
+                    $('loginForm').style.display = 'none';
+                    $('registerForm').style.display = 'flex';
                 }
+            });
+        });
+
+        // Login
+        $('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = $('loginUsername').value.trim();
+            const password = $('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('Fill all fields');
+                return;
             }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            const user = users[username];
+            
+            if (!user) {
+                alert('User not found. Register first.');
+                return;
+            }
+            
+            if (user.password !== password) {
+                alert('Invalid password');
+                return;
+            }
+            
+            if (!user.completed) {
+                showScreen('onboarding');
+            } else {
+                showScreen('home');
+            }
+            
+            $('loginForm').reset();
+        });
+
+        // Register
+        $('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = $('registerUsername').value.trim();
+            const password = $('registerPassword').value;
+            
+            if (!username) {
+                alert('Username required');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            
+            if (users[username]) {
+                alert('Username exists');
+                return;
+            }
+            
+            if (!password || password.length < 6) {
+                alert('Password min 6 chars');
+                return;
+            }
+            
+            users[username] = { password, completed: false };
+            localStorage.setItem('gu', JSON.stringify(users));
+            
+            $('registerForm').reset();
+            document.querySelector('[data-tab="login"]').click();
+            $('loginUsername').value = username;
+            
+            alert('Account created! Please login.');
+        });
+
+        // Onboarding
+        $('photoLabel').addEventListener('click', () => $('photoInput').click());
+        $('photoPreview').addEventListener('click', () => $('photoInput').click());
+        
+        $('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    $('photoPreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                    localStorage.setItem('tempPhoto', ev.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        $('onboardingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = $('onboardName').value.trim();
+            const birthDate = $('onboardBirthDate').value;
+            const city = $('onboardCity').value.trim();
+            const country = $('onboardCountry').value.trim();
+            
+            if (!name) { alert('Name required'); return; }
+            if (!birthDate) { alert('Birth date required'); return; }
+            if (!city) { alert('City required'); return; }
+            
+            const username = JSON.parse(localStorage.getItem('cu') || '{}').username || $('loginUsername').value;
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            const photo = localStorage.getItem('tempPhoto');
+            
+            users[username] = { ...users[username], name, birthDate, city, country, photo, completed: true };
+            localStorage.setItem('gu', JSON.stringify(users));
+            localStorage.setItem('cu', JSON.stringify({ username, name, birthDate, city, country, photo, completed: true }));
+            localStorage.removeItem('tempPhoto');
+            
+            $('onboardingModal').style.display = 'none';
+            showScreen('home');
+            alert('Profile completed!');
+        });
+
+        // Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.welcome-screen, .auth-screen, .home-screen, .phone-screen, .chat-screen, .settings-screen, .profile-screen, .onboarding-modal').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+            
+            if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
+            else if (screenId === 'auth') $('authScreen').style.display = 'flex';
+            else if (screenId === 'home') $('homeScreen').classList.add('active');
+            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
+            else if (screenId === 'chat') $('chatScreen').classList.add('active');
+            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
+            else if (screenId === 'profile') $('profileScreen').classList.add('active');
+            else if (screenId === 'onboarding') $('onboardingModal').style.display = 'flex';
         }
 
-        // Initialize the app
-        const app = new GlitchApp();
+        $('phoneOption').addEventListener('click', () => showScreen('phone'));
+        $('chatOption').addEventListener('click', () => showScreen('chat'));
+        $('phoneBackButton').addEventListener('click', () => showScreen('home'));
+        $('chatBackButton').addEventListener('click', () => showScreen('home'));
+        $('settingsFab').addEventListener('click', () => showScreen('settings'));
+        $('settingsBackButton').addEventListener('click', () => showScreen('home'));
+        $('profileBackButton').addEventListener('click', () => showScreen('home'));
+        $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('phoneLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('chatLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('navGLogo').addEventListener('click', () => showScreen('profile'));
+
+        // Settings
+        $('darkModeToggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            const isDark = this.classList.contains('active');
+            if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            else document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('gdm', isDark);
+        });
+
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                const color = this.dataset.color;
+                if (color !== 'black') document.documentElement.setAttribute('data-accent', color);
+                else document.documentElement.removeAttribute('data-accent');
+                localStorage.setItem('gac', color);
+            });
+        });
+
+        $('settingsLogoutButton').addEventListener('click', function() {
+            localStorage.removeItem('cu');
+            showScreen('auth');
+        });
+
+        // Dialer
+        let phoneNumber = '';
+        const nums = ['1','2','3','4','5','6','7','8','9','*','0','#'];
+        nums.forEach(n => {
+            const btn = document.createElement('button');
+            btn.className = 'dialer-button';
+            btn.textContent = n;
+            btn.addEventListener('click', () => {
+                phoneNumber += n;
+                $('dialerDisplay').textContent = phoneNumber;
+            });
+            $('dialerPad').appendChild(btn);
+        });
+
+        $('clearButton').addEventListener('click', () => {
+            phoneNumber = '';
+            $('dialerDisplay').textContent = '';
+        });
+
+        $('callButton').addEventListener('click', () => {
+            if (phoneNumber) alert('Calling ' + phoneNumber + '...');
+        });
+
+        // Chat
+        $('sendButton').addEventListener('click', sendMessage);
+        $('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const content = $('messageInput').value.trim();
+            if (!content) return;
+            const div = document.createElement('div');
+            div.className = 'message message-sent';
+            div.innerHTML = `<div class="message-content">${content}</div><div class="message-meta">You</div>`;
+            $('chatContainer').appendChild(div);
+            $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
+            $('messageInput').value = '';
+        }
+
+        // Load saved language
+        const savedLang = localStorage.getItem('glang');
+        if (savedLang) {
+            $('languageSelect').value = savedLang;
+            applyLanguage(savedLang);
+        }
+
+        // Check for existing user
+        const savedUser = JSON.parse(localStorage.getItem('cu') || 'null');
+        if (savedUser) {
+            if (!savedUser.completed) showScreen('onboarding');
+            else showScreen('home');
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('gdm') === 'true') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            $('darkModeToggle').classList.add('active');
+        }
+
+        const savedAccent = localStorage.getItem('gac');
+        if (savedAccent && savedAccent !== 'black') {
+            document.documentElement.setAttribute('data-accent', savedAccent);
+        }
+
+        console.log('App initialized with translations');
     </script>
 </body>
 </html>
