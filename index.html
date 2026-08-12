@@ -58,8 +58,12 @@
         }
 
         @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 2px 8px rgba(0,0,0,0.02)); }
-            100% { filter: drop-shadow(0 12px 24px rgba(0,0,0,0.06)); }
+            0% {
+                filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.02));
+            }
+            100% {
+                filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.06));
+            }
         }
 
         .lang-options {
@@ -101,6 +105,8 @@
             align-items: center;
             z-index: 900;
             transition: opacity 0.5s ease;
+            overflow-y: auto;
+            padding: 1rem;
         }
 
         #loginScreen.hidden {
@@ -117,6 +123,16 @@
             box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
             border: 1px solid #eeeae5;
             text-align: center;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .login-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+        .login-wrapper::-webkit-scrollbar-thumb {
+            background: #d6d0c9;
+            border-radius: 10px;
         }
 
         .login-brand {
@@ -140,7 +156,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Tabs */
         .auth-tabs {
             display: flex;
             gap: 0.5rem;
@@ -187,8 +202,14 @@
         }
 
         @keyframes fadeForm {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .input-group {
@@ -221,6 +242,28 @@
             background: #ffffff;
         }
 
+        .input-group input[type="file"] {
+            padding: 0.5rem 1rem;
+            background: #f3f0ec;
+            border: 1px dashed #d6d0c9;
+            cursor: pointer;
+        }
+
+        .input-group .file-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0.3rem auto 0;
+            border: 3px solid #eae6e1;
+            background: #f3f0ec;
+            display: none;
+        }
+
+        .input-group .file-preview.show {
+            display: block;
+        }
+
         .btn-submit {
             background: #1e1e1e;
             border: none;
@@ -242,9 +285,12 @@
         .btn-submit:hover {
             background: #333;
         }
-
         .btn-submit:active {
             transform: scale(0.97);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .auth-feedback {
@@ -253,12 +299,10 @@
             color: #4f7b6a;
             min-height: 1.4rem;
         }
-
         .auth-feedback.error {
             color: #b15e5e;
         }
 
-        /* CAPTCHA */
         .captcha-area {
             background: #f3f0ec;
             border-radius: 60px;
@@ -292,7 +336,6 @@
             background: #ffffff;
             outline: none;
         }
-
         .captcha-input:focus {
             border-color: #8f8a82;
         }
@@ -307,7 +350,6 @@
             border-radius: 30px;
             transition: background 0.2s;
         }
-
         .captcha-refresh:hover {
             background: #e0dad4;
         }
@@ -328,13 +370,114 @@
             text-align: right;
             display: inline-block;
         }
-
         .forgot-link:hover {
             color: #1e1e1e;
         }
 
+        .age-display {
+            font-size: 0.85rem;
+            color: #6b635b;
+            margin-top: 0.2rem;
+        }
+
         /* ============================================ */
-        /* TELA PRINCIPAL (FEED + CHAT) */
+        /* TELA DE COMPLETAR PERFIL (ONBOARDING) */
+        /* ============================================ */
+        #profileSetupScreen {
+            position: fixed;
+            inset: 0;
+            background: #f7f5f2;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 950;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        #profileSetupScreen.open {
+            display: flex;
+        }
+
+        .profile-setup-wrapper {
+            background: #ffffff;
+            max-width: 460px;
+            width: 100%;
+            border-radius: 56px;
+            padding: 2.5rem 2rem 2.2rem;
+            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eeeae5;
+            text-align: center;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .profile-setup-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+        .profile-setup-wrapper::-webkit-scrollbar-thumb {
+            background: #d6d0c9;
+            border-radius: 10px;
+        }
+
+        .setup-title {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.2rem;
+            color: #1e1e1e;
+            margin-bottom: 0.3rem;
+        }
+
+        .setup-sub {
+            color: #9b9289;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .setup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            text-align: left;
+        }
+
+        .setup-form .input-group .file-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0.3rem auto;
+            border: 3px solid #eae6e1;
+            background: #f3f0ec;
+            display: none;
+        }
+
+        .setup-form .input-group .file-preview.show {
+            display: block;
+        }
+
+        .setup-form .input-group .file-label {
+            background: #f3f0ec;
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #3d3d3d;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .setup-form .input-group .file-label:hover {
+            background: #e8e3dd;
+        }
+
+        .setup-form .input-group input[type="file"] {
+            display: none;
+        }
+
+        /* ============================================ */
+        /* TELA PRINCIPAL */
         /* ============================================ */
         #mainScreen {
             display: none;
@@ -367,6 +510,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            cursor: pointer;
         }
 
         .header-actions {
@@ -386,7 +530,6 @@
             transition: background 0.2s;
             position: relative;
         }
-
         .header-btn:hover {
             background: #f0eeeb;
         }
@@ -403,9 +546,9 @@
             font-weight: 600;
         }
 
-        .user-avatar {
-            width: 36px;
-            height: 36px;
+        .user-avatar-header {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: #e8e4df;
             display: flex;
@@ -413,8 +556,19 @@
             justify-content: center;
             font-size: 1.2rem;
             color: #3a3a3a;
-            border: 1px solid #d6d0c9;
+            border: 2px solid #d6d0c9;
             cursor: pointer;
+            transition: border-color 0.2s;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .user-avatar-header:hover {
+            border-color: #8f8a82;
+        }
+        .user-avatar-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .main-body {
@@ -430,6 +584,18 @@
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
+        }
+
+        .feed-empty {
+            text-align: center;
+            color: #9b9289;
+            padding: 3rem 0;
+            font-size: 1.1rem;
+        }
+        .feed-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d6d0c9;
         }
 
         .create-post {
@@ -476,11 +642,9 @@
             align-items: center;
             gap: 5px;
         }
-
         .post-media-btns label:hover {
             background: #e8e3dd;
         }
-
         .post-media-btns input[type="file"] {
             display: none;
         }
@@ -497,7 +661,6 @@
             transition: background 0.2s;
             font-size: 0.9rem;
         }
-
         .btn-post:hover {
             background: #333;
         }
@@ -533,13 +696,19 @@
             font-weight: 600;
             color: #3a3a3a;
             font-size: 0.9rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .post-user {
             font-weight: 600;
             font-size: 0.9rem;
         }
-
         .post-time {
             font-size: 0.7rem;
             color: #9b9289;
@@ -559,7 +728,6 @@
             max-height: 400px;
             object-fit: cover;
         }
-
         .post-media video {
             max-width: 100%;
             border-radius: 16px;
@@ -574,7 +742,7 @@
             font-size: 0.8rem;
         }
 
-        /* CHAT */
+        /* ===== CHAT ===== */
         .chat-panel {
             width: 0;
             background: #ffffff;
@@ -679,11 +847,149 @@
             font-family: 'Inter', sans-serif;
             transition: background 0.2s;
         }
-
         .chat-input-area button:hover {
             background: #333;
         }
 
+        /* ===== PERFIL MODAL ===== */
+        .profile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            animation: fadeInOverlay 0.3s ease;
+        }
+
+        .profile-overlay.open {
+            display: flex;
+        }
+
+        @keyframes fadeInOverlay {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .profile-modal {
+            background: #ffffff;
+            border-radius: 48px;
+            padding: 2.5rem 2.5rem 2rem;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .profile-modal .close-profile {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #8a8177;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .profile-modal .close-profile:hover {
+            color: #1e1e1e;
+        }
+
+        .profile-modal .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #eae6e1;
+            margin: 0 auto 1rem;
+            background: #f3f0ec;
+        }
+
+        .profile-modal .profile-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e1e1e;
+        }
+
+        .profile-modal .profile-info {
+            color: #6b635b;
+            font-size: 0.95rem;
+            margin: 0.3rem 0;
+        }
+
+        .profile-modal .profile-info i {
+            width: 20px;
+            color: #9b9289;
+        }
+
+        .profile-modal .profile-divider {
+            height: 1px;
+            background: #eae6e1;
+            margin: 1.2rem 0;
+        }
+
+        .profile-modal .friends-section {
+            text-align: left;
+        }
+
+        .profile-modal .friends-section h4 {
+            font-size: 0.9rem;
+            color: #3d3d3d;
+            margin-bottom: 0.6rem;
+        }
+
+        .profile-modal .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f3f0ec;
+        }
+
+        .profile-modal .friend-item .friend-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e8e4df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #3a3a3a;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .profile-modal .friend-item .friend-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-modal .friend-item .friend-name {
+            font-size: 0.9rem;
+            color: #2b2b2b;
+        }
+
+        /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
             .chat-panel.open {
                 width: 100%;
@@ -701,10 +1007,14 @@
             .lang-brand {
                 font-size: 3.5rem;
             }
-            .login-wrapper {
+            .login-wrapper,
+            .profile-setup-wrapper {
                 padding: 1.5rem 1.2rem;
                 border-radius: 40px;
-                margin: 1rem;
+                margin: 0.5rem;
+            }
+            .profile-modal {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
@@ -732,13 +1042,12 @@
             <div class="login-brand">Glith</div>
             <div class="login-sub">rede social</div>
 
-            <!-- Tabs -->
             <div class="auth-tabs">
                 <button class="auth-tab active" data-tab="login">Entrar</button>
                 <button class="auth-tab" data-tab="signup">Criar conta</button>
             </div>
 
-            <!-- FORMULÁRIO DE LOGIN -->
+            <!-- LOGIN -->
             <form class="auth-form active" id="loginForm">
                 <div class="input-group">
                     <label for="loginEmailUser">E-mail ou usuário</label>
@@ -751,33 +1060,30 @@
                 <div style="text-align: right;">
                     <button type="button" class="forgot-link" id="forgotBtn">Esqueceu a senha?</button>
                 </div>
-                <button type="submit" class="btn-submit">
-                    <i class="fas fa-arrow-right"></i> Entrar
-                </button>
+                <button type="submit" class="btn-submit"><i class="fas fa-arrow-right"></i> Entrar</button>
                 <div class="auth-feedback" id="loginFeedback"></div>
             </form>
 
-            <!-- FORMULÁRIO DE CADASTRO -->
+            <!-- CADASTRO -->
             <form class="auth-form" id="signupForm">
                 <div class="input-group">
-                    <label for="signupName">Nome</label>
+                    <label for="signupName">Nome completo *</label>
                     <input type="text" id="signupName" placeholder="Seu nome completo" required />
                 </div>
                 <div class="input-group">
-                    <label for="signupEmail">E-mail</label>
+                    <label for="signupEmail">E-mail *</label>
                     <input type="email" id="signupEmail" placeholder="exemplo@email.com" required />
                 </div>
                 <div class="input-group">
-                    <label for="signupPassword">Senha</label>
-                    <input type="password" id="signupPassword" placeholder="•••••••• (mín. 6)" required minlength="6" />
+                    <label for="signupPassword">Senha * (mín. 6)</label>
+                    <input type="password" id="signupPassword" placeholder="••••••••" required minlength="6" />
                 </div>
-                <!-- CAPTCHA -->
                 <div class="captcha-area">
                     <span class="captcha-text" id="captchaDisplay">12 + 34</span>
                     <input type="text" class="captcha-input" id="captchaInput" placeholder="Resultado" autocomplete="off" />
                     <button type="button" class="captcha-refresh" id="captchaRefresh"><i class="fas fa-sync-alt"></i></button>
                 </div>
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="signupBtn">
                     <i class="fas fa-user-plus"></i> Criar conta
                 </button>
                 <div class="auth-feedback" id="signupFeedback"></div>
@@ -786,7 +1092,49 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TELA PRINCIPAL (FEED + CHAT) -->
+    <!-- TELA DE COMPLETAR PERFIL (ONBOARDING) -->
+    <!-- ========================================== -->
+    <div id="profileSetupScreen">
+        <div class="profile-setup-wrapper">
+            <div class="setup-title">✨ Quase lá!</div>
+            <div class="setup-sub">Complete seu perfil para começar</div>
+
+            <form class="setup-form" id="setupForm">
+                <div class="input-group">
+                    <label>Foto de perfil *</label>
+                    <img id="setupPhotoPreview" class="file-preview" />
+                    <label class="file-label" for="setupPhoto">
+                        <i class="fas fa-camera"></i> Escolher foto
+                    </label>
+                    <input type="file" id="setupPhoto" accept="image/*" required />
+                </div>
+
+                <div class="input-group">
+                    <label for="setupBirth">Data de nascimento *</label>
+                    <input type="date" id="setupBirth" required />
+                    <div class="age-display" id="setupAgeDisplay"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="setupCity">Cidade</label>
+                    <input type="text" id="setupCity" placeholder="Sua cidade" />
+                </div>
+
+                <div class="input-group">
+                    <label for="setupCountry">País</label>
+                    <input type="text" id="setupCountry" placeholder="Seu país" />
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-check"></i> Concluir perfil
+                </button>
+                <div class="auth-feedback" id="setupFeedback"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TELA PRINCIPAL -->
     <!-- ========================================== -->
     <div id="mainScreen">
         <header class="main-header">
@@ -794,14 +1142,15 @@
             <div class="header-actions">
                 <button class="header-btn" id="chatToggleBtn">
                     <i class="fas fa-comment-dots"></i>
-                    <span class="badge" id="chatBadge">3</span>
+                    <span class="badge" id="chatBadge">0</span>
                 </button>
-                <div class="user-avatar"><i class="fas fa-user"></i></div>
+                <div class="user-avatar-header" id="profileAvatarHeader">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
         </header>
 
         <div class="main-body">
-            <!-- FEED -->
             <div class="feed-container" id="feedContainer">
                 <div class="create-post">
                     <textarea id="postText" placeholder="O que você está pensando?"></textarea>
@@ -819,39 +1168,52 @@
                     <div class="file-info" id="fileInfo"></div>
                 </div>
 
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="post-avatar">A</div>
-                        <div><div class="post-user">Ana Silva</div><div class="post-time">2h atrás</div></div>
-                    </div>
-                    <div class="post-content">Bem-vindos ao Glith! 🎉</div>
-                    <div class="post-stats"><span><i class="far fa-heart"></i> 12</span><span><i class="far fa-comment"></i> 5</span></div>
-                </div>
-
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="post-avatar">M</div>
-                        <div><div class="post-user">Marcos Lima</div><div class="post-time">4h atrás</div></div>
-                    </div>
-                    <div class="post-content">Alguém mais animado para o lançamento? 🚀</div>
-                    <div class="post-stats"><span><i class="far fa-heart"></i> 8</span><span><i class="far fa-comment"></i> 3</span></div>
+                <div class="feed-empty" id="feedEmpty">
+                    <i class="far fa-newspaper"></i>
+                    <p>Nenhuma publicação ainda.<br />Seja o primeiro a postar! 🚀</p>
                 </div>
             </div>
 
-            <!-- CHAT -->
             <div class="chat-panel" id="chatPanel">
                 <div class="chat-header">
                     <span><i class="fas fa-comment-dots" style="margin-right: 8px;"></i>Chat</span>
                     <button class="chat-close" id="chatCloseBtn"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="chat-messages" id="chatMessages">
-                    <div class="chat-msg received"><span class="msg-user">João</span>Olá! Alguém online?</div>
-                    <div class="chat-msg received"><span class="msg-user">Maria</span>Sim! Tudo bem?</div>
-                    <div class="chat-msg sent"><span class="msg-user">Você</span>Oi pessoal! 👋</div>
+                    <div class="chat-msg received"><span class="msg-user">Sistema</span>Bem-vindo ao chat do Glith! 👋</div>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" placeholder="Digite uma mensagem..." />
                     <button id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PERFIL MODAL -->
+    <!-- ========================================== -->
+    <div class="profile-overlay" id="profileOverlay">
+        <div class="profile-modal">
+            <button class="close-profile" id="closeProfile"><i class="fas fa-times"></i></button>
+            <img class="profile-pic" id="profileModalPic" src="" alt="Foto de perfil" />
+            <div class="profile-name" id="profileModalName">Usuário</div>
+            <div class="profile-info" id="profileModalCity"><i class="fas fa-map-marker-alt"></i> Cidade, País</div>
+            <div class="profile-info" id="profileModalAge"><i class="fas fa-calendar-alt"></i> Idade: -- anos</div>
+            <div class="profile-divider"></div>
+            <div class="friends-section">
+                <h4><i class="fas fa-user-friends"></i> Amigos (3)</h4>
+                <div class="friend-item">
+                    <div class="friend-avatar">A</div>
+                    <span class="friend-name">Ana Silva</span>
+                </div>
+                <div class="friend-item">
+                    <div class="friend-avatar">M</div>
+                    <span class="friend-name">Marcos Lima</span>
+                </div>
+                <div class="friend-item">
+                    <div class="friend-avatar">J</div>
+                    <span class="friend-name">Julia Costa</span>
                 </div>
             </div>
         </div>
@@ -863,6 +1225,7 @@
         // =============================================
         const languageScreen = document.getElementById('languageScreen');
         const loginScreen = document.getElementById('loginScreen');
+        const profileSetupScreen = document.getElementById('profileSetupScreen');
         const mainScreen = document.getElementById('mainScreen');
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -876,7 +1239,7 @@
         });
 
         // =============================================
-        // TABS (Login / Cadastro)
+        // TABS
         // =============================================
         const tabs = document.querySelectorAll('.auth-tab');
         const forms = document.querySelectorAll('.auth-form');
@@ -887,10 +1250,8 @@
                 this.classList.add('active');
                 forms.forEach(f => f.classList.remove('active'));
                 document.getElementById(this.dataset.tab + 'Form').classList.add('active');
-                // Limpa feedbacks
                 document.getElementById('loginFeedback').textContent = '';
                 document.getElementById('signupFeedback').textContent = '';
-                // Se for cadastro, gera CAPTCHA
                 if (this.dataset.tab === 'signup') generateCaptcha();
             });
         });
@@ -910,6 +1271,10 @@
                 return;
             }
 
+            // Verifica se é o primeiro login (cadastro recente)
+            // Simulação: se o email estiver no userData, é primeiro login
+            const isFirstLogin = userData && userData.email === email && !userData.perfilCompleto;
+
             feedback.textContent = '✅ Entrando...';
             feedback.className = 'auth-feedback';
 
@@ -917,13 +1282,30 @@
                 loginScreen.classList.add('hidden');
                 setTimeout(() => {
                     loginScreen.style.display = 'none';
-                    mainScreen.classList.add('active');
-                    mainScreen.style.display = 'flex';
+
+                    if (isFirstLogin) {
+                        // Primeiro login: mostra tela de completar perfil
+                        profileSetupScreen.classList.add('open');
+                        profileSetupScreen.style.display = 'flex';
+                        // Preenche o nome no setup
+                        document.getElementById('setupNameDisplay')?.remove();
+                        // Adiciona um campo oculto com o nome
+                        const nameDisplay = document.createElement('div');
+                        nameDisplay.id = 'setupNameDisplay';
+                        nameDisplay.style.cssText =
+                            'font-size:1.2rem;font-weight:600;color:#1e1e1e;margin-bottom:0.5rem;';
+                        nameDisplay.textContent = `👋 ${userData.nome}`;
+                        document.querySelector('.setup-title').after(nameDisplay);
+                    } else {
+                        // Login normal
+                        mainScreen.classList.add('active');
+                        mainScreen.style.display = 'flex';
+                        updateProfileUI();
+                    }
                 }, 500);
             }, 700);
         });
 
-        // Esqueceu a senha
         document.getElementById('forgotBtn').addEventListener('click', function() {
             const feedback = document.getElementById('loginFeedback');
             feedback.textContent = '📧 Instruções enviadas para seu e-mail (demo)';
@@ -932,7 +1314,7 @@
         });
 
         // =============================================
-        // CADASTRO com CAPTCHA
+        // CADASTRO
         // =============================================
         let captchaResult = 0;
 
@@ -955,6 +1337,19 @@
         }
 
         document.getElementById('captchaRefresh').addEventListener('click', generateCaptcha);
+
+        // Dados do usuário (global)
+        let userData = {
+            nome: '',
+            email: '',
+            senha: '',
+            perfilCompleto: false,
+            foto: '',
+            cidade: '',
+            pais: '',
+            nascimento: '',
+            amigos: ['Ana Silva', 'Marcos Lima', 'Julia Costa']
+        };
 
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -986,18 +1381,170 @@
                 return;
             }
 
-            feedback.textContent = `✅ Conta criada! Bem-vindo(a), ${nome}!`;
+            // Salva dados do usuário (sem perfil completo ainda)
+            userData.nome = nome;
+            userData.email = email;
+            userData.senha = senha;
+            userData.perfilCompleto = false;
+
+            feedback.textContent = `✅ Conta criada! Faça login para completar seu perfil.`;
             feedback.className = 'auth-feedback';
 
             setTimeout(() => {
-                // Muda para login e preenche email
                 tabs[0].click();
                 document.getElementById('loginEmailUser').value = email;
                 document.getElementById('loginPassword').value = '';
                 feedback.textContent = 'Conta criada! Faça login.';
                 feedback.className = 'auth-feedback';
                 setTimeout(() => { feedback.textContent = ''; }, 3000);
+                document.getElementById('signupForm').reset();
+                generateCaptcha();
             }, 1500);
+        });
+
+        // =============================================
+        // COMPLETAR PERFIL (ONBOARDING)
+        // =============================================
+        let setupPhotoData = null;
+
+        document.getElementById('setupPhoto').addEventListener('change', function() {
+            const preview = document.getElementById('setupPhotoPreview');
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                    setupPhotoData = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        document.getElementById('setupBirth').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (this.value && !isNaN(age) && age >= 0) {
+                document.getElementById('setupAgeDisplay').textContent = `📅 Idade: ${age} anos`;
+            } else {
+                document.getElementById('setupAgeDisplay').textContent = '';
+            }
+        });
+
+        document.getElementById('setupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const foto = document.getElementById('setupPhoto').files[0];
+            const nascimento = document.getElementById('setupBirth').value;
+            const cidade = document.getElementById('setupCity').value.trim();
+            const pais = document.getElementById('setupCountry').value.trim();
+            const feedback = document.getElementById('setupFeedback');
+
+            if (!foto) {
+                feedback.textContent = '⚠️ Adicione uma foto de perfil.';
+                feedback.className = 'auth-feedback error';
+                return;
+            }
+            if (!nascimento) {
+                feedback.textContent = '⚠️ Informe sua data de nascimento.';
+                feedback.className = 'auth-feedback error';
+                return;
+            }
+
+            // Atualiza dados do usuário
+            userData.foto = setupPhotoData || '';
+            userData.nascimento = nascimento;
+            userData.cidade = cidade || 'Não informado';
+            userData.pais = pais || 'Não informado';
+            userData.perfilCompleto = true;
+
+            feedback.textContent = '✅ Perfil completo! Entrando...';
+            feedback.className = 'auth-feedback';
+
+            setTimeout(() => {
+                profileSetupScreen.classList.remove('open');
+                profileSetupScreen.style.display = 'none';
+                mainScreen.classList.add('active');
+                mainScreen.style.display = 'flex';
+                updateProfileUI();
+                // Limpa o setup
+                document.getElementById('setupForm').reset();
+                document.getElementById('setupPhotoPreview').classList.remove('show');
+                document.getElementById('setupAgeDisplay').textContent = '';
+                setupPhotoData = null;
+            }, 1000);
+        });
+
+        // =============================================
+        // ATUALIZAR UI DO PERFIL
+        // =============================================
+        function updateProfileUI() {
+            const avatarHeader = document.getElementById('profileAvatarHeader');
+            if (userData.foto) {
+                avatarHeader.innerHTML = `<img src="${userData.foto}" alt="Perfil" />`;
+            } else {
+                avatarHeader.innerHTML = `<i class="fas fa-user"></i>`;
+            }
+
+            document.getElementById('profileModalPic').src = userData.foto ||
+            'https://via.placeholder.com/120/eee/999?text=?';
+            document.getElementById('profileModalName').textContent = userData.nome || 'Usuário';
+
+            const cidadePais = `${userData.cidade || 'Cidade'}, ${userData.pais || 'País'}`;
+            document.getElementById('profileModalCity').innerHTML =
+                `<i class="fas fa-map-marker-alt"></i> ${cidadePais}`;
+
+            let ageText = '-- anos';
+            if (userData.nascimento) {
+                const birthDate = new Date(userData.nascimento);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+                if (age >= 0) ageText = `${age} anos`;
+            }
+            document.getElementById('profileModalAge').innerHTML =
+                `<i class="fas fa-calendar-alt"></i> Idade: ${ageText}`;
+
+            // Amigos
+            const friendsContainer = document.querySelector('.friends-section');
+            if (userData.amigos && userData.amigos.length > 0) {
+                let html = `<h4><i class="fas fa-user-friends"></i> Amigos (${userData.amigos.length})</h4>`;
+                userData.amigos.forEach(f => {
+                    const initial = f.charAt(0).toUpperCase();
+                    html += `
+                            <div class="friend-item">
+                                <div class="friend-avatar">${initial}</div>
+                                <span class="friend-name">${f}</span>
+                            </div>
+                        `;
+                });
+                friendsContainer.innerHTML = html;
+            }
+        }
+
+        // =============================================
+        // PERFIL - ABRIR/FECHAR
+        // =============================================
+        const profileOverlay = document.getElementById('profileOverlay');
+        const profileAvatarHeader = document.getElementById('profileAvatarHeader');
+
+        profileAvatarHeader.addEventListener('click', function() {
+            updateProfileUI();
+            profileOverlay.classList.add('open');
+        });
+
+        document.getElementById('closeProfile').addEventListener('click', function() {
+            profileOverlay.classList.remove('open');
+        });
+
+        profileOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('open');
+            }
         });
 
         // =============================================
@@ -1051,7 +1598,9 @@
 
             setTimeout(() => {
                 const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-                const replies = ['Legal!', 'Interessante.', 'Verdade!', 'Não sabia disso.', 'Concordo!', 'Hmm...', 'Que bacana!', '😂'];
+                const replies = ['Legal!', 'Interessante.', 'Verdade!', 'Não sabia disso.', 'Concordo!', 'Hmm...',
+                    'Que bacana!', '😂', '👍', 'Bom ponto!'
+                ];
                 const reply = replies[Math.floor(Math.random() * replies.length)];
 
                 const r = document.createElement('div');
@@ -1062,14 +1611,21 @@
 
                 if (!chatPanel.classList.contains('open')) {
                     const unread = chatMessages.querySelectorAll('.chat-msg.received:not(.read)').length;
-                    chatBadge.style.display = 'inline';
-                    chatBadge.textContent = unread;
+                    if (unread > 0) {
+                        chatBadge.style.display = 'inline';
+                        chatBadge.textContent = unread;
+                    }
                 }
             }, 600 + Math.random() * 1000);
         }
 
         chatSendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendMessage(); } });
+        chatInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
 
         // =============================================
         // POSTAGEM
@@ -1080,9 +1636,11 @@
         const postBtn = document.getElementById('postBtn');
         const fileInfo = document.getElementById('fileInfo');
         const feedContainer = document.getElementById('feedContainer');
+        const feedEmpty = document.getElementById('feedEmpty');
 
         let selectedFile = null;
         let fileType = null;
+        let postCount = 0;
 
         photoInput.addEventListener('change', function() {
             if (this.files && this.files[0]) {
@@ -1117,7 +1675,8 @@
                     }
                     selectedFile = file;
                     fileType = 'video';
-                    fileInfo.textContent = `🎬 ${file.name} (${video.duration.toFixed(1)}s, ${(file.size / 1024 / 1024).toFixed(2)}MB)`;
+                    fileInfo.textContent =
+                        `🎬 ${file.name} (${video.duration.toFixed(1)}s, ${(file.size / 1024 / 1024).toFixed(2)}MB)`;
                     photoInput.value = '';
                 };
                 video.src = URL.createObjectURL(file);
@@ -1131,21 +1690,35 @@
                 return;
             }
 
+            postCount++;
+            feedEmpty.style.display = 'none';
+
             const card = document.createElement('div');
             card.className = 'post-card';
+            const userInitial = userData.nome ? userData.nome.charAt(0).toUpperCase() : 'V';
+            const avatarHTML = userData.foto ?
+                `<img src="${userData.foto}" alt="Perfil" />` :
+                userInitial;
+
             const mediaHTML = selectedFile ? (fileType === 'image' ?
                 `<img src="${URL.createObjectURL(selectedFile)}" class="post-media" />` :
                 `<video src="${URL.createObjectURL(selectedFile)}" class="post-media" controls></video>`) : '';
 
             card.innerHTML = `
-                <div class="post-header">
-                    <div class="post-avatar">V</div>
-                    <div><div class="post-user">Você</div><div class="post-time">Agora</div></div>
-                </div>
-                <div class="post-content">${text || ''}</div>
-                ${mediaHTML}
-                <div class="post-stats"><span><i class="far fa-heart"></i> 0</span><span><i class="far fa-comment"></i> 0</span></div>
-            `;
+                    <div class="post-header">
+                        <div class="post-avatar">${avatarHTML}</div>
+                        <div>
+                            <div class="post-user">${userData.nome || 'Você'}</div>
+                            <div class="post-time">Agora</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${text || ''}</div>
+                    ${mediaHTML}
+                    <div class="post-stats">
+                        <span><i class="far fa-heart"></i> 0</span>
+                        <span><i class="far fa-comment"></i> 0</span>
+                    </div>
+                `;
 
             feedContainer.insertBefore(card, feedContainer.firstChild);
 
@@ -1162,6 +1735,7 @@
         // =============================================
         generateCaptcha();
         console.log('🚀 Glith iniciado!');
+        console.log('💡 Fluxo: Cadastro → Login → Completar Perfil → Feed');
     </script>
 
 </body>
