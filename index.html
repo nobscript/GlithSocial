@@ -511,6 +511,10 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .main-brand:hover {
+            opacity: 0.7;
         }
 
         .header-actions {
@@ -851,7 +855,9 @@
             background: #333;
         }
 
-        /* ===== PERFIL MODAL ===== */
+        /* ============================================ */
+        /* PERFIL MODAL */
+        /* ============================================ */
         .profile-overlay {
             position: fixed;
             inset: 0;
@@ -947,25 +953,54 @@
             margin: 1.2rem 0;
         }
 
-        .profile-modal .friends-section {
+        /* Botão editar perfil */
+        .btn-edit-profile {
+            background: #f3f0ec;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+            color: #2b2b2b;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-edit-profile:hover {
+            background: #e8e3dd;
+        }
+
+        /* Adicionar amigos */
+        .add-friends-section {
             text-align: left;
         }
 
-        .profile-modal .friends-section h4 {
+        .add-friends-section h4 {
             font-size: 0.9rem;
             color: #3d3d3d;
             margin-bottom: 0.6rem;
         }
 
-        .profile-modal .friend-item {
+        .friend-suggestion {
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.4rem 0;
+            padding: 0.5rem 0;
             border-bottom: 1px solid #f3f0ec;
+            justify-content: space-between;
         }
 
-        .profile-modal .friend-item .friend-avatar {
+        .friend-suggestion .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .friend-suggestion .friend-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -978,15 +1013,247 @@
             overflow: hidden;
             flex-shrink: 0;
         }
-        .profile-modal .friend-item .friend-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
 
-        .profile-modal .friend-item .friend-name {
+        .friend-suggestion .friend-name {
             font-size: 0.9rem;
             color: #2b2b2b;
+        }
+
+        .btn-add-friend {
+            background: #1e1e1e;
+            border: none;
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-add-friend:hover {
+            background: #333;
+        }
+        .btn-add-friend.added {
+            background: #9b9289;
+            cursor: default;
+        }
+
+        /* ============================================ */
+        /* CONFIGURAÇÕES (SETTINGS) */
+        /* ============================================ */
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 250;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            animation: fadeInOverlay 0.3s ease;
+        }
+
+        .settings-overlay.open {
+            display: flex;
+        }
+
+        .settings-modal {
+            background: #ffffff;
+            border-radius: 48px;
+            padding: 2.5rem 2.5rem 2rem;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .settings-modal .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-modal .settings-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e1e1e;
+        }
+
+        .settings-modal .close-settings {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #8a8177;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .settings-modal .close-settings:hover {
+            color: #1e1e1e;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f3f0ec;
+        }
+
+        .settings-item .settings-label {
+            font-size: 0.95rem;
+            color: #2b2b2b;
+        }
+
+        .settings-item .settings-label i {
+            width: 24px;
+            color: #9b9289;
+        }
+
+        .settings-item .settings-value {
+            font-size: 0.9rem;
+            color: #6b635b;
+        }
+
+        .settings-item .settings-action {
+            background: none;
+            border: none;
+            color: #1e1e1e;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .settings-item .settings-action:hover {
+            background: #f3f0ec;
+        }
+
+        .settings-item .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #d6d0c9;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .settings-item .toggle-switch.active {
+            background: #1e1e1e;
+        }
+
+        .settings-item .toggle-switch .toggle-ball {
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .settings-item .toggle-switch.active .toggle-ball {
+            transform: translateX(20px);
+        }
+
+        .settings-item .logout-btn {
+            background: #b15e5e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .settings-item .logout-btn:hover {
+            background: #8f4a4a;
+        }
+
+        /* ============================================ */
+        /* EDITAR PERFIL (DENTRO DO MODAL) */
+        /* ============================================ */
+        .edit-profile-form {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .edit-profile-form.open {
+            display: flex;
+        }
+
+        .edit-profile-form .input-group input {
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #ddd8d1;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .edit-profile-form .input-group input:focus {
+            border-color: #8f8a82;
+        }
+
+        .edit-profile-form .input-group .file-preview-sm {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0.3rem 0;
+            border: 2px solid #eae6e1;
+            background: #f3f0ec;
+        }
+
+        .edit-profile-form .btn-save-edit {
+            background: #1e1e1e;
+            border: none;
+            padding: 0.6rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .edit-profile-form .btn-save-edit:hover {
+            background: #333;
+        }
+
+        .edit-profile-form .btn-cancel-edit {
+            background: transparent;
+            border: 1px solid #d6d0c9;
+            padding: 0.6rem;
+            border-radius: 40px;
+            color: #5f5a54;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .edit-profile-form .btn-cancel-edit:hover {
+            background: #f3f0ec;
+        }
+
+        .edit-profile-form .form-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .edit-profile-form .form-actions button {
+            flex: 1;
         }
 
         /* ===== RESPONSIVO ===== */
@@ -1013,7 +1280,8 @@
                 border-radius: 40px;
                 margin: 0.5rem;
             }
-            .profile-modal {
+            .profile-modal,
+            .settings-modal {
                 padding: 2rem 1.5rem;
             }
         }
@@ -1138,7 +1406,7 @@
     <!-- ========================================== -->
     <div id="mainScreen">
         <header class="main-header">
-            <span class="main-brand">Glith</span>
+            <span class="main-brand" id="settingsTrigger">Glith</span>
             <div class="header-actions">
                 <button class="header-btn" id="chatToggleBtn">
                     <i class="fas fa-comment-dots"></i>
@@ -1196,25 +1464,134 @@
     <div class="profile-overlay" id="profileOverlay">
         <div class="profile-modal">
             <button class="close-profile" id="closeProfile"><i class="fas fa-times"></i></button>
+
             <img class="profile-pic" id="profileModalPic" src="" alt="Foto de perfil" />
             <div class="profile-name" id="profileModalName">Usuário</div>
             <div class="profile-info" id="profileModalCity"><i class="fas fa-map-marker-alt"></i> Cidade, País</div>
             <div class="profile-info" id="profileModalAge"><i class="fas fa-calendar-alt"></i> Idade: -- anos</div>
+
+            <button class="btn-edit-profile" id="editProfileBtn">
+                <i class="fas fa-pen"></i> Editar perfil
+            </button>
+
+            <!-- Formulário de edição -->
+            <div class="edit-profile-form" id="editProfileForm">
+                <div class="input-group">
+                    <label>Foto de perfil</label>
+                    <img id="editPhotoPreview" class="file-preview-sm" />
+                    <label class="file-label" for="editPhoto" style="font-size:0.8rem;padding:0.3rem 0.8rem;">
+                        <i class="fas fa-camera"></i> Alterar foto
+                    </label>
+                    <input type="file" id="editPhoto" accept="image/*" />
+                </div>
+                <div class="input-group">
+                    <label for="editBirth">Data de nascimento</label>
+                    <input type="date" id="editBirth" />
+                    <div class="age-display" id="editAgeDisplay"></div>
+                </div>
+                <div class="input-group">
+                    <label for="editCity">Cidade</label>
+                    <input type="text" id="editCity" placeholder="Sua cidade" />
+                </div>
+                <div class="input-group">
+                    <label for="editCountry">País</label>
+                    <input type="text" id="editCountry" placeholder="Seu país" />
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel-edit" id="cancelEditBtn">Cancelar</button>
+                    <button type="button" class="btn-save-edit" id="saveEditBtn">Salvar</button>
+                </div>
+            </div>
+
             <div class="profile-divider"></div>
-            <div class="friends-section">
-                <h4><i class="fas fa-user-friends"></i> Amigos (3)</h4>
-                <div class="friend-item">
-                    <div class="friend-avatar">A</div>
-                    <span class="friend-name">Ana Silva</span>
+
+            <!-- Adicionar amigos -->
+            <div class="add-friends-section">
+                <h4><i class="fas fa-user-plus"></i> Adicionar amigos</h4>
+                <div id="friendSuggestions">
+                    <div class="friend-suggestion">
+                        <div class="friend-info">
+                            <div class="friend-avatar">A</div>
+                            <span class="friend-name">Ana Silva</span>
+                        </div>
+                        <button class="btn-add-friend" data-friend="Ana Silva">Adicionar</button>
+                    </div>
+                    <div class="friend-suggestion">
+                        <div class="friend-info">
+                            <div class="friend-avatar">M</div>
+                            <span class="friend-name">Marcos Lima</span>
+                        </div>
+                        <button class="btn-add-friend" data-friend="Marcos Lima">Adicionar</button>
+                    </div>
+                    <div class="friend-suggestion">
+                        <div class="friend-info">
+                            <div class="friend-avatar">J</div>
+                            <span class="friend-name">Julia Costa</span>
+                        </div>
+                        <button class="btn-add-friend" data-friend="Julia Costa">Adicionar</button>
+                    </div>
+                    <div class="friend-suggestion">
+                        <div class="friend-info">
+                            <div class="friend-avatar">R</div>
+                            <span class="friend-name">Rafael Santos</span>
+                        </div>
+                        <button class="btn-add-friend" data-friend="Rafael Santos">Adicionar</button>
+                    </div>
+                    <div class="friend-suggestion">
+                        <div class="friend-info">
+                            <div class="friend-avatar">C</div>
+                            <span class="friend-name">Carla Mendes</span>
+                        </div>
+                        <button class="btn-add-friend" data-friend="Carla Mendes">Adicionar</button>
+                    </div>
                 </div>
-                <div class="friend-item">
-                    <div class="friend-avatar">M</div>
-                    <span class="friend-name">Marcos Lima</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CONFIGURAÇÕES (SETTINGS) -->
+    <!-- ========================================== -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-modal">
+            <div class="settings-header">
+                <h2><i class="fas fa-cog" style="margin-right:10px;"></i>Configurações</h2>
+                <button class="close-settings" id="closeSettings"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-label"><i class="fas fa-user"></i> Nome</span>
+                <span class="settings-value" id="settingsName">—</span>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-label"><i class="fas fa-envelope"></i> E-mail</span>
+                <span class="settings-value" id="settingsEmail">—</span>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-label"><i class="fas fa-globe"></i> Idioma</span>
+                <span class="settings-value">Português</span>
+                <button class="settings-action">Alterar</button>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-label"><i class="fas fa-moon"></i> Modo escuro</span>
+                <div class="toggle-switch" id="darkModeToggle">
+                    <div class="toggle-ball"></div>
                 </div>
-                <div class="friend-item">
-                    <div class="friend-avatar">J</div>
-                    <span class="friend-name">Julia Costa</span>
+            </div>
+
+            <div class="settings-item">
+                <span class="settings-label"><i class="fas fa-bell"></i> Notificações</span>
+                <div class="toggle-switch active" id="notifToggle">
+                    <div class="toggle-ball"></div>
                 </div>
+            </div>
+
+            <div class="settings-item" style="border-bottom:none; padding-top:1rem;">
+                <span class="settings-label"><i class="fas fa-sign-out-alt"></i> Sair</span>
+                <button class="logout-btn" id="logoutBtn">Sair</button>
             </div>
         </div>
     </div>
@@ -1271,8 +1648,6 @@
                 return;
             }
 
-            // Verifica se é o primeiro login (cadastro recente)
-            // Simulação: se o email estiver no userData, é primeiro login
             const isFirstLogin = userData && userData.email === email && !userData.perfilCompleto;
 
             feedback.textContent = '✅ Entrando...';
@@ -1284,12 +1659,8 @@
                     loginScreen.style.display = 'none';
 
                     if (isFirstLogin) {
-                        // Primeiro login: mostra tela de completar perfil
                         profileSetupScreen.classList.add('open');
                         profileSetupScreen.style.display = 'flex';
-                        // Preenche o nome no setup
-                        document.getElementById('setupNameDisplay')?.remove();
-                        // Adiciona um campo oculto com o nome
                         const nameDisplay = document.createElement('div');
                         nameDisplay.id = 'setupNameDisplay';
                         nameDisplay.style.cssText =
@@ -1297,10 +1668,10 @@
                         nameDisplay.textContent = `👋 ${userData.nome}`;
                         document.querySelector('.setup-title').after(nameDisplay);
                     } else {
-                        // Login normal
                         mainScreen.classList.add('active');
                         mainScreen.style.display = 'flex';
                         updateProfileUI();
+                        updateSettingsUI();
                     }
                 }, 500);
             }, 700);
@@ -1338,7 +1709,6 @@
 
         document.getElementById('captchaRefresh').addEventListener('click', generateCaptcha);
 
-        // Dados do usuário (global)
         let userData = {
             nome: '',
             email: '',
@@ -1348,7 +1718,7 @@
             cidade: '',
             pais: '',
             nascimento: '',
-            amigos: ['Ana Silva', 'Marcos Lima', 'Julia Costa']
+            amigos: []
         };
 
         document.getElementById('signupForm').addEventListener('submit', function(e) {
@@ -1381,7 +1751,6 @@
                 return;
             }
 
-            // Salva dados do usuário (sem perfil completo ainda)
             userData.nome = nome;
             userData.email = email;
             userData.senha = senha;
@@ -1425,9 +1794,7 @@
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
             if (this.value && !isNaN(age) && age >= 0) {
                 document.getElementById('setupAgeDisplay').textContent = `📅 Idade: ${age} anos`;
             } else {
@@ -1454,7 +1821,6 @@
                 return;
             }
 
-            // Atualiza dados do usuário
             userData.foto = setupPhotoData || '';
             userData.nascimento = nascimento;
             userData.cidade = cidade || 'Não informado';
@@ -1470,7 +1836,7 @@
                 mainScreen.classList.add('active');
                 mainScreen.style.display = 'flex';
                 updateProfileUI();
-                // Limpa o setup
+                updateSettingsUI();
                 document.getElementById('setupForm').reset();
                 document.getElementById('setupPhotoPreview').classList.remove('show');
                 document.getElementById('setupAgeDisplay').textContent = '';
@@ -1479,7 +1845,7 @@
         });
 
         // =============================================
-        // ATUALIZAR UI DO PERFIL
+        // ATUALIZAR UI
         // =============================================
         function updateProfileUI() {
             const avatarHeader = document.getElementById('profileAvatarHeader');
@@ -1490,7 +1856,7 @@
             }
 
             document.getElementById('profileModalPic').src = userData.foto ||
-            'https://via.placeholder.com/120/eee/999?text=?';
+                'https://via.placeholder.com/120/eee/999?text=?';
             document.getElementById('profileModalName').textContent = userData.nome || 'Usuário';
 
             const cidadePais = `${userData.cidade || 'Cidade'}, ${userData.pais || 'País'}`;
@@ -1509,21 +1875,19 @@
             document.getElementById('profileModalAge').innerHTML =
                 `<i class="fas fa-calendar-alt"></i> Idade: ${ageText}`;
 
-            // Amigos
-            const friendsContainer = document.querySelector('.friends-section');
-            if (userData.amigos && userData.amigos.length > 0) {
-                let html = `<h4><i class="fas fa-user-friends"></i> Amigos (${userData.amigos.length})</h4>`;
-                userData.amigos.forEach(f => {
-                    const initial = f.charAt(0).toUpperCase();
-                    html += `
-                            <div class="friend-item">
-                                <div class="friend-avatar">${initial}</div>
-                                <span class="friend-name">${f}</span>
-                            </div>
-                        `;
-                });
-                friendsContainer.innerHTML = html;
+            // Preenche formulário de edição
+            document.getElementById('editBirth').value = userData.nascimento || '';
+            document.getElementById('editCity').value = userData.cidade || '';
+            document.getElementById('editCountry').value = userData.pais || '';
+            if (userData.foto) {
+                document.getElementById('editPhotoPreview').src = userData.foto;
+                document.getElementById('editPhotoPreview').style.display = 'block';
             }
+        }
+
+        function updateSettingsUI() {
+            document.getElementById('settingsName').textContent = userData.nome || '—';
+            document.getElementById('settingsEmail').textContent = userData.email || '—';
         }
 
         // =============================================
@@ -1534,6 +1898,9 @@
 
         profileAvatarHeader.addEventListener('click', function() {
             updateProfileUI();
+            // Fecha edição se estiver aberta
+            document.getElementById('editProfileForm').classList.remove('open');
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
             profileOverlay.classList.add('open');
         });
 
@@ -1543,7 +1910,155 @@
 
         profileOverlay.addEventListener('click', function(e) {
             if (e.target === this) {
+                profileOverlay.classList.remove('open');
+            }
+        });
+
+        // =============================================
+        // EDITAR PERFIL
+        // =============================================
+        let editPhotoData = null;
+
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            document.getElementById('editProfileForm').classList.toggle('open');
+            this.style.display = this.style.display === 'none' ? 'inline-flex' : 'none';
+            // Preenche dados atuais
+            document.getElementById('editBirth').value = userData.nascimento || '';
+            document.getElementById('editCity').value = userData.cidade || '';
+            document.getElementById('editCountry').value = userData.pais || '';
+            if (userData.foto) {
+                document.getElementById('editPhotoPreview').src = userData.foto;
+                document.getElementById('editPhotoPreview').style.display = 'block';
+            }
+            // Calcula idade
+            if (userData.nascimento) {
+                const birthDate = new Date(userData.nascimento);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+                if (age >= 0) {
+                    document.getElementById('editAgeDisplay').textContent = `📅 Idade: ${age} anos`;
+                }
+            }
+        });
+
+        document.getElementById('editPhoto').addEventListener('change', function() {
+            const preview = document.getElementById('editPhotoPreview');
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    editPhotoData = e.target.result;
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        document.getElementById('editBirth').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            if (this.value && !isNaN(age) && age >= 0) {
+                document.getElementById('editAgeDisplay').textContent = `📅 Idade: ${age} anos`;
+            } else {
+                document.getElementById('editAgeDisplay').textContent = '';
+            }
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            document.getElementById('editProfileForm').classList.remove('open');
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+            editPhotoData = null;
+        });
+
+        document.getElementById('saveEditBtn').addEventListener('click', function() {
+            const nascimento = document.getElementById('editBirth').value;
+            const cidade = document.getElementById('editCity').value.trim();
+            const pais = document.getElementById('editCountry').value.trim();
+
+            if (nascimento) userData.nascimento = nascimento;
+            if (cidade) userData.cidade = cidade;
+            if (pais) userData.pais = pais;
+            if (editPhotoData) {
+                userData.foto = editPhotoData;
+                editPhotoData = null;
+            }
+
+            // Atualiza UI
+            updateProfileUI();
+            updateSettingsUI();
+
+            // Fecha edição
+            document.getElementById('editProfileForm').classList.remove('open');
+            document.getElementById('editProfileBtn').style.display = 'inline-flex';
+
+            // Feedback
+            const feedback = document.createElement('div');
+            feedback.style.cssText =
+                'margin-top:0.5rem;font-size:0.9rem;color:#4f7b6a;text-align:center;';
+            feedback.textContent = '✅ Perfil atualizado!';
+            document.querySelector('.profile-modal .profile-divider').before(feedback);
+            setTimeout(() => feedback.remove(), 3000);
+        });
+
+        // =============================================
+        // ADICIONAR AMIGOS
+        // =============================================
+        document.querySelectorAll('.btn-add-friend').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const friendName = this.dataset.friend;
+                if (this.classList.contains('added')) return;
+
+                if (!userData.amigos.includes(friendName)) {
+                    userData.amigos.push(friendName);
+                    this.textContent = 'Adicionado ✓';
+                    this.classList.add('added');
+                }
+            });
+        });
+
+        // =============================================
+        // CONFIGURAÇÕES (SETTINGS)
+        // =============================================
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsTrigger = document.getElementById('settingsTrigger');
+
+        settingsTrigger.addEventListener('click', function() {
+            updateSettingsUI();
+            settingsOverlay.classList.add('open');
+        });
+
+        document.getElementById('closeSettings').addEventListener('click', function() {
+            settingsOverlay.classList.remove('open');
+        });
+
+        settingsOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
                 this.classList.remove('open');
+            }
+        });
+
+        // Toggle switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                settingsOverlay.classList.remove('open');
+                profileOverlay.classList.remove('open');
+                mainScreen.classList.remove('active');
+                mainScreen.style.display = 'none';
+                loginScreen.classList.remove('hidden');
+                loginScreen.style.display = 'flex';
+                document.getElementById('loginPassword').value = '';
             }
         });
 
@@ -1735,7 +2250,8 @@
         // =============================================
         generateCaptcha();
         console.log('🚀 Glith iniciado!');
-        console.log('💡 Fluxo: Cadastro → Login → Completar Perfil → Feed');
+        console.log('💡 Clique no nome "Glith" para Configurações');
+        console.log('💡 Clique no avatar para Perfil (com edição)');
     </script>
 
 </body>
