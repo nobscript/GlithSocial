@@ -21,7 +21,6 @@
             --success: #00d4aa;
         }
 
-        /* Dark Mode */
         [data-theme="dark"] {
             --bg-primary: #1a1a1a;
             --bg-secondary: #2a2a2a;
@@ -51,7 +50,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Success Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -91,7 +89,6 @@
             }
         }
 
-        /* Auth Screen */
         .auth-screen {
             position: fixed;
             top: 0;
@@ -104,6 +101,22 @@
             justify-content: center;
             z-index: 100;
             animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .auth-container {
@@ -241,31 +254,49 @@
             display: block;
         }
 
-        /* Captcha Styles */
+        /* Math Captcha Styles */
         .captcha-container {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 15px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             user-select: none;
+            justify-content: center;
         }
 
-        .captcha-text {
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem;
+        .captcha-equation {
+            font-size: 1.8rem;
             font-weight: bold;
-            letter-spacing: 8px;
             color: var(--text-primary);
-            text-decoration: line-through;
-            transform: rotate(-2deg);
-            padding: 5px 10px;
-            background: var(--bg-primary);
-            border-radius: 5px;
-            flex: 1;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-equals {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+        }
+
+        .captcha-answer-input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
             text-align: center;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        .captcha-answer-input:focus {
+            outline: none;
+            border-color: var(--accent);
         }
 
         .captcha-refresh {
@@ -281,6 +312,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .captcha-refresh:hover {
@@ -288,7 +320,6 @@
             transform: rotate(180deg);
         }
 
-        /* Welcome Modal */
         .welcome-modal {
             position: fixed;
             top: 0;
@@ -300,6 +331,11 @@
             align-items: center;
             justify-content: center;
             animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .welcome-overlay {
@@ -323,6 +359,17 @@
             animation: contentSlideUp 0.4s ease;
             max-width: 400px;
             width: 90%;
+        }
+
+        @keyframes contentSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .welcome-logo {
@@ -364,7 +411,6 @@
             transform: translateY(-2px);
         }
 
-        /* Home Screen */
         .home-screen {
             display: none;
             height: 100%;
@@ -423,7 +469,6 @@
             transform: scale(1.05);
         }
 
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed;
             bottom: 30px;
@@ -502,7 +547,6 @@
             transform: scale(1.1);
         }
 
-        /* Phone Dialer Screen */
         .phone-screen {
             display: none;
             height: 100%;
@@ -596,6 +640,12 @@
             transform: scale(1.1);
         }
 
+        .dialer-button .sub-text {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
         .dialer-actions {
             display: flex;
             gap: 30px;
@@ -618,12 +668,21 @@
             color: white;
         }
 
+        .call-button:hover {
+            background: #00c49a;
+            transform: scale(1.1);
+        }
+
         .clear-button {
             background: #ff4757;
             color: white;
         }
 
-        /* Chat Screen */
+        .clear-button:hover {
+            background: #ff3747;
+            transform: scale(1.1);
+        }
+
         .chat-screen {
             display: none;
             height: 100%;
@@ -662,10 +721,12 @@
 
         .status-online {
             background: #00d4aa;
+            box-shadow: 0 0 10px rgba(0, 212, 170, 0.6);
         }
 
         .status-offline {
             background: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.6);
         }
 
         @keyframes pulse {
@@ -680,6 +741,13 @@
             padding-bottom: 120px;
             scroll-behavior: smooth;
             background: var(--bg-primary);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .message-content {
@@ -773,7 +841,6 @@
             transform: translateY(-2px);
         }
 
-        /* Settings Screen */
         .settings-screen {
             display: none;
             height: 100%;
@@ -867,7 +934,6 @@
             color: var(--text-primary);
         }
 
-        /* Toggle Switch */
         .toggle-switch {
             position: relative;
             width: 50px;
@@ -911,6 +977,10 @@
             .settings-content {
                 padding: 20px;
             }
+            
+            .captcha-equation {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -940,12 +1010,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Captcha Verification</label>
+                    <label class="form-label">Solve the equation</label>
                     <div class="captcha-container">
-                        <div class="captcha-text" id="loginCaptchaText"></div>
+                        <div class="captcha-equation">
+                            <span id="captchaNum1">5</span>
+                            <span>+</span>
+                            <span id="captchaNum2">3</span>
+                            <span class="captcha-equals">=</span>
+                        </div>
+                        <input type="number" class="captcha-answer-input" id="captchaAnswerInput" placeholder="?" min="0" max="18">
                         <button type="button" class="captcha-refresh" id="loginCaptchaRefresh">↻</button>
                     </div>
-                    <input type="text" class="form-input" id="loginCaptchaInput" placeholder="Enter the captcha code">
                     <div class="error-message" id="loginCaptchaError"></div>
                 </div>
 
@@ -1127,7 +1202,7 @@
             constructor() {
                 this.users = JSON.parse(localStorage.getItem('glitchUsers') || '{}');
                 this.currentUser = null;
-                this.loginCaptcha = '';
+                this.captchaAnswer = 0;
                 this.phoneNumber = '';
                 this.isFirstLogin = false;
                 this.darkMode = localStorage.getItem('glitchDarkMode') === 'true';
@@ -1137,6 +1212,7 @@
 
             init() {
                 this.setupTheme();
+                this.generateMathCaptcha();
                 this.setupTabs();
                 this.setupForms();
                 this.setupCaptcha();
@@ -1166,147 +1242,35 @@
 
             updateToggleSwitch() {
                 const toggle = document.getElementById('darkModeToggle');
-                if (this.darkMode) {
-                    toggle.classList.add('active');
-                } else {
-                    toggle.classList.remove('active');
-                }
-            }
-
-            setupSettings() {
-                document.getElementById('darkModeToggle').addEventListener('click', () => {
-                    this.toggleDarkMode();
-                });
-                
-                this.updateToggleSwitch();
-
-                document.getElementById('settingsLogoutButton').addEventListener('click', () => {
-                    this.logout();
-                });
-
-                document.getElementById('settingsBackButton').addEventListener('click', () => {
-                    this.showHomeScreen();
-                });
-
-                // Open settings when clicking logo in header
-                document.getElementById('homeLogoSettings').addEventListener('click', () => {
-                    this.showSettingsScreen();
-                });
-
-                document.getElementById('phoneLogoSettings').addEventListener('click', () => {
-                    this.showSettingsScreen();
-                });
-
-                document.getElementById('chatLogoSettings').addEventListener('click', () => {
-                    this.showSettingsScreen();
-                });
-            }
-
-            showSettingsScreen() {
-                this.homeScreen.classList.remove('active');
-                this.phoneScreen.classList.remove('active');
-                this.chatScreen.classList.remove('active');
-                this.settingsScreen.classList.add('active');
-                
-                if (this.currentUser) {
-                    document.getElementById('profileName').textContent = this.currentUser.name;
-                    document.getElementById('profileUsername').textContent = '@' + this.currentUser.username;
-                    document.getElementById('profileAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
-                }
-                
-                this.updateToggleSwitch();
-            }
-
-            setupNavigation() {
-                document.getElementById('phoneOption').addEventListener('click', () => {
-                    this.showPhoneScreen();
-                    this.setActiveNav('phoneOption');
-                });
-
-                document.getElementById('chatOption').addEventListener('click', () => {
-                    this.showChatScreen();
-                    this.setActiveNav('chatOption');
-                });
-
-                document.getElementById('navGLogo').addEventListener('click', () => {
-                    this.showHomeScreen();
-                    this.setActiveNav(null);
-                });
-
-                document.getElementById('phoneBackButton').addEventListener('click', () => {
-                    this.showHomeScreen();
-                });
-
-                document.getElementById('chatBackButton').addEventListener('click', () => {
-                    this.showHomeScreen();
-                });
-
-                document.getElementById('homeBackButton').addEventListener('click', () => {
-                    this.logout();
-                });
-
-                document.getElementById('homeLogo').addEventListener('click', () => {
-                    const logo = document.getElementById('homeLogo');
-                    logo.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        logo.style.transform = 'scale(1)';
-                    }, 200);
-                });
-            }
-
-            setActiveNav(activeId) {
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                if (activeId) {
-                    document.getElementById(activeId).classList.add('active');
-                }
-            }
-
-            setupDialer() {
-                const dialerPad = document.getElementById('dialerPad');
-                const dialerDisplay = document.getElementById('dialerDisplay');
-                
-                const buttons = [
-                    { number: '1', sub: '' },
-                    { number: '2', sub: 'ABC' },
-                    { number: '3', sub: 'DEF' },
-                    { number: '4', sub: 'GHI' },
-                    { number: '5', sub: 'JKL' },
-                    { number: '6', sub: 'MNO' },
-                    { number: '7', sub: 'PQRS' },
-                    { number: '8', sub: 'TUV' },
-                    { number: '9', sub: 'WXYZ' },
-                    { number: '*', sub: '' },
-                    { number: '0', sub: '+' },
-                    { number: '#', sub: '' }
-                ];
-
-                buttons.forEach(btn => {
-                    const button = document.createElement('button');
-                    button.className = 'dialer-button';
-                    button.innerHTML = `
-                        ${btn.number}
-                        ${btn.sub ? `<span class="sub-text">${btn.sub}</span>` : ''}
-                    `;
-                    button.addEventListener('click', () => {
-                        this.phoneNumber += btn.number;
-                        dialerDisplay.textContent = this.phoneNumber;
-                    });
-                    dialerPad.appendChild(button);
-                });
-
-                document.getElementById('clearButton').addEventListener('click', () => {
-                    this.phoneNumber = '';
-                    dialerDisplay.textContent = '';
-                });
-
-                document.getElementById('callButton').addEventListener('click', () => {
-                    if (this.phoneNumber) {
-                        alert(`Calling ${this.phoneNumber}...`);
+                if (toggle) {
+                    if (this.darkMode) {
+                        toggle.classList.add('active');
+                    } else {
+                        toggle.classList.remove('active');
                     }
-                });
+                }
+            }
+
+            generateMathCaptcha() {
+                const num1 = Math.floor(Math.random() * 9) + 1; // 1-9
+                const num2 = Math.floor(Math.random() * 9) + 1; // 1-9
+                this.captchaAnswer = num1 + num2;
+                
+                document.getElementById('captchaNum1').textContent = num1;
+                document.getElementById('captchaNum2').textContent = num2;
+                
+                console.log('Captcha:', num1, '+', num2, '=', this.captchaAnswer);
+            }
+
+            setupCaptcha() {
+                const refreshButton = document.getElementById('loginCaptchaRefresh');
+                if (refreshButton) {
+                    refreshButton.addEventListener('click', () => {
+                        this.generateMathCaptcha();
+                        document.getElementById('captchaAnswerInput').value = '';
+                        document.getElementById('loginCaptchaError').classList.remove('show');
+                    });
+                }
             }
 
             setupTabs() {
@@ -1322,7 +1286,7 @@
                         if (tab.dataset.tab === 'login') {
                             loginForm.style.display = 'flex';
                             registerForm.style.display = 'none';
-                            this.generateCaptcha();
+                            this.generateMathCaptcha();
                             this.clearErrors();
                         } else {
                             loginForm.style.display = 'none';
@@ -1334,65 +1298,27 @@
             }
 
             setupForms() {
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleLogin();
-                });
-
-                document.getElementById('registerForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleRegister();
-                });
-            }
-
-            setupCaptcha() {
-                this.generateCaptcha();
-                
-                document.getElementById('loginCaptchaRefresh').addEventListener('click', () => {
-                    this.generateCaptcha();
-                    document.getElementById('loginCaptchaInput').value = '';
-                    document.getElementById('loginCaptchaError').classList.remove('show');
-                });
-            }
-
-            generateCaptcha() {
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-                let captcha = '';
-                for (let i = 0; i < 5; i++) {
-                    captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleLogin();
+                    });
                 }
-                this.loginCaptcha = captcha;
-                document.getElementById('loginCaptchaText').textContent = captcha;
-            }
 
-            clearErrors() {
-                document.querySelectorAll('.error-message').forEach(el => {
-                    el.classList.remove('show');
-                    el.textContent = '';
-                });
-                document.querySelectorAll('.form-input').forEach(el => {
-                    el.classList.remove('error');
-                });
-            }
-
-            showToast(message) {
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.innerHTML = `✓ ${message}`;
-                document.body.appendChild(toast);
-                
-                setTimeout(() => {
-                    toast.classList.add('hide');
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 300);
-                }, 3000);
+                const registerForm = document.getElementById('registerForm');
+                if (registerForm) {
+                    registerForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleRegister();
+                    });
+                }
             }
 
             handleLogin() {
                 const username = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value;
-                const captchaInput = document.getElementById('loginCaptchaInput').value.trim().toUpperCase();
+                const captchaInput = document.getElementById('captchaAnswerInput').value.trim();
                 
                 let isValid = true;
 
@@ -1414,14 +1340,15 @@
                     document.getElementById('loginPassword').classList.remove('error');
                 }
 
-                if (captchaInput !== this.loginCaptcha) {
-                    this.showError('loginCaptchaError', 'Invalid captcha code');
-                    document.getElementById('loginCaptchaInput').classList.add('error');
+                if (!captchaInput || parseInt(captchaInput) !== this.captchaAnswer) {
+                    this.showError('loginCaptchaError', 'Incorrect answer. Please solve the equation.');
+                    document.getElementById('captchaAnswerInput').classList.add('error');
                     isValid = false;
-                    this.generateCaptcha();
+                    this.generateMathCaptcha();
+                    document.getElementById('captchaAnswerInput').value = '';
                 } else {
                     this.hideError('loginCaptchaError');
-                    document.getElementById('loginCaptchaInput').classList.remove('error');
+                    document.getElementById('captchaAnswerInput').classList.remove('error');
                 }
 
                 if (!isValid) return;
@@ -1430,12 +1357,16 @@
                 if (!user) {
                     this.showError('loginUsernameError', 'User not found');
                     document.getElementById('loginUsername').classList.add('error');
+                    this.generateMathCaptcha();
+                    document.getElementById('captchaAnswerInput').value = '';
                     return;
                 }
 
                 if (user.password !== password) {
                     this.showError('loginPasswordError', 'Invalid password');
                     document.getElementById('loginPassword').classList.add('error');
+                    this.generateMathCaptcha();
+                    document.getElementById('captchaAnswerInput').value = '';
                     return;
                 }
 
@@ -1449,7 +1380,7 @@
                 localStorage.setItem('glitchCurrentUser', JSON.stringify(this.currentUser));
                 
                 document.getElementById('loginForm').reset();
-                this.generateCaptcha();
+                this.generateMathCaptcha();
                 
                 this.showHomeScreen();
                 
@@ -1529,8 +1460,168 @@
                 
                 document.getElementById('loginUsername').value = username;
                 document.getElementById('loginPassword').focus();
+                this.generateMathCaptcha();
                 
                 this.showToast('Account created successfully! Please login.');
+            }
+
+            setupNavigation() {
+                const phoneOption = document.getElementById('phoneOption');
+                if (phoneOption) {
+                    phoneOption.addEventListener('click', () => {
+                        this.showPhoneScreen();
+                        this.setActiveNav('phoneOption');
+                    });
+                }
+
+                const chatOption = document.getElementById('chatOption');
+                if (chatOption) {
+                    chatOption.addEventListener('click', () => {
+                        this.showChatScreen();
+                        this.setActiveNav('chatOption');
+                    });
+                }
+
+                const navGLogo = document.getElementById('navGLogo');
+                if (navGLogo) {
+                    navGLogo.addEventListener('click', () => {
+                        this.showHomeScreen();
+                        this.setActiveNav(null);
+                    });
+                }
+
+                const phoneBackButton = document.getElementById('phoneBackButton');
+                if (phoneBackButton) {
+                    phoneBackButton.addEventListener('click', () => {
+                        this.showHomeScreen();
+                    });
+                }
+
+                const chatBackButton = document.getElementById('chatBackButton');
+                if (chatBackButton) {
+                    chatBackButton.addEventListener('click', () => {
+                        this.showHomeScreen();
+                    });
+                }
+
+                const homeBackButton = document.getElementById('homeBackButton');
+                if (homeBackButton) {
+                    homeBackButton.addEventListener('click', () => {
+                        this.logout();
+                    });
+                }
+            }
+
+            setActiveNav(activeId) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                if (activeId) {
+                    document.getElementById(activeId).classList.add('active');
+                }
+            }
+
+            setupDialer() {
+                const dialerPad = document.getElementById('dialerPad');
+                const dialerDisplay = document.getElementById('dialerDisplay');
+                
+                if (!dialerPad || !dialerDisplay) return;
+                
+                const buttons = [
+                    { number: '1', sub: '' },
+                    { number: '2', sub: 'ABC' },
+                    { number: '3', sub: 'DEF' },
+                    { number: '4', sub: 'GHI' },
+                    { number: '5', sub: 'JKL' },
+                    { number: '6', sub: 'MNO' },
+                    { number: '7', sub: 'PQRS' },
+                    { number: '8', sub: 'TUV' },
+                    { number: '9', sub: 'WXYZ' },
+                    { number: '*', sub: '' },
+                    { number: '0', sub: '+' },
+                    { number: '#', sub: '' }
+                ];
+
+                buttons.forEach(btn => {
+                    const button = document.createElement('button');
+                    button.className = 'dialer-button';
+                    button.innerHTML = `
+                        ${btn.number}
+                        ${btn.sub ? `<span class="sub-text">${btn.sub}</span>` : ''}
+                    `;
+                    button.addEventListener('click', () => {
+                        this.phoneNumber += btn.number;
+                        dialerDisplay.textContent = this.phoneNumber;
+                    });
+                    dialerPad.appendChild(button);
+                });
+
+                const clearButton = document.getElementById('clearButton');
+                if (clearButton) {
+                    clearButton.addEventListener('click', () => {
+                        this.phoneNumber = '';
+                        dialerDisplay.textContent = '';
+                    });
+                }
+
+                const callButton = document.getElementById('callButton');
+                if (callButton) {
+                    callButton.addEventListener('click', () => {
+                        if (this.phoneNumber) {
+                            alert(`Calling ${this.phoneNumber}...`);
+                        }
+                    });
+                }
+            }
+
+            setupSettings() {
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', () => {
+                        this.toggleDarkMode();
+                    });
+                    this.updateToggleSwitch();
+                }
+
+                const settingsLogoutButton = document.getElementById('settingsLogoutButton');
+                if (settingsLogoutButton) {
+                    settingsLogoutButton.addEventListener('click', () => {
+                        this.logout();
+                    });
+                }
+
+                const settingsBackButton = document.getElementById('settingsBackButton');
+                if (settingsBackButton) {
+                    settingsBackButton.addEventListener('click', () => {
+                        this.showHomeScreen();
+                    });
+                }
+
+                const logoElements = ['homeLogoSettings', 'phoneLogoSettings', 'chatLogoSettings'];
+                logoElements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.addEventListener('click', () => {
+                            this.showSettingsScreen();
+                        });
+                    }
+                });
+            }
+
+            showSettingsScreen() {
+                this.homeScreen.classList.remove('active');
+                this.phoneScreen.classList.remove('active');
+                this.chatScreen.classList.remove('active');
+                this.settingsScreen.classList.add('active');
+                
+                if (this.currentUser) {
+                    document.getElementById('profileName').textContent = this.currentUser.name;
+                    document.getElementById('profileUsername').textContent = '@' + this.currentUser.username;
+                    document.getElementById('profileAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                }
+                
+                this.updateToggleSwitch();
             }
 
             logout() {
@@ -1541,14 +1632,42 @@
 
             showError(elementId, message) {
                 const element = document.getElementById(elementId);
-                element.textContent = message;
-                element.classList.add('show');
+                if (element) {
+                    element.textContent = message;
+                    element.classList.add('show');
+                }
             }
 
             hideError(elementId) {
                 const element = document.getElementById(elementId);
-                element.textContent = '';
-                element.classList.remove('show');
+                if (element) {
+                    element.textContent = '';
+                    element.classList.remove('show');
+                }
+            }
+
+            clearErrors() {
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.classList.remove('show');
+                    el.textContent = '';
+                });
+                document.querySelectorAll('.form-input').forEach(el => {
+                    el.classList.remove('error');
+                });
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `✓ ${message}`;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 3000);
             }
 
             showHomeScreen() {
@@ -1578,8 +1697,25 @@
             }
 
             showWelcomeModal() {
-                document.getElementById('welcomeUserName').textContent = this.currentUser.name;
+                const welcomeUserName = document.getElementById('welcomeUserName');
+                if (welcomeUserName) {
+                    welcomeUserName.textContent = this.currentUser.name;
+                }
                 this.welcomeModal.style.display = 'flex';
+                
+                const welcomeButton = document.getElementById('welcomeButton');
+                if (welcomeButton) {
+                    welcomeButton.addEventListener('click', () => {
+                        this.closeWelcomeModal();
+                    });
+                }
+                
+                const welcomeOverlay = document.querySelector('.welcome-overlay');
+                if (welcomeOverlay) {
+                    welcomeOverlay.addEventListener('click', () => {
+                        this.closeWelcomeModal();
+                    });
+                }
             }
 
             closeWelcomeModal() {
@@ -1599,7 +1735,7 @@
                 
                 document.getElementById('loginForm').reset();
                 document.getElementById('registerForm').reset();
-                this.generateCaptcha();
+                this.generateMathCaptcha();
                 this.clearErrors();
             }
         }
@@ -1657,18 +1793,22 @@
             }
 
             setupEventListeners() {
-                this.sendButton.addEventListener('click', () => this.sendMessage());
+                if (this.sendButton) {
+                    this.sendButton.addEventListener('click', () => this.sendMessage());
+                }
                 
-                this.messageInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        this.sendMessage();
-                    }
-                });
-                
-                this.messageInput.addEventListener('input', () => {
-                    this.autoResizeInput();
-                });
+                if (this.messageInput) {
+                    this.messageInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            this.sendMessage();
+                        }
+                    });
+                    
+                    this.messageInput.addEventListener('input', () => {
+                        this.autoResizeInput();
+                    });
+                }
             }
 
             autoResizeInput() {
