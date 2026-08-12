@@ -49,28 +49,6 @@
             overflow: hidden;
         }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: var(--bg-primary);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 2000;
-            animation: slideInRight 0.3s ease;
-            font-weight: 500;
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .toast.hide { animation: slideOutRight 0.3s ease forwards; }
-        @keyframes slideOutRight { to { opacity: 0; transform: translateX(100px); } }
-
         .welcome-screen {
             position: fixed;
             inset: 0;
@@ -125,15 +103,7 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.3s;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
         }
-
-        .language-select:focus { outline: none; }
 
         .continue-button {
             background: var(--accent);
@@ -144,15 +114,11 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s;
             font-family: 'Inter', sans-serif;
             width: 100%;
-            position: relative;
-            z-index: 10;
         }
 
-        .continue-button:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        .continue-button:active { transform: translateY(0); }
+        .continue-button:hover { background: var(--accent-hover); }
 
         .auth-screen {
             position: fixed;
@@ -207,7 +173,6 @@
             font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-secondary);
-            transition: all 0.3s;
             border-radius: 10px;
             font-family: 'Inter', sans-serif;
         }
@@ -224,7 +189,6 @@
             border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.3s;
             background: var(--bg-input);
             color: var(--text-primary);
         }
@@ -240,15 +204,11 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s;
             font-family: 'Inter', sans-serif;
             margin-top: 10px;
         }
 
         .auth-button:hover { background: var(--accent-hover); }
-
-        .error-message { color: var(--error); font-size: 0.75rem; display: none; }
-        .error-message.show { display: block; }
 
         .back-to-welcome {
             display: block;
@@ -797,11 +757,11 @@
             <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
         </div>
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received"><div class="message-content" id="welcomeMsg">Welcome!</div><div class="message-meta">system</div></div>
+            <div class="message message-received"><div class="message-content">Welcome!</div><div class="message-meta">system</div></div>
         </div>
         <div class="input-container">
             <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
-            <button class="send-button" id="sendButton" type="button" id="sendLabel">Send</button>
+            <button class="send-button" id="sendButton" type="button">Send</button>
         </div>
     </div>
 
@@ -813,9 +773,9 @@
         </div>
         <div class="settings-content">
             <div class="settings-section">
-                <div class="settings-title" id="appearanceTitle">Appearance</div>
-                <div class="settings-item"><span id="darkModeLabel">Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
-                <div class="settings-item"><span id="accentColorLabel">Accent Color</span></div>
+                <div class="settings-title">Appearance</div>
+                <div class="settings-item"><span>Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
+                <div class="settings-item"><span>Accent Color</span></div>
                 <div class="color-options">
                     <div class="color-option" data-color="black" style="background:#000;"></div>
                     <div class="color-option" data-color="blue" style="background:#06f;"></div>
@@ -825,277 +785,64 @@
                 </div>
             </div>
             <div class="settings-section">
-                <div class="settings-title" id="serversTitle">Servers</div>
+                <div class="settings-title">Servers</div>
                 <div class="server-option active" data-server="wss://echo.websocket.org">🌍 Global</div>
                 <div class="server-option" data-server="wss://ws.postman-echo.com/raw">🇪🇺 EU</div>
                 <div class="server-option" data-server="wss://socketsbay.com/wss/v2/1/demo/">🧪 Demo</div>
             </div>
             <div class="settings-section">
-                <div class="settings-title" id="accountTitle">Account</div>
-                <div class="settings-item"><span id="logoutLabel">Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
+                <div class="settings-title">Account</div>
+                <div class="settings-item"><span>Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Translations
-        const I18N = {
-            pt: {
-                tagline: 'Sua Experiência de Chat',
-                languageLabel: 'Escolha o Idioma',
-                continueBtn: 'Continuar',
-                login: 'Entrar',
-                register: 'Cadastrar',
-                username: 'Usuário',
-                password: 'Senha',
-                loginBtn: 'Entrar',
-                registerBtn: 'Cadastrar',
-                backToLang: '← Mudar Idioma',
-                onboardingText: '👋 Bem-vindo! Complete seu perfil:<br>📸 Foto • 👤 Nome • 🎂 Data de Nascimento • 📍 Cidade',
-                fullName: 'Nome Completo *',
-                birthDate: 'Data de Nascimento *',
-                city: 'Cidade *',
-                country: 'País (opcional)',
-                addPhoto: 'Adicionar Foto',
-                completeProfile: 'Completar Perfil',
-                phone: 'Telefone',
-                chat: 'Chat',
-                name: 'Nome',
-                birth: 'Data de Nascimento',
-                change: 'Trocar',
-                edit: 'Editar',
-                welcome: 'Bem-vindo!',
-                send: 'Enviar',
-                appearance: 'Aparência',
-                darkMode: 'Modo Escuro',
-                accentColor: 'Cor de Destaque',
-                servers: 'Servidores',
-                account: 'Conta',
-                logout: 'Sair',
-                typePlaceholder: 'Digite...',
-                usernamePlaceholder: 'Digite o usuário',
-                passwordPlaceholder: 'Digite a senha',
-                chooseUsername: 'Escolha um usuário',
-                createPassword: 'Crie uma senha',
-                yourName: 'Seu nome',
-                yourCity: 'Sua cidade',
-                yourCountry: 'Seu país'
-            },
-            en: {
-                tagline: 'Your Chat Experience',
-                languageLabel: 'Choose Language',
-                continueBtn: 'Continue',
-                login: 'Login',
-                register: 'Register',
-                username: 'Username',
-                password: 'Password',
-                loginBtn: 'Login',
-                registerBtn: 'Register',
-                backToLang: '← Change Language',
-                onboardingText: '👋 Welcome! Complete your profile:<br>📸 Photo • 👤 Name • 🎂 Birth Date • 📍 City',
-                fullName: 'Full Name *',
-                birthDate: 'Birth Date *',
-                city: 'City *',
-                country: 'Country (optional)',
-                addPhoto: 'Add Photo',
-                completeProfile: 'Complete Profile',
-                phone: 'Phone',
-                chat: 'Chat',
-                name: 'Name',
-                birth: 'Birth Date',
-                change: 'Change',
-                edit: 'Edit',
-                welcome: 'Welcome!',
-                send: 'Send',
-                appearance: 'Appearance',
-                darkMode: 'Dark Mode',
-                accentColor: 'Accent Color',
-                servers: 'Servers',
-                account: 'Account',
-                logout: 'Logout',
-                typePlaceholder: 'Type...',
-                usernamePlaceholder: 'Enter username',
-                passwordPlaceholder: 'Enter password',
-                chooseUsername: 'Choose username',
-                createPassword: 'Create password',
-                yourName: 'Your name',
-                yourCity: 'Your city',
-                yourCountry: 'Your country'
-            },
-            ru: {
-                tagline: 'Ваш чат',
-                languageLabel: 'Выберите язык',
-                continueBtn: 'Продолжить',
-                login: 'Вход',
-                register: 'Регистрация',
-                username: 'Имя пользователя',
-                password: 'Пароль',
-                loginBtn: 'Войти',
-                registerBtn: 'Зарегистрироваться',
-                backToLang: '← Сменить язык',
-                onboardingText: '👋 Добро пожаловать! Заполните профиль:<br>📸 Фото • 👤 Имя • 🎂 Дата рождения • 📍 Город',
-                fullName: 'Полное имя *',
-                birthDate: 'Дата рождения *',
-                city: 'Город *',
-                country: 'Страна (необязательно)',
-                addPhoto: 'Добавить фото',
-                completeProfile: 'Завершить',
-                phone: 'Телефон',
-                chat: 'Чат',
-                name: 'Имя',
-                birth: 'Дата рождения',
-                change: 'Сменить',
-                edit: 'Изменить',
-                welcome: 'Добро пожаловать!',
-                send: 'Отправить',
-                appearance: 'Внешний вид',
-                darkMode: 'Тёмный режим',
-                accentColor: 'Цвет акцента',
-                servers: 'Серверы',
-                account: 'Аккаунт',
-                logout: 'Выйти',
-                typePlaceholder: 'Введите...',
-                usernamePlaceholder: 'Введите имя',
-                passwordPlaceholder: 'Введите пароль',
-                chooseUsername: 'Выберите имя',
-                createPassword: 'Создайте пароль',
-                yourName: 'Ваше имя',
-                yourCity: 'Ваш город',
-                yourCountry: 'Ваша страна'
-            },
-            hi: {
-                tagline: 'आपका चैट अनुभव',
-                languageLabel: 'भाषा चुनें',
-                continueBtn: 'जारी रखें',
-                login: 'लॉगिन',
-                register: 'पंजीकरण',
-                username: 'उपयोगकर्ता नाम',
-                password: 'पासवर्ड',
-                loginBtn: 'लॉगिन',
-                registerBtn: 'पंजीकरण',
-                backToLang: '← भाषा बदलें',
-                onboardingText: '👋 स्वागत है! अपनी प्रोफ़ाइल पूरी करें:<br>📸 फोटो • 👤 नाम • 🎂 जन्म तिथि • 📍 शहर',
-                fullName: 'पूरा नाम *',
-                birthDate: 'जन्म तिथि *',
-                city: 'शहर *',
-                country: 'देश (वैकल्पिक)',
-                addPhoto: 'फोटो जोड़ें',
-                completeProfile: 'प्रोफ़ाइल पूरी करें',
-                phone: 'फ़ोन',
-                chat: 'चैट',
-                name: 'नाम',
-                birth: 'जन्म तिथि',
-                change: 'बदलें',
-                edit: 'संपादित',
-                welcome: 'स्वागत है!',
-                send: 'भेजें',
-                appearance: 'दिखावट',
-                darkMode: 'डार्क मोड',
-                accentColor: 'एक्सेंट रंग',
-                servers: 'सर्वर',
-                account: 'खाता',
-                logout: 'लॉगआउट',
-                typePlaceholder: 'लिखें...',
-                usernamePlaceholder: 'उपयोगकर्ता नाम दर्ज करें',
-                passwordPlaceholder: 'पासवर्ड दर्ज करें',
-                chooseUsername: 'उपयोगकर्ता नाम चुनें',
-                createPassword: 'पासवर्ड बनाएं',
-                yourName: 'आपका नाम',
-                yourCity: 'आपका शहर',
-                yourCountry: 'आपका देश'
-            }
-        };
-
+        // Simple app initialization
         const $ = (id) => document.getElementById(id);
-        let currentLang = 'pt';
-
-        function applyLanguage(lang) {
-            const t = I18N[lang] || I18N.en;
-            currentLang = lang;
+        
+        console.log('App starting...');
+        
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.welcome-screen, .auth-screen, .home-screen, .phone-screen, .chat-screen, .settings-screen, .profile-screen, .onboarding-modal').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
             
-            // Welcome
-            $('welcomeTagline').textContent = t.tagline;
-            $('languageLabel').textContent = t.languageLabel;
-            $('continueButton').textContent = t.continueBtn;
-            
-            // Auth
-            $('authSubtitle').textContent = t.tagline;
-            $('loginTab').textContent = t.login;
-            $('registerTab').textContent = t.register;
-            $('loginUsernameLabel').textContent = t.username;
-            $('loginPasswordLabel').textContent = t.password;
-            $('registerUsernameLabel').textContent = t.username;
-            $('registerPasswordLabel').textContent = t.password;
-            $('loginButton').textContent = t.loginBtn;
-            $('registerButton').textContent = t.registerBtn;
-            $('backToWelcome').textContent = t.backToLang;
-            
-            // Placeholders
-            $('loginUsername').placeholder = t.usernamePlaceholder;
-            $('loginPassword').placeholder = t.passwordPlaceholder;
-            $('registerUsername').placeholder = t.chooseUsername;
-            $('registerPassword').placeholder = t.createPassword;
-            
-            // Onboarding
-            $('onboardingText').innerHTML = t.onboardingText;
-            $('obNameLabel').textContent = t.fullName;
-            $('obBirthLabel').textContent = t.birthDate;
-            $('obCityLabel').textContent = t.city;
-            $('obCountryLabel').textContent = t.country;
-            $('obSubmit').textContent = t.completeProfile;
-            $('photoLabel').textContent = t.addPhoto;
-            $('onboardName').placeholder = t.yourName;
-            $('onboardCity').placeholder = t.yourCity;
-            $('onboardCountry').placeholder = t.yourCountry;
-            
-            // Nav
-            $('phoneLabel').textContent = t.phone;
-            $('chatLabel').textContent = t.chat;
-            
-            // Profile
-            $('nameLabel').textContent = t.name;
-            $('birthLabel').textContent = t.birth;
-            $('cityLabel').textContent = t.city;
-            $('countryLabel').textContent = t.country;
-            $('usernameLabel').textContent = t.username;
-            $('editNameButton').textContent = t.edit;
-            $('editBirthButton').textContent = t.edit;
-            $('changePhotoLabel').textContent = t.change;
-            
-            // Chat
-            $('welcomeMsg').textContent = t.welcome;
-            $('sendButton').textContent = t.send;
-            $('messageInput').placeholder = t.typePlaceholder;
-            
-            // Settings
-            $('appearanceTitle').textContent = t.appearance;
-            $('darkModeLabel').textContent = t.darkMode;
-            $('accentColorLabel').textContent = t.accentColor;
-            $('serversTitle').textContent = t.servers;
-            $('accountTitle').textContent = t.account;
-            $('logoutLabel').textContent = t.logout;
+            // Show target screen
+            if (screenId === 'welcome') {
+                $('welcomeScreen').style.display = 'flex';
+            } else if (screenId === 'auth') {
+                $('authScreen').style.display = 'flex';
+            } else if (screenId === 'home') {
+                $('homeScreen').classList.add('active');
+            } else if (screenId === 'phone') {
+                $('phoneScreen').classList.add('active');
+            } else if (screenId === 'chat') {
+                $('chatScreen').classList.add('active');
+            } else if (screenId === 'settings') {
+                $('settingsScreen').classList.add('active');
+            } else if (screenId === 'profile') {
+                $('profileScreen').classList.add('active');
+            } else if (screenId === 'onboarding') {
+                $('onboardingModal').style.display = 'flex';
+            }
         }
-
-        // Language change
-        $('languageSelect').addEventListener('change', function() {
-            applyLanguage(this.value);
-        });
-
+        
         // Continue button
         $('continueButton').addEventListener('click', function() {
-            const lang = $('languageSelect').value;
-            applyLanguage(lang);
-            localStorage.setItem('glang', lang);
+            console.log('Continue clicked');
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'flex';
         });
-
+        
         // Back to welcome
         $('backToWelcome').addEventListener('click', function() {
             $('authScreen').style.display = 'none';
             $('welcomeScreen').style.display = 'flex';
         });
-
+        
         // Auth tabs
         document.querySelectorAll('.auth-tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -1110,7 +857,7 @@
                 }
             });
         });
-
+        
         // Login
         $('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1143,7 +890,7 @@
             
             $('loginForm').reset();
         });
-
+        
         // Register
         $('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1176,7 +923,7 @@
             
             alert('Account created! Please login.');
         });
-
+        
         // Onboarding
         $('photoLabel').addEventListener('click', () => $('photoInput').click());
         $('photoPreview').addEventListener('click', () => $('photoInput').click());
@@ -1186,7 +933,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
-                    $('photoPreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                    $('photoPreview').innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
                     localStorage.setItem('tempPhoto', ev.target.result);
                 };
                 reader.readAsDataURL(file);
@@ -1204,7 +951,8 @@
             if (!birthDate) { alert('Birth date required'); return; }
             if (!city) { alert('City required'); return; }
             
-            const username = JSON.parse(localStorage.getItem('cu') || '{}').username || $('loginUsername').value;
+            const savedUser = JSON.parse(localStorage.getItem('cu') || 'null');
+            const username = savedUser ? savedUser.username : $('loginUsername').value;
             const users = JSON.parse(localStorage.getItem('gu') || '{}');
             const photo = localStorage.getItem('tempPhoto');
             
@@ -1217,24 +965,8 @@
             showScreen('home');
             alert('Profile completed!');
         });
-
+        
         // Navigation
-        function showScreen(screenId) {
-            document.querySelectorAll('.welcome-screen, .auth-screen, .home-screen, .phone-screen, .chat-screen, .settings-screen, .profile-screen, .onboarding-modal').forEach(el => {
-                el.style.display = 'none';
-                el.classList.remove('active');
-            });
-            
-            if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
-            else if (screenId === 'auth') $('authScreen').style.display = 'flex';
-            else if (screenId === 'home') $('homeScreen').classList.add('active');
-            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
-            else if (screenId === 'chat') $('chatScreen').classList.add('active');
-            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
-            else if (screenId === 'profile') $('profileScreen').classList.add('active');
-            else if (screenId === 'onboarding') $('onboardingModal').style.display = 'flex';
-        }
-
         $('phoneOption').addEventListener('click', () => showScreen('phone'));
         $('chatOption').addEventListener('click', () => showScreen('chat'));
         $('phoneBackButton').addEventListener('click', () => showScreen('home'));
@@ -1242,36 +974,43 @@
         $('settingsFab').addEventListener('click', () => showScreen('settings'));
         $('settingsBackButton').addEventListener('click', () => showScreen('home'));
         $('profileBackButton').addEventListener('click', () => showScreen('home'));
+        
         $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('phoneLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('chatLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('navGLogo').addEventListener('click', () => showScreen('profile'));
-
+        
         // Settings
         $('darkModeToggle').addEventListener('click', function() {
             this.classList.toggle('active');
             const isDark = this.classList.contains('active');
-            if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
-            else document.documentElement.removeAttribute('data-theme');
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
             localStorage.setItem('gdm', isDark);
         });
-
+        
         document.querySelectorAll('.color-option').forEach(opt => {
             opt.addEventListener('click', function() {
                 document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
                 this.classList.add('active');
                 const color = this.dataset.color;
-                if (color !== 'black') document.documentElement.setAttribute('data-accent', color);
-                else document.documentElement.removeAttribute('data-accent');
+                if (color !== 'black') {
+                    document.documentElement.setAttribute('data-accent', color);
+                } else {
+                    document.documentElement.removeAttribute('data-accent');
+                }
                 localStorage.setItem('gac', color);
             });
         });
-
+        
         $('settingsLogoutButton').addEventListener('click', function() {
             localStorage.removeItem('cu');
             showScreen('auth');
         });
-
+        
         // Dialer
         let phoneNumber = '';
         const nums = ['1','2','3','4','5','6','7','8','9','*','0','#'];
@@ -1285,16 +1024,16 @@
             });
             $('dialerPad').appendChild(btn);
         });
-
+        
         $('clearButton').addEventListener('click', () => {
             phoneNumber = '';
             $('dialerDisplay').textContent = '';
         });
-
+        
         $('callButton').addEventListener('click', () => {
             if (phoneNumber) alert('Calling ' + phoneNumber + '...');
         });
-
+        
         // Chat
         $('sendButton').addEventListener('click', sendMessage);
         $('messageInput').addEventListener('keydown', function(e) {
@@ -1303,44 +1042,40 @@
                 sendMessage();
             }
         });
-
+        
         function sendMessage() {
             const content = $('messageInput').value.trim();
             if (!content) return;
             const div = document.createElement('div');
             div.className = 'message message-sent';
-            div.innerHTML = `<div class="message-content">${content}</div><div class="message-meta">You</div>`;
+            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">You</div>';
             $('chatContainer').appendChild(div);
             $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
             $('messageInput').value = '';
         }
-
-        // Load saved language
-        const savedLang = localStorage.getItem('glang');
-        if (savedLang) {
-            $('languageSelect').value = savedLang;
-            applyLanguage(savedLang);
-        }
-
+        
         // Check for existing user
         const savedUser = JSON.parse(localStorage.getItem('cu') || 'null');
         if (savedUser) {
-            if (!savedUser.completed) showScreen('onboarding');
-            else showScreen('home');
+            if (!savedUser.completed) {
+                showScreen('onboarding');
+            } else {
+                showScreen('home');
+            }
         }
-
+        
         // Load saved theme
         if (localStorage.getItem('gdm') === 'true') {
             document.documentElement.setAttribute('data-theme', 'dark');
             $('darkModeToggle').classList.add('active');
         }
-
+        
         const savedAccent = localStorage.getItem('gac');
         if (savedAccent && savedAccent !== 'black') {
             document.documentElement.setAttribute('data-accent', savedAccent);
         }
-
-        console.log('App initialized with translations');
+        
+        console.log('App initialized successfully');
     </script>
 </body>
 </html>
