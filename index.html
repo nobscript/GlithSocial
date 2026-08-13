@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>glitch - Chat P2P</title>
+    <title>glitch - Chat P2P Real</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -103,20 +103,6 @@
             margin-bottom: 30px;
         }
 
-        .language-selector { margin-bottom: 30px; }
-
-        .language-select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--accent);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
         .continue-button, .auth-button {
             background: var(--accent);
             color: var(--bg-primary);
@@ -173,20 +159,6 @@
         }
 
         .form-input:focus { outline: none; border-color: var(--accent); }
-
-        .back-to-welcome {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            background: none;
-            border: none;
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-        }
 
         .home-screen {
             display: none;
@@ -258,21 +230,6 @@
         .nav-icon { font-size: 1.4rem; }
         .nav-label { font-size: 0.7rem; font-weight: 600; }
 
-        .nav-g-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Pacifico', cursive;
-            font-size: 1.4rem;
-            cursor: pointer;
-            border: none;
-        }
-
         .globe-fab {
             position: fixed;
             bottom: 85px;
@@ -290,25 +247,6 @@
             box-shadow: 0 4px 12px var(--shadow);
             z-index: 40;
             font-size: 1.2rem;
-        }
-
-        .settings-fab {
-            position: fixed;
-            bottom: 85px;
-            right: 25px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 40;
-            font-size: 1.1rem;
         }
 
         .servers-modal {
@@ -334,8 +272,6 @@
             padding: 25px;
             max-width: 400px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
         }
 
         .server-option-card {
@@ -388,22 +324,13 @@
             border: none;
         }
 
-        .my-id-display {
-            margin-left: auto;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            background: var(--bg-secondary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
         .connection-status {
             display: flex;
             align-items: center;
             gap: 5px;
             font-size: 0.75rem;
             color: var(--text-secondary);
+            margin-left: auto;
         }
 
         .status-dot {
@@ -474,152 +401,6 @@
             font-size: 0.85rem;
             font-weight: 600;
         }
-
-        .settings-screen, .profile-screen, .phone-screen {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-            background: var(--bg-primary);
-        }
-
-        .settings-screen.active, .profile-screen.active, .phone-screen.active { display: flex; }
-
-        .settings-content, .profile-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 25px;
-            max-width: 450px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .settings-section {
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-        }
-
-        .settings-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .settings-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 45px;
-            height: 24px;
-            background: var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .toggle-switch.active { background: var(--accent); }
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            top: 3px; left: 3px;
-            width: 18px; height: 18px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-        .toggle-switch.active::after { left: 24px; }
-
-        .color-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .color-option {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid var(--border);
-        }
-        .color-option.active { border-color: var(--accent); }
-
-        .profile-photo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 3px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            overflow: hidden;
-            font-size: 2.5rem;
-        }
-
-        .profile-info-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-
-        .dialer-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            padding-bottom: 90px;
-        }
-
-        .dialer-display {
-            width: 280px;
-            height: 50px;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .dialer-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-
-        .dialer-button {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            background: var(--bg-primary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .dialer-actions { display: flex; gap: 25px; }
-        .call-button, .clear-button {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        .call-button { background: var(--accent); color: var(--bg-primary); }
-        .clear-button { background: #ff4757; color: white; }
     </style>
 </head>
 <body>
@@ -627,13 +408,7 @@
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-container">
             <div class="welcome-logo">glitch</div>
-            <div class="welcome-tagline">Chat P2P sem servidor</div>
-            <div class="language-selector">
-                <select class="language-select" id="languageSelect">
-                    <option value="pt">🇧🇷 Português</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
-            </div>
+            <div class="welcome-tagline">Chat P2P entre dispositivos</div>
             <button class="continue-button" id="continueButton" type="button">Continuar</button>
         </div>
     </div>
@@ -642,13 +417,32 @@
     <div class="auth-screen" id="authScreen">
         <div class="auth-container">
             <div class="auth-logo">glitch</div>
-            <div class="auth-subtitle">Digite seu nome para conversar</div>
-            <form class="auth-form" id="nameForm">
+            <div class="auth-subtitle">Entre ou crie sua conta</div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login" type="button">Entrar</button>
+                <button class="auth-tab" data-tab="register" type="button">Criar Conta</button>
+            </div>
+            <form class="auth-form" id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">Seu Nome</label>
-                    <input type="text" class="form-input" id="userName" placeholder="Digite seu nome">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="Digite seu usuário">
                 </div>
-                <button type="submit" class="auth-button">Entrar no Chat</button>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="auth-button">Entrar</button>
+            </form>
+            <form class="auth-form" id="registerForm" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="Escolha um usuário">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="Crie uma senha">
+                </div>
+                <button type="submit" class="auth-button">Criar Conta</button>
             </form>
         </div>
     </div>
@@ -656,18 +450,15 @@
     <!-- Home Screen -->
     <div class="home-screen" id="homeScreen">
         <div class="home-header">
-            <button class="home-logo" id="homeLogoSettings" type="button">glitch</button>
+            <button class="home-logo" type="button">glitch</button>
         </div>
         <div class="home-content">
             <div class="home-title">glitch</div>
         </div>
         <div class="bottom-nav">
-            <button class="nav-item" id="phoneOption" type="button"><span class="nav-icon">📞</span><span class="nav-label">Phone</span></button>
-            <button class="nav-g-logo" id="navGLogo" type="button">g</button>
             <button class="nav-item" id="chatOption" type="button"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
         </div>
         <button class="globe-fab" id="globeFab" type="button">🌐</button>
-        <button class="settings-fab" id="settingsFab" type="button">⚙️</button>
     </div>
 
     <!-- Servers Modal -->
@@ -675,16 +466,17 @@
         <div class="servers-overlay" id="serversOverlay"></div>
         <div class="servers-content-modal">
             <div style="font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--accent);margin-bottom:20px;text-align:center;">Salas de Chat</div>
-            <div class="server-option-card" data-server="sala1">
+            <div class="server-option-card" data-server="glitch-sala-1">
                 <div class="server-option-name">💬 Sala 1</div>
-                <div class="server-option-desc">Sala principal - Máx 6 pessoas</div>
+                <div class="server-option-desc">Entre e converse com todos na Sala 1</div>
             </div>
-            <div class="server-option-card" data-server="sala2">
+            <div class="server-option-card" data-server="glitch-sala-2">
                 <div class="server-option-name">💬 Sala 2</div>
-                <div class="server-option-desc">Sala secundária - Máx 6 pessoas</div>
+                <div class="server-option-desc">Entre e converse com todos na Sala 2</div>
             </div>
             <div style="margin-top:15px;padding:10px;background:var(--bg-secondary);border-radius:10px;font-size:0.75rem;color:var(--text-secondary);text-align:center;">
-                ✅ Funciona sem servidor - comunicação direta entre navegadores
+                ✅ Funciona entre dispositivos diferentes em redes diferentes<br>
+                Sem precisar criar servidor!
             </div>
         </div>
     </div>
@@ -693,16 +485,15 @@
     <div class="chat-screen" id="chatScreen">
         <div class="screen-header">
             <button class="back-button" id="chatBackButton" type="button">←</button>
-            <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
-            <span id="currentServerName" style="font-size:0.8rem;color:var(--text-secondary);"></span>
+            <button class="header-logo" type="button">glitch</button>
+            <span id="currentRoomName" style="font-size:0.8rem;color:var(--text-secondary);"></span>
             <div class="connection-status">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Offline</span>
             </div>
-            <div class="my-id-display" id="myIdDisplay" title="Clique para copiar">📋 Copiar ID</div>
         </div>
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received"><div class="message-content">Conectando...</div><div class="message-meta">system</div></div>
+            <div class="message message-received"><div class="message-content">Conectando à sala P2P...</div><div class="message-meta">system</div></div>
         </div>
         <div class="input-container">
             <textarea class="message-input" id="messageInput" placeholder="Digite sua mensagem..."></textarea>
@@ -710,182 +501,101 @@
         </div>
     </div>
 
-    <!-- Phone Screen -->
-    <div class="phone-screen" id="phoneScreen">
-        <div class="screen-header">
-            <button class="back-button" id="phoneBackButton" type="button">←</button>
-            <button class="header-logo" type="button">glitch</button>
-        </div>
-        <div class="dialer-container">
-            <div class="dialer-display" id="dialerDisplay"></div>
-            <div class="dialer-pad" id="dialerPad"></div>
-            <div class="dialer-actions">
-                <button class="call-button" id="callButton" type="button">📞</button>
-                <button class="clear-button" id="clearButton" type="button">✕</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Screen -->
-    <div class="settings-screen" id="settingsScreen">
-        <div class="screen-header">
-            <button class="back-button" id="settingsBackButton" type="button">←</button>
-            <button class="header-logo" type="button">glitch</button>
-        </div>
-        <div class="settings-content">
-            <div class="settings-section">
-                <div class="settings-title">Aparência</div>
-                <div class="settings-item"><span>Modo Escuro</span><div class="toggle-switch" id="darkModeToggle"></div></div>
-            </div>
-            <div class="settings-section">
-                <div class="settings-title">Sair</div>
-                <div class="settings-item"><span>Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Screen -->
-    <div class="profile-screen" id="profileScreen">
-        <div class="screen-header">
-            <button class="back-button" id="profileBackButton" type="button">←</button>
-            <button class="header-logo" type="button">glitch</button>
-        </div>
-        <div class="profile-content">
-            <div style="text-align:center;margin-bottom:20px;">
-                <div class="profile-photo">👤</div>
-            </div>
-            <div class="profile-info-item"><span>Nome</span><span id="profileNameValue">-</span></div>
-            <div class="profile-info-item"><span>Seu ID</span><span id="profileIdValue">-</span></div>
-        </div>
-    </div>
-
-    <!-- PeerJS -->
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <!-- Trystero - P2P sem servidor -->
+    <script src="https://cdn.jsdelivr.net/npm/trystero@0.20.0/dist/trystero.min.js"></script>
     
     <script>
         const $ = (id) => document.getElementById(id);
         
-        let peer = null;
-        let myPeerId = null;
-        let userName = localStorage.getItem('glitchName') || '';
-        let selectedRoom = localStorage.getItem('selectedRoom') || 'sala1';
-        let connections = new Map();
+        let currentUser = JSON.parse(localStorage.getItem('cu') || 'null');
+        let currentRoom = localStorage.getItem('currentRoom') || 'glitch-sala-1';
+        let room = null;
+        let peers = [];
         
-        // Show screen
         function showScreen(screenId) {
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'none';
             $('serversModal').style.display = 'none';
-            ['homeScreen', 'phoneScreen', 'chatScreen', 'settingsScreen', 'profileScreen'].forEach(id => {
+            ['homeScreen', 'chatScreen'].forEach(id => {
                 $(id).classList.remove('active');
             });
             
             if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
             else if (screenId === 'auth') $('authScreen').style.display = 'flex';
             else if (screenId === 'home') $('homeScreen').classList.add('active');
-            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
             else if (screenId === 'chat') {
                 $('chatScreen').classList.add('active');
-                initPeer();
-            }
-            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
-            else if (screenId === 'profile') {
-                $('profileScreen').classList.add('active');
-                $('profileNameValue').textContent = userName;
-                $('profileIdValue').textContent = myPeerId || 'Conectando...';
+                joinRoom();
             }
         }
         
-        // Initialize PeerJS
-        function initPeer() {
-            if (peer) return;
+        function joinRoom() {
+            $('currentRoomName').textContent = currentRoom === 'glitch-sala-1' ? '💬 Sala 1' : '💬 Sala 2';
             
-            peer = new Peer();
-            
-            peer.on('open', function(id) {
-                myPeerId = id;
-                console.log('✅ Meu ID:', id);
-                $('myIdDisplay').textContent = '📋 ' + id.substring(0, 8) + '...';
-                $('myIdDisplay').title = id;
-                setStatus(true);
+            try {
+                // Join P2P room using Trystero
+                room = trystero.joinRoom({ appId: 'glitch-chat-app' }, currentRoom);
                 
-                // Add welcome message
-                addSystemMessage('Seu ID: ' + id.substring(0, 12) + '... (clique para copiar)');
-                addSystemMessage('Compartilhe seu ID para conectar com outros');
-            });
-            
-            peer.on('connection', function(conn) {
-                conn.on('open', function() {
-                    connections.set(conn.peer, conn);
-                    addSystemMessage('🔗 Conectado com: ' + conn.peer.substring(0, 8) + '...');
+                // Listen for peers joining
+                room.onPeerJoin(function(peerId) {
+                    console.log('👋 Peer entrou:', peerId);
+                    peers.push(peerId);
+                    setStatus(true);
+                    addSystemMessage('👋 ' + peerId.substring(0, 8) + '... entrou na sala!');
                     
-                    conn.on('data', function(data) {
-                        if (data.type === 'message') {
-                            displayMessage(data.content, false, data.sender);
-                        }
-                    });
+                    // Send welcome message to new peer
+                    room.send({
+                        type: 'message',
+                        content: '👋 ' + (currentUser?.name || currentUser?.username) + ' está online!',
+                        sender: currentUser?.name || currentUser?.username || 'Anônimo',
+                        userId: currentUser?.username || 'guest'
+                    }, peerId);
                 });
-            });
-            
-            peer.on('error', function(err) {
-                console.error('Erro PeerJS:', err);
-                setStatus(false);
-            });
-            
-            $('currentServerName').textContent = selectedRoom === 'sala1' ? '💬 Sala 1' : '💬 Sala 2';
-        }
-        
-        // Connect to peer
-        function connectToPeer(peerId) {
-            if (!peer || !peerId || peerId === myPeerId) return;
-            
-            const conn = peer.connect(peerId, { reliable: true });
-            
-            conn.on('open', function() {
-                connections.set(peerId, conn);
-                addSystemMessage('🔗 Conectado com: ' + peerId.substring(0, 8) + '...');
                 
-                conn.on('data', function(data) {
-                    if (data.type === 'message') {
-                        displayMessage(data.content, false, data.sender);
+                // Listen for peers leaving
+                room.onPeerLeave(function(peerId) {
+                    console.log('👋 Peer saiu:', peerId);
+                    peers = peers.filter(id => id !== peerId);
+                    addSystemMessage('👋 ' + peerId.substring(0, 8) + '... saiu da sala!');
+                    if (peers.length === 0) setStatus(false);
+                });
+                
+                // Listen for messages
+                room.onPeerData(function(data, peerId) {
+                    console.log('📨 Mensagem recebida de:', peerId);
+                    if (data.type === 'message' && data.content) {
+                        const isMine = data.userId === currentUser?.username;
+                        displayMessage(data.content, isMine, data.sender);
                     }
                 });
                 
-                // Send join message
-                conn.send({
-                    type: 'message',
-                    content: '👋 ' + userName + ' entrou na sala!',
-                    sender: userName
-                });
-            });
-            
-            conn.on('error', function(err) {
-                addSystemMessage('❌ Erro ao conectar');
-            });
+                setStatus(true);
+                addSystemMessage('✅ Conectado à ' + (currentRoom === 'glitch-sala-1' ? 'Sala 1' : 'Sala 2'));
+                addSystemMessage('👥 Aguardando outros usuários entrarem...');
+                
+            } catch(e) {
+                console.error('Erro ao entrar na sala:', e);
+                setStatus(false);
+                addSystemMessage('❌ Erro ao conectar. Tente novamente.');
+            }
         }
         
-        // Send message
         function sendMessage() {
             const content = $('messageInput').value.trim();
-            if (!content || !peer) return;
+            if (!content || !room) return;
             
-            displayMessage(content, true);
-            
-            // Send to all connected peers
-            connections.forEach((conn) => {
-                if (conn.open) {
-                    conn.send({
-                        type: 'message',
-                        content: content,
-                        sender: userName
-                    });
-                }
+            // Send to all peers in room
+            room.send({
+                type: 'message',
+                content: content,
+                sender: currentUser?.name || currentUser?.username || 'Anônimo',
+                userId: currentUser?.username || 'guest'
             });
             
+            displayMessage(content, true);
             $('messageInput').value = '';
         }
         
-        // Display message
         function displayMessage(content, sent, sender = null) {
             const div = document.createElement('div');
             div.className = 'message ' + (sent ? 'message-sent' : 'message-received');
@@ -894,7 +604,6 @@
             $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
         }
         
-        // System message
         function addSystemMessage(text) {
             const div = document.createElement('div');
             div.style.textAlign = 'center';
@@ -908,7 +617,7 @@
         
         function setStatus(connected) {
             $('statusDot').className = 'status-dot' + (connected ? ' connected' : '');
-            $('statusText').textContent = connected ? 'Online' : 'Offline';
+            $('statusText').textContent = connected ? 'Online (' + peers.length + ' peers)' : 'Offline';
         }
         
         // Event Listeners
@@ -917,24 +626,63 @@
             $('authScreen').style.display = 'flex';
         });
         
-        $('nameForm').addEventListener('submit', function(e) {
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                $('loginForm').style.display = this.dataset.tab === 'login' ? 'flex' : 'none';
+                $('registerForm').style.display = this.dataset.tab === 'register' ? 'flex' : 'none';
+            });
+        });
+        
+        $('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            userName = $('userName').value.trim();
-            if (!userName) { alert('Digite seu nome'); return; }
-            localStorage.setItem('glitchName', userName);
-            $('nameForm').reset();
+            const username = $('loginUsername').value.trim();
+            const password = $('loginPassword').value;
+            
+            if (!username || !password) { alert('Preencha todos os campos'); return; }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            const user = users[username];
+            
+            if (!user) { alert('Usuário não encontrado'); return; }
+            if (user.password !== password) { alert('Senha inválida'); return; }
+            
+            currentUser = { username, ...user };
+            localStorage.setItem('cu', JSON.stringify(currentUser));
+            $('loginForm').reset();
             showScreen('home');
         });
         
-        $('phoneOption').addEventListener('click', () => showScreen('phone'));
+        $('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = $('registerUsername').value.trim();
+            const password = $('registerPassword').value;
+            
+            if (!username) { alert('Usuário obrigatório'); return; }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            if (users[username]) { alert('Usuário já existe'); return; }
+            if (!password || password.length < 6) { alert('Senha mínima 6 caracteres'); return; }
+            
+            users[username] = { password, name: username };
+            localStorage.setItem('gu', JSON.stringify(users));
+            $('registerForm').reset();
+            
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="login"]').classList.add('active');
+            $('loginForm').style.display = 'flex';
+            $('registerForm').style.display = 'none';
+            $('loginUsername').value = username;
+            
+            alert('Conta criada! Faça login.');
+        });
+        
         $('chatOption').addEventListener('click', () => showScreen('chat'));
-        $('phoneBackButton').addEventListener('click', () => showScreen('home'));
-        $('chatBackButton').addEventListener('click', () => showScreen('home'));
-        $('settingsFab').addEventListener('click', () => showScreen('settings'));
-        $('settingsBackButton').addEventListener('click', () => showScreen('home'));
-        $('profileBackButton').addEventListener('click', () => showScreen('home'));
-        $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
-        $('navGLogo').addEventListener('click', () => showScreen('profile'));
+        $('chatBackButton').addEventListener('click', () => {
+            if (room) room.leave();
+            showScreen('home');
+        });
         
         $('globeFab').addEventListener('click', () => {
             $('serversModal').style.display = 'flex';
@@ -946,31 +694,15 @@
         
         document.querySelectorAll('.server-option-card').forEach(card => {
             card.addEventListener('click', function() {
-                selectedRoom = this.dataset.server;
-                localStorage.setItem('selectedRoom', selectedRoom);
+                currentRoom = this.dataset.server;
+                localStorage.setItem('currentRoom', currentRoom);
                 
                 document.querySelectorAll('.server-option-card').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
                 
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.textContent = '✓ ' + this.querySelector('.server-option-name').textContent + ' selecionada';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
-                
-                setTimeout(() => {
-                    $('serversModal').style.display = 'none';
-                }, 500);
+                $('serversModal').style.display = 'none';
+                showScreen('chat');
             });
-        });
-        
-        // Copy ID on click
-        $('myIdDisplay').addEventListener('click', function() {
-            if (myPeerId) {
-                navigator.clipboard.writeText(myPeerId).then(() => {
-                    alert('ID copiado! Compartilhe com seus amigos.');
-                });
-            }
         });
         
         $('sendButton').addEventListener('click', sendMessage);
@@ -978,66 +710,27 @@
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
         });
         
-        $('darkModeToggle').addEventListener('click', function() {
-            this.classList.toggle('active');
-            const isDark = this.classList.contains('active');
-            if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
-            else document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('gdm', isDark);
-        });
-        
-        $('settingsLogoutButton').addEventListener('click', function() {
-            localStorage.removeItem('glitchName');
-            userName = '';
-            if (peer) peer.destroy();
-            peer = null;
-            myPeerId = null;
-            connections.clear();
-            showScreen('auth');
-        });
-        
-        // Dialer
-        let phoneNumber = '';
-        ['1','2','3','4','5','6','7','8','9','*','0','#'].forEach(n => {
-            const btn = document.createElement('button');
-            btn.className = 'dialer-button';
-            btn.textContent = n;
-            btn.addEventListener('click', () => {
-                phoneNumber += n;
-                $('dialerDisplay').textContent = phoneNumber;
-            });
-            $('dialerPad').appendChild(btn);
-        });
-        
-        $('clearButton').addEventListener('click', () => { phoneNumber = ''; $('dialerDisplay').textContent = ''; });
-        $('callButton').addEventListener('click', () => { 
-            if (phoneNumber) {
-                // Use dialed number as peer ID
-                connectToPeer(phoneNumber);
-            }
-        });
-        
         // Initialize
-        if (userName) {
+        if (currentUser) {
             showScreen('home');
         }
         
-        if (localStorage.getItem('gdm') === 'true') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            $('darkModeToggle')?.classList.add('active');
-        }
-        
         document.querySelectorAll('.server-option-card').forEach(card => {
-            card.classList.toggle('active', card.dataset.server === selectedRoom);
+            card.classList.toggle('active', card.dataset.server === currentRoom);
         });
         
-        console.log('✅ App P2P inicializado');
-        console.log('📌 Como usar:');
-        console.log('1. Digite seu nome');
-        console.log('2. Abra o chat');
-        console.log('3. Copie seu ID');
-        console.log('4. Compartilhe com amigo');
-        console.log('5. Amigo usa o discador para conectar');
+        console.log('✅ App P2P inicializado com Trystero');
+        console.log('📌 Como funciona:');
+        console.log('1. Crie conta ou faça login');
+        console.log('2. Clique no globinho 🌐');
+        console.log('3. Escolha Sala 1 ou Sala 2');
+        console.log('4. Abra em outro dispositivo (celular/outro navegador)');
+        console.log('5. Entre na MESMA sala');
+        console.log('6. Converse em tempo real!');
+        console.log('');
+        console.log('✅ SEM precisar criar servidor!');
+        console.log('✅ Funciona entre dispositivos diferentes!');
+        console.log('✅ Funciona em redes diferentes (4G, WiFi, etc)!');
     </script>
 </body>
 </html>
