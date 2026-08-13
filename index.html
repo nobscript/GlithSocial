@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>glitch - Servers</title>
+    <title>glitch - Chat P2P</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -17,9 +17,6 @@
             --accent-hover: #333333;
             --border: #e0e0e0;
             --shadow: rgba(0, 0, 0, 0.08);
-            --error: #ff4757;
-            --success: #00d4aa;
-            --warning: #ffa502;
         }
 
         [data-theme="dark"] {
@@ -118,8 +115,6 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
         }
 
         .continue-button, .auth-button {
@@ -351,43 +346,13 @@
             cursor: pointer;
             border: 2px solid var(--border);
             transition: all 0.3s;
-            position: relative;
         }
 
         .server-option-card:hover { border-color: var(--accent); }
         .server-option-card.active { border-color: var(--accent); background: var(--bg-input); }
-        .server-option-card.full { opacity: 0.5; cursor: not-allowed; }
 
         .server-option-name { font-weight: 700; font-size: 1rem; }
         .server-option-desc { font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px; }
-        
-        .server-capacity {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .capacity-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .capacity-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-
-        .capacity-text {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
 
         .chat-screen {
             display: none;
@@ -421,6 +386,41 @@
             cursor: pointer;
             background: none;
             border: none;
+        }
+
+        .my-id-display {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff4757;
+        }
+
+        .status-dot.connected {
+            background: #00d4aa;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .chat-container {
@@ -475,14 +475,14 @@
             font-weight: 600;
         }
 
-        .settings-screen, .profile-screen {
+        .settings-screen, .profile-screen, .phone-screen {
             display: none;
             height: 100%;
             flex-direction: column;
             background: var(--bg-primary);
         }
 
-        .settings-screen.active, .profile-screen.active { display: flex; }
+        .settings-screen.active, .profile-screen.active, .phone-screen.active { display: flex; }
 
         .settings-content, .profile-content {
             flex: 1;
@@ -559,7 +559,6 @@
             justify-content: center;
             margin: 0 auto 10px;
             overflow: hidden;
-            cursor: pointer;
             font-size: 2.5rem;
         }
 
@@ -572,14 +571,6 @@
             border-radius: 12px;
             margin-bottom: 10px;
         }
-
-        .phone-screen {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-            background: var(--bg-primary);
-        }
-        .phone-screen.active { display: flex; }
 
         .dialer-container {
             flex: 1;
@@ -636,14 +627,14 @@
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-container">
             <div class="welcome-logo">glitch</div>
-            <div class="welcome-tagline">Your Chat Experience</div>
+            <div class="welcome-tagline">Chat P2P sem servidor</div>
             <div class="language-selector">
                 <select class="language-select" id="languageSelect">
                     <option value="pt">🇧🇷 Português</option>
                     <option value="en">🇺🇸 English</option>
                 </select>
             </div>
-            <button class="continue-button" id="continueButton" type="button">Continue</button>
+            <button class="continue-button" id="continueButton" type="button">Continuar</button>
         </div>
     </div>
 
@@ -651,34 +642,14 @@
     <div class="auth-screen" id="authScreen">
         <div class="auth-container">
             <div class="auth-logo">glitch</div>
-            <div class="auth-subtitle">Your Chat Experience</div>
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="login" type="button">Login</button>
-                <button class="auth-tab" data-tab="register" type="button">Register</button>
-            </div>
-            <form class="auth-form" id="loginForm">
+            <div class="auth-subtitle">Digite seu nome para conversar</div>
+            <form class="auth-form" id="nameForm">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="loginUsername" placeholder="Enter username">
+                    <label class="form-label">Seu Nome</label>
+                    <input type="text" class="form-input" id="userName" placeholder="Digite seu nome">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter password">
-                </div>
-                <button type="submit" class="auth-button">Login</button>
+                <button type="submit" class="auth-button">Entrar no Chat</button>
             </form>
-            <form class="auth-form" id="registerForm" style="display:none;">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="registerUsername" placeholder="Choose username">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="registerPassword" placeholder="Create password">
-                </div>
-                <button type="submit" class="auth-button">Register</button>
-            </form>
-            <button class="back-to-welcome" id="backToWelcome" type="button">← Back</button>
         </div>
     </div>
 
@@ -703,22 +674,17 @@
     <div class="servers-modal" id="serversModal">
         <div class="servers-overlay" id="serversOverlay"></div>
         <div class="servers-content-modal">
-            <div style="font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--accent);margin-bottom:20px;text-align:center;">Select Server</div>
-            <div class="server-option-card" data-server="server1" id="server1Card">
-                <div class="server-option-name">🌍 Global Server</div>
-                <div class="server-option-desc">Chat global - Máx 6 participantes</div>
-                <div class="server-capacity">
-                    <div class="capacity-bar"><div class="capacity-fill" id="server1Fill" style="width:0%"></div></div>
-                    <span class="capacity-text" id="server1Text">0/6</span>
-                </div>
+            <div style="font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--accent);margin-bottom:20px;text-align:center;">Salas de Chat</div>
+            <div class="server-option-card" data-server="sala1">
+                <div class="server-option-name">💬 Sala 1</div>
+                <div class="server-option-desc">Sala principal - Máx 6 pessoas</div>
             </div>
-            <div class="server-option-card" data-server="server2" id="server2Card">
-                <div class="server-option-name">🇪🇺 Europe Server</div>
-                <div class="server-option-desc">Chat europeu - Máx 6 participantes</div>
-                <div class="server-capacity">
-                    <div class="capacity-bar"><div class="capacity-fill" id="server2Fill" style="width:0%"></div></div>
-                    <span class="capacity-text" id="server2Text">0/6</span>
-                </div>
+            <div class="server-option-card" data-server="sala2">
+                <div class="server-option-name">💬 Sala 2</div>
+                <div class="server-option-desc">Sala secundária - Máx 6 pessoas</div>
+            </div>
+            <div style="margin-top:15px;padding:10px;background:var(--bg-secondary);border-radius:10px;font-size:0.75rem;color:var(--text-secondary);text-align:center;">
+                ✅ Funciona sem servidor - comunicação direta entre navegadores
             </div>
         </div>
     </div>
@@ -729,13 +695,18 @@
             <button class="back-button" id="chatBackButton" type="button">←</button>
             <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
             <span id="currentServerName" style="font-size:0.8rem;color:var(--text-secondary);"></span>
+            <div class="connection-status">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Offline</span>
+            </div>
+            <div class="my-id-display" id="myIdDisplay" title="Clique para copiar">📋 Copiar ID</div>
         </div>
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received"><div class="message-content">Welcome to the server!</div><div class="message-meta">system</div></div>
+            <div class="message message-received"><div class="message-content">Conectando...</div><div class="message-meta">system</div></div>
         </div>
         <div class="input-container">
-            <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
-            <button class="send-button" id="sendButton" type="button">Send</button>
+            <textarea class="message-input" id="messageInput" placeholder="Digite sua mensagem..."></textarea>
+            <button class="send-button" id="sendButton" type="button">Enviar</button>
         </div>
     </div>
 
@@ -763,19 +734,11 @@
         </div>
         <div class="settings-content">
             <div class="settings-section">
-                <div class="settings-title">Appearance</div>
-                <div class="settings-item"><span>Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
-                <div class="settings-item"><span>Accent Color</span></div>
-                <div class="color-options">
-                    <div class="color-option" data-color="black" style="background:#000;"></div>
-                    <div class="color-option" data-color="blue" style="background:#06f;"></div>
-                    <div class="color-option" data-color="green" style="background:#0c6;"></div>
-                    <div class="color-option" data-color="red" style="background:#f33;"></div>
-                    <div class="color-option" data-color="purple" style="background:#93f;"></div>
-                </div>
+                <div class="settings-title">Aparência</div>
+                <div class="settings-item"><span>Modo Escuro</span><div class="toggle-switch" id="darkModeToggle"></div></div>
             </div>
             <div class="settings-section">
-                <div class="settings-title">Account</div>
+                <div class="settings-title">Sair</div>
                 <div class="settings-item"><span>Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
             </div>
         </div>
@@ -789,104 +752,24 @@
         </div>
         <div class="profile-content">
             <div style="text-align:center;margin-bottom:20px;">
-                <div class="profile-photo" id="profilePhotoDisplay">👤</div>
+                <div class="profile-photo">👤</div>
             </div>
-            <div class="profile-info-item"><span>Name</span><span id="profileNameValue">-</span></div>
-            <div class="profile-info-item"><span>Username</span><span id="profileUsernameValue">-</span></div>
-            <div class="profile-info-item"><span>Server</span><span id="profileServerValue">-</span></div>
+            <div class="profile-info-item"><span>Nome</span><span id="profileNameValue">-</span></div>
+            <div class="profile-info-item"><span>Seu ID</span><span id="profileIdValue">-</span></div>
         </div>
     </div>
 
+    <!-- PeerJS -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
     <script>
         const $ = (id) => document.getElementById(id);
         
-        // Server state
-        const MAX_PARTICIPANTS = 6;
-        let currentUser = JSON.parse(localStorage.getItem('cu') || 'null');
-        let selectedServer = localStorage.getItem('selectedServer') || 'server1';
-        let ws = null;
-        
-        // Get server participants from localStorage
-        function getServerParticipants(serverId) {
-            return JSON.parse(localStorage.getItem('server_' + serverId) || '[]');
-        }
-        
-        // Save server participants
-        function saveServerParticipants(serverId, participants) {
-            localStorage.setItem('server_' + serverId, JSON.stringify(participants));
-        }
-        
-        // Join server
-        function joinServer(serverId) {
-            if (!currentUser) {
-                alert('Please login first');
-                return;
-            }
-            
-            const participants = getServerParticipants(serverId);
-            
-            // Check if already in server
-            if (participants.includes(currentUser.username)) {
-                return true;
-            }
-            
-            // Check if server is full
-            if (participants.length >= MAX_PARTICIPANTS) {
-                alert('Server is full! Maximum ' + MAX_PARTICIPANTS + ' participants.');
-                return false;
-            }
-            
-            // First participant becomes admin
-            if (participants.length === 0) {
-                participants.push({ username: currentUser.username, role: 'admin', name: currentUser.name || currentUser.username });
-            } else {
-                participants.push({ username: currentUser.username, role: 'member', name: currentUser.name || currentUser.username });
-            }
-            
-            saveServerParticipants(serverId, participants);
-            updateServerUI();
-            return true;
-        }
-        
-        // Leave server
-        function leaveServer(serverId) {
-            if (!currentUser) return;
-            
-            let participants = getServerParticipants(serverId);
-            participants = participants.filter(p => p.username !== currentUser.username);
-            
-            // If admin left, promote next person
-            if (participants.length > 0 && !participants.some(p => p.role === 'admin')) {
-                participants[0].role = 'admin';
-            }
-            
-            saveServerParticipants(serverId, participants);
-            updateServerUI();
-        }
-        
-        // Update server UI (capacity bars)
-        function updateServerUI() {
-            ['server1', 'server2'].forEach(serverId => {
-                const participants = getServerParticipants(serverId);
-                const count = participants.length;
-                const fillPercent = (count / MAX_PARTICIPANTS) * 100;
-                
-                const fillEl = $(serverId + 'Fill');
-                const textEl = $(serverId + 'Text');
-                const cardEl = $(serverId + 'Card');
-                
-                if (fillEl) fillEl.style.width = fillPercent + '%';
-                if (textEl) textEl.textContent = count + '/' + MAX_PARTICIPANTS;
-                
-                if (cardEl) {
-                    if (count >= MAX_PARTICIPANTS) {
-                        cardEl.classList.add('full');
-                    } else {
-                        cardEl.classList.remove('full');
-                    }
-                }
-            });
-        }
+        let peer = null;
+        let myPeerId = null;
+        let userName = localStorage.getItem('glitchName') || '';
+        let selectedRoom = localStorage.getItem('selectedRoom') || 'sala1';
+        let connections = new Map();
         
         // Show screen
         function showScreen(screenId) {
@@ -903,75 +786,101 @@
             else if (screenId === 'phone') $('phoneScreen').classList.add('active');
             else if (screenId === 'chat') {
                 $('chatScreen').classList.add('active');
-                connectToServer();
+                initPeer();
             }
             else if (screenId === 'settings') $('settingsScreen').classList.add('active');
             else if (screenId === 'profile') {
                 $('profileScreen').classList.add('active');
-                updateProfileUI();
+                $('profileNameValue').textContent = userName;
+                $('profileIdValue').textContent = myPeerId || 'Conectando...';
             }
         }
         
-        // Connect to WebSocket
-        function connectToServer() {
-            if (ws) ws.close();
+        // Initialize PeerJS
+        function initPeer() {
+            if (peer) return;
             
-            const serverUrls = {
-                server1: 'wss://echo.websocket.org',
-                server2: 'wss://ws.postman-echo.com/raw'
-            };
+            peer = new Peer();
             
-            $('currentServerName').textContent = selectedServer === 'server1' ? '🌍 Global' : '🇪🇺 Europe';
-            
-            try {
-                ws = new WebSocket(serverUrls[selectedServer]);
+            peer.on('open', function(id) {
+                myPeerId = id;
+                console.log('✅ Meu ID:', id);
+                $('myIdDisplay').textContent = '📋 ' + id.substring(0, 8) + '...';
+                $('myIdDisplay').title = id;
+                setStatus(true);
                 
-                ws.onopen = function() {
-                    console.log('Connected to', selectedServer);
-                    if (currentUser) {
-                        ws.send(JSON.stringify({
-                            type: 'join',
-                            server: selectedServer,
-                            user: currentUser.username
-                        }));
-                    }
-                };
-                
-                ws.onmessage = function(event) {
-                    try {
-                        const data = JSON.parse(event.data);
-                        if (data.content) {
+                // Add welcome message
+                addSystemMessage('Seu ID: ' + id.substring(0, 12) + '... (clique para copiar)');
+                addSystemMessage('Compartilhe seu ID para conectar com outros');
+            });
+            
+            peer.on('connection', function(conn) {
+                conn.on('open', function() {
+                    connections.set(conn.peer, conn);
+                    addSystemMessage('🔗 Conectado com: ' + conn.peer.substring(0, 8) + '...');
+                    
+                    conn.on('data', function(data) {
+                        if (data.type === 'message') {
                             displayMessage(data.content, false, data.sender);
                         }
-                    } catch(e) {
-                        displayMessage(event.data, false, 'Server');
-                    }
-                };
+                    });
+                });
+            });
+            
+            peer.on('error', function(err) {
+                console.error('Erro PeerJS:', err);
+                setStatus(false);
+            });
+            
+            $('currentServerName').textContent = selectedRoom === 'sala1' ? '💬 Sala 1' : '💬 Sala 2';
+        }
+        
+        // Connect to peer
+        function connectToPeer(peerId) {
+            if (!peer || !peerId || peerId === myPeerId) return;
+            
+            const conn = peer.connect(peerId, { reliable: true });
+            
+            conn.on('open', function() {
+                connections.set(peerId, conn);
+                addSystemMessage('🔗 Conectado com: ' + peerId.substring(0, 8) + '...');
                 
-                ws.onclose = function() {
-                    console.log('Disconnected');
-                    if (currentUser) leaveServer(selectedServer);
-                };
-            } catch(e) {
-                console.error('Connection error:', e);
-            }
+                conn.on('data', function(data) {
+                    if (data.type === 'message') {
+                        displayMessage(data.content, false, data.sender);
+                    }
+                });
+                
+                // Send join message
+                conn.send({
+                    type: 'message',
+                    content: '👋 ' + userName + ' entrou na sala!',
+                    sender: userName
+                });
+            });
+            
+            conn.on('error', function(err) {
+                addSystemMessage('❌ Erro ao conectar');
+            });
         }
         
         // Send message
         function sendMessage() {
             const content = $('messageInput').value.trim();
-            if (!content) return;
+            if (!content || !peer) return;
             
             displayMessage(content, true);
             
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({
-                    type: 'message',
-                    server: selectedServer,
-                    content: content,
-                    sender: currentUser?.name || currentUser?.username || 'Anonymous'
-                }));
-            }
+            // Send to all connected peers
+            connections.forEach((conn) => {
+                if (conn.open) {
+                    conn.send({
+                        type: 'message',
+                        content: content,
+                        sender: userName
+                    });
+                }
+            });
             
             $('messageInput').value = '';
         }
@@ -980,143 +889,72 @@
         function displayMessage(content, sent, sender = null) {
             const div = document.createElement('div');
             div.className = 'message ' + (sent ? 'message-sent' : 'message-received');
-            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">' + (sent ? 'You' : sender || 'Peer') + '</div>';
+            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">' + (sent ? 'Você' : sender || 'Peer') + '</div>';
             $('chatContainer').appendChild(div);
             $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
         }
         
-        // Update profile
-        function updateProfileUI() {
-            if (currentUser) {
-                $('profileNameValue').textContent = currentUser.name || currentUser.username;
-                $('profileUsernameValue').textContent = '@' + currentUser.username;
-                $('profileServerValue').textContent = selectedServer === 'server1' ? '🌍 Global' : '🇪🇺 Europe';
-            }
+        // System message
+        function addSystemMessage(text) {
+            const div = document.createElement('div');
+            div.style.textAlign = 'center';
+            div.style.fontSize = '0.75rem';
+            div.style.color = 'var(--text-secondary)';
+            div.style.margin = '10px 0';
+            div.textContent = text;
+            $('chatContainer').appendChild(div);
+            $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
         }
         
-        // Continue button
-        $('continueButton').addEventListener('click', function() {
+        function setStatus(connected) {
+            $('statusDot').className = 'status-dot' + (connected ? ' connected' : '');
+            $('statusText').textContent = connected ? 'Online' : 'Offline';
+        }
+        
+        // Event Listeners
+        $('continueButton').addEventListener('click', () => {
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'flex';
         });
         
-        // Back to welcome
-        $('backToWelcome').addEventListener('click', function() {
-            $('authScreen').style.display = 'none';
-            $('welcomeScreen').style.display = 'flex';
-        });
-        
-        // Auth tabs
-        document.querySelectorAll('.auth-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                $('loginForm').style.display = this.dataset.tab === 'login' ? 'flex' : 'none';
-                $('registerForm').style.display = this.dataset.tab === 'register' ? 'flex' : 'none';
-            });
-        });
-        
-        // Login
-        $('loginForm').addEventListener('submit', function(e) {
+        $('nameForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = $('loginUsername').value.trim();
-            const password = $('loginPassword').value;
-            
-            if (!username || !password) { alert('Fill all fields'); return; }
-            
-            const users = JSON.parse(localStorage.getItem('gu') || '{}');
-            const user = users[username];
-            
-            if (!user) { alert('User not found'); return; }
-            if (user.password !== password) { alert('Invalid password'); return; }
-            
-            currentUser = { username, ...user };
-            localStorage.setItem('cu', JSON.stringify(currentUser));
-            $('loginForm').reset();
+            userName = $('userName').value.trim();
+            if (!userName) { alert('Digite seu nome'); return; }
+            localStorage.setItem('glitchName', userName);
+            $('nameForm').reset();
             showScreen('home');
         });
         
-        // Register
-        $('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = $('registerUsername').value.trim();
-            const password = $('registerPassword').value;
-            
-            if (!username) { alert('Username required'); return; }
-            
-            const users = JSON.parse(localStorage.getItem('gu') || '{}');
-            if (users[username]) { alert('Username exists'); return; }
-            if (!password || password.length < 6) { alert('Password min 6 chars'); return; }
-            
-            users[username] = { password, name: username, completed: true };
-            localStorage.setItem('gu', JSON.stringify(users));
-            $('registerForm').reset();
-            
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('[data-tab="login"]').classList.add('active');
-            $('loginForm').style.display = 'flex';
-            $('registerForm').style.display = 'none';
-            $('loginUsername').value = username;
-            
-            alert('Account created! Please login.');
-        });
-        
-        // Navigation
         $('phoneOption').addEventListener('click', () => showScreen('phone'));
         $('chatOption').addEventListener('click', () => showScreen('chat'));
         $('phoneBackButton').addEventListener('click', () => showScreen('home'));
-        $('chatBackButton').addEventListener('click', () => {
-            if (ws) ws.close();
-            if (currentUser) leaveServer(selectedServer);
-            showScreen('home');
-        });
+        $('chatBackButton').addEventListener('click', () => showScreen('home'));
         $('settingsFab').addEventListener('click', () => showScreen('settings'));
         $('settingsBackButton').addEventListener('click', () => showScreen('home'));
         $('profileBackButton').addEventListener('click', () => showScreen('home'));
         $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
-        $('chatLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('navGLogo').addEventListener('click', () => showScreen('profile'));
         
-        // Globe button
-        $('globeFab').addEventListener('click', function() {
-            updateServerUI();
+        $('globeFab').addEventListener('click', () => {
             $('serversModal').style.display = 'flex';
         });
         
-        // Close servers modal
-        $('serversOverlay').addEventListener('click', function() {
+        $('serversOverlay').addEventListener('click', () => {
             $('serversModal').style.display = 'none';
         });
         
-        // Server selection
         document.querySelectorAll('.server-option-card').forEach(card => {
             card.addEventListener('click', function() {
-                const serverId = this.dataset.server;
-                const participants = getServerParticipants(serverId);
-                
-                if (participants.length >= MAX_PARTICIPANTS && !participants.includes(currentUser?.username)) {
-                    alert('Server is full! Maximum ' + MAX_PARTICIPANTS + ' participants.');
-                    return;
-                }
-                
-                // Leave old server
-                if (selectedServer && selectedServer !== serverId) {
-                    leaveServer(selectedServer);
-                }
-                
-                selectedServer = serverId;
-                localStorage.setItem('selectedServer', selectedServer);
-                
-                // Join new server
-                joinServer(serverId);
+                selectedRoom = this.dataset.server;
+                localStorage.setItem('selectedRoom', selectedRoom);
                 
                 document.querySelectorAll('.server-option-card').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
                 
-                const serverName = this.querySelector('.server-option-name').textContent;
                 const toast = document.createElement('div');
                 toast.className = 'toast';
-                toast.textContent = '✓ Joined ' + serverName;
+                toast.textContent = '✓ ' + this.querySelector('.server-option-name').textContent + ' selecionada';
                 document.body.appendChild(toast);
                 setTimeout(() => toast.remove(), 2000);
                 
@@ -1126,13 +964,20 @@
             });
         });
         
-        // Chat
+        // Copy ID on click
+        $('myIdDisplay').addEventListener('click', function() {
+            if (myPeerId) {
+                navigator.clipboard.writeText(myPeerId).then(() => {
+                    alert('ID copiado! Compartilhe com seus amigos.');
+                });
+            }
+        });
+        
         $('sendButton').addEventListener('click', sendMessage);
         $('messageInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
         });
         
-        // Settings
         $('darkModeToggle').addEventListener('click', function() {
             this.classList.toggle('active');
             const isDark = this.classList.contains('active');
@@ -1141,22 +986,13 @@
             localStorage.setItem('gdm', isDark);
         });
         
-        document.querySelectorAll('.color-option').forEach(opt => {
-            opt.addEventListener('click', function() {
-                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
-                this.classList.add('active');
-                const color = this.dataset.color;
-                if (color !== 'black') document.documentElement.setAttribute('data-accent', color);
-                else document.documentElement.removeAttribute('data-accent');
-                localStorage.setItem('gac', color);
-            });
-        });
-        
         $('settingsLogoutButton').addEventListener('click', function() {
-            if (ws) ws.close();
-            if (currentUser) leaveServer(selectedServer);
-            localStorage.removeItem('cu');
-            currentUser = null;
+            localStorage.removeItem('glitchName');
+            userName = '';
+            if (peer) peer.destroy();
+            peer = null;
+            myPeerId = null;
+            connections.clear();
             showScreen('auth');
         });
         
@@ -1174,27 +1010,34 @@
         });
         
         $('clearButton').addEventListener('click', () => { phoneNumber = ''; $('dialerDisplay').textContent = ''; });
-        $('callButton').addEventListener('click', () => { if (phoneNumber) alert('Calling ' + phoneNumber + '...'); });
+        $('callButton').addEventListener('click', () => { 
+            if (phoneNumber) {
+                // Use dialed number as peer ID
+                connectToPeer(phoneNumber);
+            }
+        });
         
         // Initialize
-        updateServerUI();
-        
-        if (currentUser) {
+        if (userName) {
             showScreen('home');
         }
         
-        // Load theme
         if (localStorage.getItem('gdm') === 'true') {
             document.documentElement.setAttribute('data-theme', 'dark');
             $('darkModeToggle')?.classList.add('active');
         }
         
-        // Highlight selected server
         document.querySelectorAll('.server-option-card').forEach(card => {
-            card.classList.toggle('active', card.dataset.server === selectedServer);
+            card.classList.toggle('active', card.dataset.server === selectedRoom);
         });
         
-        console.log('App initialized with 2 servers, max 6 participants each');
+        console.log('✅ App P2P inicializado');
+        console.log('📌 Como usar:');
+        console.log('1. Digite seu nome');
+        console.log('2. Abra o chat');
+        console.log('3. Copie seu ID');
+        console.log('4. Compartilhe com amigo');
+        console.log('5. Amigo usa o discador para conectar');
     </script>
 </body>
 </html>
