@@ -389,6 +389,21 @@
             text-align: center;
             margin-top: -4px;
         }
+
+        .debug-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #4ade80;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-family: monospace;
+            max-width: 200px;
+            z-index: 9999;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
@@ -445,7 +460,7 @@
 
             <div id="messagesContainer" class="messages-container">
                 <div style="text-align: center; color: #666; padding: 20px; font-size: 14px;">
-                    Conectado! Comece a conversar 💬
+                    Aguardando conexão...
                 </div>
             </div>
 
@@ -457,8 +472,24 @@
         </div>
     </div>
 
+    <!-- Debug Info -->
+    <div class="debug-info" id="debugInfo">
+        🔍 Status: Iniciando...
+    </div>
+
     <script>
+        // ==================== DEBUG ====================
+        function updateDebug(msg) {
+            const debug = document.getElementById('debugInfo');
+            if (debug) {
+                debug.innerHTML = '🔍 ' + msg;
+            }
+            console.log('[DEBUG]', msg);
+        }
+
         // ==================== CONFIGURAÇÃO ====================
+        updateDebug('Criando Peer...');
+        
         const peer = new Peer(undefined, {
             debug: 2,
             config: {
@@ -495,12 +526,14 @@
         peer.on('open', (id) => {
             myId = id;
             myIdDisplay.textContent = id;
+            updateDebug('ID: ' + id);
             console.log('✅ Meu ID:', id);
             saveIdToStorage(id);
             loadMyName();
         });
 
         peer.on('connection', (conn) => {
+            updateDebug('Conexão recebida de: ' + conn.peer);
             console.log('📞 Conexão recebida de:', conn.peer);
             friendId = conn.peer;
             setupConnection(conn);
@@ -508,6 +541,7 @@
         });
 
         peer.on('error', (err) => {
+            updateDebug('Erro: ' + err.message);
             console.error('❌ Erro PeerJS:', err);
             showStatus('Erro: ' + err.message, 'error');
         });
@@ -519,6 +553,7 @@
                 myName = name;
                 myNameDisplay.textContent = `👤 ${myName}`;
                 localStorage.setItem('glith_my_name', myName);
+                updateDebug('Nome: ' + myName);
                 
                 if (currentConnection && isConnected) {
                     currentConnection.send({
@@ -539,6 +574,7 @@
                 myName = savedName;
                 myNameInput.value = savedName;
                 myNameDisplay.textContent = `👤 ${myName}`;
+                updateDebug('Nome carregado: ' + myName);
             }
         }
 
@@ -546,12 +582,15 @@
             if (name) {
                 friendName = name;
                 friendNameDisplay.textContent = friendName;
+                updateDebug('Amigo: ' + name);
             }
         }
 
         // ==================== FUNÇÕES PRINCIPAIS ====================
         function connectToFriend() {
             const id = friendIdInput.value.trim();
+            updateDebug('Tentando conectar a: ' + id);
+            
             if (!id) {
                 showStatus('Digite o ID do seu amigo!', 'error');
                 return;
@@ -572,24 +611,27 @@
                 setupConnection(conn);
                 friendId = id;
                 switchToChat();
+                updateDebug('Conectando a: ' + id);
             } catch (error) {
+                updateDebug('Erro ao conectar: ' + error.message);
                 showStatus('Erro ao conectar: ' + error.message, 'error');
             }
         }
 
         function setupConnection(conn) {
             currentConnection = conn;
+            updateDebug('Configurando conexão...');
             
             conn.on('open', () => {
+                updateDebug('CONECTADO a: ' + conn.peer);
                 console.log('🔗 Conectado ao:', conn.peer);
                 isConnected = true;
                 showStatus('✅ Conectado!', 'connected');
                 friendStatus.textContent = '● Online';
                 friendStatus.className = 'status-dot online';
                 
-                // Limpa mensagem inicial
                 messagesContainer.innerHTML = '';
-                addSystemMessage('Conectado ao amigo!');
+                addSystemMessage('✅ Conectado ao amigo!');
                 
                 if (myName) {
                     conn.send({
@@ -599,9 +641,13 @@
                 }
                 
                 messageInput.focus();
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                updateDebug('Pronto para enviar mensagens');
             });
 
             conn.on('data', (data) => {
+                updateDebug('Dados recebidos: ' + JSON.stringify(data).substring(0, 50));
                 console.log('📩 Dados recebidos:', data);
                 
                 if (data.type === 'message') {
@@ -613,41 +659,51 @@
             });
 
             conn.on('close', () => {
+                updateDebug('Conexão fechada');
                 console.log('🔌 Conexão fechada');
                 isConnected = false;
                 friendStatus.textContent = '● Offline';
                 friendStatus.className = 'status-dot offline';
                 addSystemMessage('Conexão perdida');
                 showStatus('Desconectado', 'error');
+                messageInput.disabled = true;
+                sendButton.disabled = true;
             });
 
             conn.on('error', (err) => {
+                updateDebug('Erro na conexão: ' + err.message);
                 console.error('❌ Erro na conexão:', err);
                 showStatus('Erro na conexão', 'error');
             });
         }
 
         function sendMessage() {
+            updateDebug('🔄 sendMessage() chamado');
             console.log('🔵 Tentando enviar mensagem...');
+            
             const text = messageInput.value.trim();
             
             if (!text) {
+                updateDebug('⚠️ Mensagem vazia');
                 console.log('⚠️ Mensagem vazia');
                 return;
             }
             
             if (!currentConnection) {
+                updateDebug('⚠️ Sem currentConnection');
                 console.log('⚠️ Sem conexão');
                 showStatus('Sem conexão!', 'error');
                 return;
             }
             
             if (!isConnected) {
+                updateDebug('⚠️ isConnected = false');
                 console.log('⚠️ Desconectado');
                 showStatus('Você está desconectado!', 'error');
                 return;
             }
 
+            updateDebug('📤 Enviando: "' + text + '"');
             console.log('📤 Enviando mensagem:', text);
             
             const messageData = {
@@ -662,14 +718,17 @@
                 addMessage(text, 'sent', messageData.time, myName);
                 messageInput.value = '';
                 messageInput.focus();
+                updateDebug('✅ Mensagem enviada!');
                 console.log('✅ Mensagem enviada com sucesso!');
             } catch (error) {
+                updateDebug('❌ Erro ao enviar: ' + error.message);
                 console.error('❌ Erro ao enviar:', error);
                 showStatus('Erro ao enviar mensagem', 'error');
             }
         }
 
         function receiveMessage(text, time, senderName) {
+            updateDebug('📩 Recebido de ' + (senderName || 'amigo') + ': ' + text.substring(0, 30));
             console.log('📩 Mensagem recebida de', senderName, ':', text);
             addMessage(text, 'received', time, senderName || 'Amigo');
         }
@@ -714,6 +773,7 @@
             chatScreen.classList.add('active');
             setTimeout(() => {
                 messageInput.focus();
+                updateDebug('🎯 Foco no input');
                 console.log('🎯 Foco no input de mensagem');
             }, 300);
         }
@@ -731,17 +791,20 @@
             chatScreen.classList.remove('active');
             messagesContainer.innerHTML = '';
             showStatus('Desconectado', '');
+            updateDebug('Desconectado');
         }
 
         function clearChat() {
             if (confirm('Limpar todas as mensagens?')) {
                 messagesContainer.innerHTML = '';
+                updateDebug('Chat limpo');
             }
         }
 
         function copyId() {
             navigator.clipboard.writeText(myId).then(() => {
                 showStatus('✅ ID copiado!', 'connected');
+                updateDebug('ID copiado');
                 setTimeout(() => showStatus('', ''), 2000);
             }).catch(() => {
                 const textArea = document.createElement('textarea');
@@ -751,6 +814,7 @@
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
                 showStatus('✅ ID copiado!', 'connected');
+                updateDebug('ID copiado (fallback)');
                 setTimeout(() => showStatus('', ''), 2000);
             });
         }
@@ -761,6 +825,7 @@
                 currentConnection = null;
             }
             peer.destroy();
+            updateDebug('Recriando ID...');
             location.reload();
         }
 
@@ -799,6 +864,8 @@
         // EVENTO PRINCIPAL - GARANTE QUE O BOTÃO FUNCIONE
         sendButton.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            updateDebug('🖱️ Botão clicado!');
             console.log('🖱️ Botão de enviar clicado!');
             sendMessage();
         });
@@ -807,6 +874,7 @@
         messageInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                updateDebug('⌨️ Enter pressionado!');
                 console.log('⌨️ Enter pressionado!');
                 sendMessage();
             }
@@ -818,10 +886,23 @@
             }
         });
 
+        // ==================== INICIALIZAÇÃO ====================
+        updateDebug('Glith iniciado! Aguardando ID...');
         console.log('🚀 Glith iniciado!');
         console.log('💡 Compartilhe seu ID com um amigo para conversar');
         console.log('📝 Defina seu nome para aparecer nas mensagens');
-        console.log('🔍 Teste: Clique no botão ➤ para enviar mensagens');
+        console.log('🔍 Veja o debug no canto inferior direito');
+
+        // Habilita/desabilita o input baseado na conexão
+        messageInput.disabled = true;
+        sendButton.disabled = true;
+
+        // Quando conectar, habilita
+        const originalSwitch = switchToChat;
+        switchToChat = function() {
+            originalSwitch();
+            // Não habilita imediatamente, espera a conexão abrir
+        };
     </script>
 </body>
 </html>
