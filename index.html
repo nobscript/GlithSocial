@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>glitch - Servers</title>
+    <title>glitch - Chat</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -70,15 +70,387 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* Servers Screen */
-        .servers-screen {
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .welcome-container {
+            background: var(--bg-primary);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .welcome-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .welcome-tagline {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .language-selector { margin-bottom: 30px; }
+
+        .language-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .language-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .continue-button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+
+        .continue-button:hover { background: var(--accent-hover); }
+
+        /* Auth Screen */
+        .auth-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .auth-container {
+            background: var(--bg-primary);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .auth-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .auth-tab.active { background: var(--accent); color: var(--bg-primary); }
+
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; text-align: left; }
+        .form-label { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+
+        .form-input {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--accent); }
+
+        .auth-button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+
+        .back-to-welcome {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: none;
+            border: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Home Screen */
+        .home-screen {
             display: none;
             height: 100%;
             flex-direction: column;
             background: var(--bg-primary);
         }
 
-        .servers-screen.active {
+        .home-screen.active { display: flex; }
+
+        .home-header {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .home-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: var(--accent);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .home-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .home-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 5rem;
+            color: var(--accent);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-primary);
+            border-radius: 25px;
+            box-shadow: 0 8px 30px var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 18px;
+            z-index: 50;
+            border: 1px solid var(--border);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+        }
+
+        .nav-item:hover { color: var(--accent); }
+
+        .nav-icon { font-size: 1.4rem; }
+        .nav-label { font-size: 0.7rem; font-weight: 600; }
+
+        .nav-g-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.4rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Globe button - left bottom */
+        .globe-fab {
+            position: fixed;
+            bottom: 85px;
+            left: 25px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 40;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .globe-fab:hover { transform: scale(1.1); }
+
+        .settings-fab {
+            position: fixed;
+            bottom: 85px;
+            right: 25px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 40;
+            font-size: 1.1rem;
+        }
+
+        /* Servers Modal */
+        .servers-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .servers-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .servers-content-modal {
+            position: relative;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .server-option-card {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .server-option-card:hover {
+            border-color: var(--accent);
+        }
+
+        .server-option-card.active {
+            border-color: var(--accent);
+            background: var(--bg-input);
+        }
+
+        .server-option-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .server-option-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Phone, Chat, Settings, Profile screens */
+        .phone-screen, .chat-screen, .settings-screen, .profile-screen {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .phone-screen.active, .chat-screen.active, .settings-screen.active, .profile-screen.active {
             display: flex;
         }
 
@@ -98,663 +470,648 @@
             color: var(--accent);
         }
 
-        .header-title {
+        .header-logo {
             font-family: 'Pacifico', cursive;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--accent);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .dialer-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            padding-bottom: 90px;
+        }
+
+        .dialer-display {
+            width: 280px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 600;
             color: var(--accent);
         }
 
-        .servers-content {
+        .dialer-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+        .dialer-button {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .dialer-actions { display: flex; gap: 25px; }
+        .call-button, .clear-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .call-button { background: var(--accent); color: var(--bg-primary); }
+        .clear-button { background: #ff4757; color: white; }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px;
+        }
+
+        .message { margin-bottom: 15px; display: flex; flex-direction: column; }
+        .message-content {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        .message-sent { align-items: flex-end; }
+        .message-sent .message-content { background: var(--accent); color: var(--bg-primary); }
+        .message-received { align-items: flex-start; }
+        .message-received .message-content { background: var(--bg-secondary); color: var(--text-primary); }
+        .message-meta { font-size: 0.65rem; color: var(--text-secondary); margin-top: 3px; }
+
+        .input-container {
+            padding: 15px 20px;
+            padding-bottom: 85px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            min-height: 40px;
+        }
+
+        .send-button {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 20px;
+            padding: 0 18px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .settings-content {
             flex: 1;
             overflow-y: auto;
             padding: 25px;
-            max-width: 500px;
+            max-width: 450px;
             margin: 0 auto;
             width: 100%;
         }
 
-        .server-card {
+        .settings-section {
             background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 2px solid var(--border);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .server-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow);
-        }
-
-        .server-card.active {
-            border-color: var(--accent);
-            background: var(--bg-input);
-        }
-
-        .server-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .server-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .server-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .badge-admin {
-            background: var(--warning);
-            color: #000;
-        }
-
-        .badge-member {
-            background: var(--success);
-            color: #fff;
-        }
-
-        .badge-pending {
-            background: var(--error);
-            color: #fff;
-        }
-
-        .server-info {
-            display: flex;
-            gap: 20px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .server-info span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Members list */
-        .members-list {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
-
-        .member-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .member-item:hover {
-            background: var(--bg-input);
-        }
-
-        .member-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .member-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .member-name {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .member-role {
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .role-admin {
-            background: var(--warning);
-            color: #000;
-        }
-
-        .role-member {
-            background: var(--success);
-            color: #fff;
-        }
-
-        /* Mini Popup */
-        .mini-popup {
-            position: fixed;
-            z-index: 1500;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px var(--shadow);
-            padding: 10px;
-            min-width: 150px;
-            animation: popupIn 0.2s ease;
-            display: none;
-        }
-
-        @keyframes popupIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .popup-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .popup-item:hover {
-            background: var(--bg-secondary);
-        }
-
-        .popup-item.danger {
-            color: var(--error);
-        }
-
-        .popup-item.danger:hover {
-            background: #fff0f0;
-        }
-
-        /* Pending requests */
-        .pending-section {
-            margin-top: 15px;
+            border-radius: 15px;
             padding: 15px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            border: 1px dashed var(--border);
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
         }
 
-        .pending-title {
+        .settings-title {
             font-size: 0.8rem;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--accent);
             margin-bottom: 10px;
             text-transform: uppercase;
         }
 
-        .pending-item {
+        .settings-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            background: var(--bg-primary);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .pending-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .accept-btn, .reject-btn {
-            padding: 5px 12px;
-            border-radius: 15px;
-            border: none;
+        .toggle-switch {
+            position: relative;
+            width: 45px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
             transition: all 0.3s;
         }
+        .toggle-switch.active { background: var(--accent); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px; left: 3px;
+            width: 18px; height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .toggle-switch.active::after { left: 24px; }
 
-        .accept-btn {
-            background: var(--success);
-            color: #fff;
+        .color-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--border);
+        }
+        .color-option.active { border-color: var(--accent); }
+
+        .profile-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .accept-btn:hover { opacity: 0.8; }
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            cursor: pointer;
+            font-size: 2.5rem;
+        }
+        .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
 
-        .reject-btn {
-            background: var(--error);
-            color: #fff;
+        .profile-info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-bottom: 10px;
         }
 
-        .reject-btn:hover { opacity: 0.8; }
-
-        .join-btn {
+        .edit-button {
             background: var(--accent);
             color: var(--bg-primary);
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 0.8rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s;
         }
-
-        .join-btn:hover { background: var(--accent-hover); }
     </style>
 </head>
 <body>
-    <!-- Servers Screen -->
-    <div class="servers-screen" id="serversScreen">
-        <div class="screen-header">
-            <button class="back-button" id="serversBackButton" type="button">←</button>
-            <span class="header-title">glitch</span>
-        </div>
-        <div class="servers-content" id="serversContent">
-            <!-- Server cards will be rendered here -->
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="welcome-logo">glitch</div>
+            <div class="welcome-tagline">Your Chat Experience</div>
+            <div class="language-selector">
+                <label class="language-label">Choose Language</label>
+                <select class="language-select" id="languageSelect">
+                    <option value="pt">🇧🇷 Português</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="hi">🇮🇳 हिन्दी</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="zh">🇨🇳 中文</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="tr">🇹🇷 Türkçe</option>
+                    <option value="nl">🇳🇱 Nederlands</option>
+                    <option value="pl">🇵🇱 Polski</option>
+                    <option value="sv">🇸🇪 Svenska</option>
+                    <option value="no">🇳🇴 Norsk</option>
+                    <option value="da">🇩🇰 Dansk</option>
+                    <option value="fi">🇫🇮 Suomi</option>
+                    <option value="el">🇬🇷 Ελληνικά</option>
+                    <option value="cs">🇨🇿 Čeština</option>
+                    <option value="hu">🇭🇺 Magyar</option>
+                    <option value="ro">🇷🇴 Română</option>
+                    <option value="uk">🇺🇦 Українська</option>
+                    <option value="th">🇹🇭 ไทย</option>
+                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                    <option value="id">🇮🇩 Indonesia</option>
+                    <option value="ms">🇲🇾 Melayu</option>
+                    <option value="fa">🇮🇷 فارسی</option>
+                    <option value="he">🇮🇱 עברית</option>
+                    <option value="sw">🇰🇪 Kiswahili</option>
+                </select>
+            </div>
+            <button class="continue-button" id="continueButton" type="button">Continue</button>
         </div>
     </div>
 
-    <!-- Mini Popup -->
-    <div class="mini-popup" id="miniPopup">
-        <button class="popup-item" id="popupKick" type="button">🚫 Expulsar</button>
-        <button class="popup-item" id="popupPromote" type="button">👑 Tornar Admin</button>
-        <button class="popup-item" id="popupMessage" type="button">💬 Mensagem</button>
-        <button class="popup-item danger" id="popupBlock" type="button">⛔ Bloquear</button>
+    <!-- Auth Screen -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-container">
+            <div class="auth-logo">glitch</div>
+            <div class="auth-subtitle">Your Chat Experience</div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login" type="button">Login</button>
+                <button class="auth-tab" data-tab="register" type="button">Register</button>
+            </div>
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="loginUsername" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter password">
+                </div>
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+            <form class="auth-form" id="registerForm" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="Choose username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="Create password">
+                </div>
+                <button type="submit" class="auth-button">Register</button>
+            </form>
+            <button class="back-to-welcome" id="backToWelcome" type="button">← Change Language</button>
+        </div>
+    </div>
+
+    <!-- Home Screen -->
+    <div class="home-screen" id="homeScreen">
+        <div class="home-header">
+            <button class="home-logo" id="homeLogoSettings" type="button">glitch</button>
+        </div>
+        <div class="home-content">
+            <div class="home-title">glitch</div>
+        </div>
+        <div class="bottom-nav">
+            <button class="nav-item" id="phoneOption" type="button"><span class="nav-icon">📞</span><span class="nav-label">Phone</span></button>
+            <button class="nav-g-logo" id="navGLogo" type="button">g</button>
+            <button class="nav-item" id="chatOption" type="button"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+        </div>
+        <!-- Globe button bottom left -->
+        <button class="globe-fab" id="globeFab" type="button">🌐</button>
+        <!-- Settings button bottom right -->
+        <button class="settings-fab" id="settingsFab" type="button">⚙️</button>
+    </div>
+
+    <!-- Servers Modal -->
+    <div class="servers-modal" id="serversModal">
+        <div class="servers-overlay" id="serversOverlay"></div>
+        <div class="servers-content-modal">
+            <div style="font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--accent);margin-bottom:20px;text-align:center;">Select Server</div>
+            <div class="server-option-card active" data-server="server1">
+                <div class="server-option-name">🌍 Global Server</div>
+                <div class="server-option-desc">Global server for all users</div>
+            </div>
+            <div class="server-option-card" data-server="server2">
+                <div class="server-option-name">🇪🇺 Europe Server</div>
+                <div class="server-option-desc">European server</div>
+            </div>
+            <div class="server-option-card" data-server="server3">
+                <div class="server-option-name">🧪 Demo Server</div>
+                <div class="server-option-desc">Demo server for testing</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phone Screen -->
+    <div class="phone-screen" id="phoneScreen">
+        <div class="screen-header">
+            <button class="back-button" id="phoneBackButton" type="button">←</button>
+            <button class="header-logo" id="phoneLogoSettings" type="button">glitch</button>
+        </div>
+        <div class="dialer-container">
+            <div class="dialer-display" id="dialerDisplay"></div>
+            <div class="dialer-pad" id="dialerPad"></div>
+            <div class="dialer-actions">
+                <button class="call-button" id="callButton" type="button">📞</button>
+                <button class="clear-button" id="clearButton" type="button">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Screen -->
+    <div class="chat-screen" id="chatScreen">
+        <div class="screen-header">
+            <button class="back-button" id="chatBackButton" type="button">←</button>
+            <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
+        </div>
+        <div class="chat-container" id="chatContainer">
+            <div class="message message-received"><div class="message-content">Welcome!</div><div class="message-meta">system</div></div>
+        </div>
+        <div class="input-container">
+            <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
+            <button class="send-button" id="sendButton" type="button">Send</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div class="settings-screen" id="settingsScreen">
+        <div class="screen-header">
+            <button class="back-button" id="settingsBackButton" type="button">←</button>
+            <button class="header-logo" type="button">glitch</button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <div class="settings-title">Appearance</div>
+                <div class="settings-item"><span>Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
+                <div class="settings-item"><span>Accent Color</span></div>
+                <div class="color-options">
+                    <div class="color-option" data-color="black" style="background:#000;"></div>
+                    <div class="color-option" data-color="blue" style="background:#06f;"></div>
+                    <div class="color-option" data-color="green" style="background:#0c6;"></div>
+                    <div class="color-option" data-color="red" style="background:#f33;"></div>
+                    <div class="color-option" data-color="purple" style="background:#93f;"></div>
+                </div>
+            </div>
+            <div class="settings-section">
+                <div class="settings-title">Account</div>
+                <div class="settings-item"><span>Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Screen -->
+    <div class="profile-screen" id="profileScreen">
+        <div class="screen-header">
+            <button class="back-button" id="profileBackButton" type="button">←</button>
+            <button class="header-logo" type="button">glitch</button>
+        </div>
+        <div class="profile-content">
+            <div style="text-align:center;margin-bottom:20px;">
+                <div class="profile-photo" id="profilePhotoDisplay">👤</div>
+                <span class="edit-button" id="changePhotoLabel" style="cursor:pointer;margin-top:5px;display:inline-block;">Change</span>
+                <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+            </div>
+            <div class="profile-info-item"><span>Name</span><span id="profileNameValue">-</span><button class="edit-button" id="editNameButton">Edit</button></div>
+            <div class="profile-info-item"><span>Birth Date</span><span id="profileBirthValue">-</span><button class="edit-button" id="editBirthButton">Edit</button></div>
+            <div class="profile-info-item"><span>City</span><span id="profileCityValue">-</span></div>
+            <div class="profile-info-item"><span>Country</span><span id="profileCountryValue">-</span></div>
+            <div class="profile-info-item"><span>Username</span><span id="profileUsernameValue">-</span></div>
+        </div>
     </div>
 
     <script>
         const $ = (id) => document.getElementById(id);
         
-        // Server data stored in localStorage
-        function getServers() {
-            return JSON.parse(localStorage.getItem('glitchServers') || '{}');
-        }
-
-        function saveServers(servers) {
-            localStorage.setItem('glitchServers', JSON.stringify(servers));
-        }
-
-        function getCurrentUser() {
-            return JSON.parse(localStorage.getItem('cu') || 'null');
-        }
-
-        // Initialize servers if not exist
-        function initServers() {
-            const servers = getServers();
-            
-            const defaultServers = {
-                'server1': {
-                    id: 'server1',
-                    name: '🌍 Global Server',
-                    description: 'Servidor global para todos',
-                    admin: null,
-                    members: {},
-                    pendingRequests: {},
-                    createdAt: Date.now()
-                },
-                'server2': {
-                    id: 'server2',
-                    name: '🇪🇺 Europe Server',
-                    description: 'Servidor europeu',
-                    admin: null,
-                    members: {},
-                    pendingRequests: {},
-                    createdAt: Date.now()
-                },
-                'server3': {
-                    id: 'server3',
-                    name: '🧪 Demo Server',
-                    description: 'Servidor de demonstração',
-                    admin: null,
-                    members: {},
-                    pendingRequests: {},
-                    createdAt: Date.now()
-                }
-            };
-            
-            if (Object.keys(servers).length === 0) {
-                saveServers(defaultServers);
-            }
-            
-            return Object.keys(servers).length > 0 ? servers : defaultServers;
-        }
-
-        // Render servers
-        function renderServers() {
-            const servers = initServers();
-            const currentUser = getCurrentUser();
-            const container = $('serversContent');
-            
-            container.innerHTML = '';
-            
-            Object.values(servers).forEach(server => {
-                const card = document.createElement('div');
-                card.className = 'server-card';
-                if (server.members[currentUser?.username]) {
-                    card.classList.add('active');
-                }
-                
-                const isAdmin = server.admin === currentUser?.username;
-                const isMember = server.members[currentUser?.username];
-                const isPending = server.pendingRequests[currentUser?.username];
-                
-                let badge = '';
-                if (isAdmin) {
-                    badge = '<span class="server-badge badge-admin">👑 Admin</span>';
-                } else if (isMember) {
-                    badge = '<span class="server-badge badge-member">✓ Member</span>';
-                } else if (isPending) {
-                    badge = '<span class="server-badge badge-pending">⏳ Pending</span>';
-                } else {
-                    badge = '<button class="join-btn" data-server="' + server.id + '">Join</button>';
-                }
-                
-                const memberCount = Object.keys(server.members).length;
-                
-                card.innerHTML = `
-                    <div class="server-card-header">
-                        <span class="server-name">${server.name}</span>
-                        ${badge}
-                    </div>
-                    <div class="server-info">
-                        <span>👥 ${memberCount} members</span>
-                        <span>📝 ${server.description}</span>
-                    </div>
-                `;
-                
-                // If user is member or admin, show members list
-                if (isMember || isAdmin) {
-                    const membersList = document.createElement('div');
-                    membersList.className = 'members-list';
-                    
-                    Object.entries(server.members).forEach(([username, data]) => {
-                        const memberItem = document.createElement('div');
-                        memberItem.className = 'member-item';
-                        memberItem.dataset.username = username;
-                        memberItem.dataset.server = server.id;
-                        
-                        const role = username === server.admin ? 'Admin' : 'Member';
-                        const roleClass = username === server.admin ? 'role-admin' : 'role-member';
-                        
-                        memberItem.innerHTML = `
-                            <div class="member-info">
-                                <div class="member-avatar">${data.name ? data.name.charAt(0).toUpperCase() : username.charAt(0).toUpperCase()}</div>
-                                <span class="member-name">${data.name || username} ${username === currentUser?.username ? '(You)' : ''}</span>
-                            </div>
-                            <span class="member-role ${roleClass}">${role}</span>
-                        `;
-                        
-                        // Only admin can click on other members
-                        if (isAdmin && username !== currentUser?.username) {
-                            memberItem.addEventListener('click', function(e) {
-                                e.stopPropagation();
-                                showMiniPopup(e, username, server.id);
-                            });
-                        }
-                        
-                        membersList.appendChild(memberItem);
-                    });
-                    
-                    // Show pending requests for admin
-                    if (isAdmin && Object.keys(server.pendingRequests).length > 0) {
-                        const pendingSection = document.createElement('div');
-                        pendingSection.className = 'pending-section';
-                        pendingSection.innerHTML = '<div class="pending-title">⏳ Pending Requests</div>';
-                        
-                        Object.entries(server.pendingRequests).forEach(([username, data]) => {
-                            const pendingItem = document.createElement('div');
-                            pendingItem.className = 'pending-item';
-                            pendingItem.innerHTML = `
-                                <span style="font-size:0.85rem;">${data.name || username}</span>
-                                <div class="pending-actions">
-                                    <button class="accept-btn" data-server="${server.id}" data-username="${username}">Accept</button>
-                                    <button class="reject-btn" data-server="${server.id}" data-username="${username}">Reject</button>
-                                </div>
-                            `;
-                            pendingSection.appendChild(pendingItem);
-                        });
-                        
-                        membersList.appendChild(pendingSection);
-                    }
-                    
-                    card.appendChild(membersList);
-                }
-                
-                container.appendChild(card);
+        // Show screen function
+        function showScreen(screenId) {
+            // Hide all
+            $('welcomeScreen').style.display = 'none';
+            $('authScreen').style.display = 'none';
+            $('serversModal').style.display = 'none';
+            ['homeScreen', 'phoneScreen', 'chatScreen', 'settingsScreen', 'profileScreen'].forEach(id => {
+                $(id).classList.remove('active');
             });
             
-            // Add event listeners for join buttons
-            document.querySelectorAll('.join-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    joinServer(this.dataset.server);
-                });
-            });
-            
-            // Add event listeners for accept/reject buttons
-            document.querySelectorAll('.accept-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    acceptRequest(this.dataset.server, this.dataset.username);
-                });
-            });
-            
-            document.querySelectorAll('.reject-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    rejectRequest(this.dataset.server, this.dataset.username);
-                });
-            });
+            // Show requested
+            if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
+            else if (screenId === 'auth') $('authScreen').style.display = 'flex';
+            else if (screenId === 'home') $('homeScreen').classList.add('active');
+            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
+            else if (screenId === 'chat') $('chatScreen').classList.add('active');
+            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
+            else if (screenId === 'profile') $('profileScreen').classList.add('active');
         }
-
-        // Join server
-        function joinServer(serverId) {
-            const servers = getServers();
-            const currentUser = getCurrentUser();
-            
-            if (!currentUser) {
-                alert('Please login first');
-                return;
-            }
-            
-            const server = servers[serverId];
-            
-            if (!server) return;
-            
-            // First member becomes admin
-            if (Object.keys(server.members).length === 0 && !server.admin) {
-                server.admin = currentUser.username;
-                server.members[currentUser.username] = {
-                    name: currentUser.name,
-                    joinedAt: Date.now()
-                };
-                showToast('You are now the Admin of ' + server.name + '! 👑');
-            } else {
-                // Add to pending requests
-                server.pendingRequests[currentUser.username] = {
-                    name: currentUser.name,
-                    requestedAt: Date.now()
-                };
-                showToast('Request sent to join ' + server.name + ' ⏳');
-            }
-            
-            saveServers(servers);
-            renderServers();
-        }
-
-        // Accept request
-        function acceptRequest(serverId, username) {
-            const servers = getServers();
-            const server = servers[serverId];
-            
-            if (server.pendingRequests[username]) {
-                server.members[username] = {
-                    name: server.pendingRequests[username].name,
-                    joinedAt: Date.now()
-                };
-                delete server.pendingRequests[username];
-                saveServers(servers);
-                renderServers();
-                showToast(username + ' accepted! ✓');
-            }
-        }
-
-        // Reject request
-        function rejectRequest(serverId, username) {
-            const servers = getServers();
-            const server = servers[serverId];
-            
-            if (server.pendingRequests[username]) {
-                delete server.pendingRequests[username];
-                saveServers(servers);
-                renderServers();
-                showToast(username + ' rejected');
-            }
-        }
-
-        // Show mini popup
-        function showMiniPopup(event, username, serverId) {
-            const popup = $('miniPopup');
-            popup.style.display = 'block';
-            
-            // Position popup near click
-            const x = event.clientX;
-            const y = event.clientY;
-            
-            popup.style.left = Math.min(x, window.innerWidth - 170) + 'px';
-            popup.style.top = Math.min(y, window.innerHeight - 150) + 'px';
-            
-            // Store context
-            popup.dataset.username = username;
-            popup.dataset.server = serverId;
-        }
-
-        // Hide popup
-        function hidePopup() {
-            $('miniPopup').style.display = 'none';
-        }
-
-        // Kick member
-        function kickMember(serverId, username) {
-            const servers = getServers();
-            const server = servers[serverId];
-            
-            if (server.members[username]) {
-                delete server.members[username];
-                saveServers(servers);
-                renderServers();
-                hidePopup();
-                showToast(username + ' kicked from server 🚫');
-            }
-        }
-
-        // Promote to admin
-        function promoteMember(serverId, username) {
-            const servers = getServers();
-            const server = servers[serverId];
-            const currentUser = getCurrentUser();
-            
-            if (server.admin === currentUser.username) {
-                server.admin = username;
-                saveServers(servers);
-                renderServers();
-                hidePopup();
-                showToast(username + ' is now Admin 👑');
-            }
-        }
-
-        // Block member
-        function blockMember(serverId, username) {
-            const servers = getServers();
-            const server = servers[serverId];
-            
-            if (server.members[username]) {
-                delete server.members[username];
-                server.pendingRequests[username] = { blocked: true, name: username };
-                saveServers(servers);
-                renderServers();
-                hidePopup();
-                showToast(username + ' blocked ⛔');
-            }
-        }
-
-        // Show toast
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
-        }
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            renderServers();
-            
-            // Hide popup on click elsewhere
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.mini-popup')) {
-                    hidePopup();
-                }
-            });
-            
-            // Popup actions
-            $('popupKick').addEventListener('click', function() {
-                const popup = $('miniPopup');
-                kickMember(popup.dataset.server, popup.dataset.username);
-            });
-            
-            $('popupPromote').addEventListener('click', function() {
-                const popup = $('miniPopup');
-                promoteMember(popup.dataset.server, popup.dataset.username);
-            });
-            
-            $('popupMessage').addEventListener('click', function() {
-                const popup = $('miniPopup');
-                alert('Message to ' + popup.dataset.username);
-                hidePopup();
-            });
-            
-            $('popupBlock').addEventListener('click', function() {
-                const popup = $('miniPopup');
-                blockMember(popup.dataset.server, popup.dataset.username);
+        
+        // Continue button
+        $('continueButton').addEventListener('click', function() {
+            localStorage.setItem('glang', $('languageSelect').value);
+            $('welcomeScreen').style.display = 'none';
+            $('authScreen').style.display = 'flex';
+        });
+        
+        // Back to welcome
+        $('backToWelcome').addEventListener('click', function() {
+            $('authScreen').style.display = 'none';
+            $('welcomeScreen').style.display = 'flex';
+        });
+        
+        // Auth tabs
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                $('loginForm').style.display = this.dataset.tab === 'login' ? 'flex' : 'none';
+                $('registerForm').style.display = this.dataset.tab === 'register' ? 'flex' : 'none';
             });
         });
-
-        // For testing - create a test user
-        if (!getCurrentUser()) {
-            localStorage.setItem('cu', JSON.stringify({
-                username: 'admin',
-                name: 'Admin User',
-                completed: true
-            }));
+        
+        // Login
+        $('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = $('loginUsername').value.trim();
+            const password = $('loginPassword').value;
+            
+            if (!username || !password) { alert('Fill all fields'); return; }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            const user = users[username];
+            
+            if (!user) { alert('User not found'); return; }
+            if (user.password !== password) { alert('Invalid password'); return; }
+            
+            localStorage.setItem('cu', JSON.stringify({ username, ...user }));
+            $('loginForm').reset();
+            showScreen('home');
+        });
+        
+        // Register
+        $('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = $('registerUsername').value.trim();
+            const password = $('registerPassword').value;
+            
+            if (!username) { alert('Username required'); return; }
+            
+            const users = JSON.parse(localStorage.getItem('gu') || '{}');
+            if (users[username]) { alert('Username exists'); return; }
+            if (!password || password.length < 6) { alert('Password min 6 chars'); return; }
+            
+            users[username] = { password, completed: true, name: username };
+            localStorage.setItem('gu', JSON.stringify(users));
+            $('registerForm').reset();
+            
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="login"]').classList.add('active');
+            $('loginForm').style.display = 'flex';
+            $('registerForm').style.display = 'none';
+            $('loginUsername').value = username;
+            
+            alert('Account created! Please login.');
+        });
+        
+        // Navigation
+        $('phoneOption').addEventListener('click', () => showScreen('phone'));
+        $('chatOption').addEventListener('click', () => showScreen('chat'));
+        $('phoneBackButton').addEventListener('click', () => showScreen('home'));
+        $('chatBackButton').addEventListener('click', () => showScreen('home'));
+        $('settingsFab').addEventListener('click', () => showScreen('settings'));
+        $('settingsBackButton').addEventListener('click', () => showScreen('home'));
+        $('profileBackButton').addEventListener('click', () => showScreen('home'));
+        $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('phoneLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('chatLogoSettings').addEventListener('click', () => showScreen('profile'));
+        $('navGLogo').addEventListener('click', () => showScreen('profile'));
+        
+        // Globe button - opens servers modal
+        $('globeFab').addEventListener('click', function() {
+            $('serversModal').style.display = 'flex';
+        });
+        
+        // Close servers modal
+        $('serversOverlay').addEventListener('click', function() {
+            $('serversModal').style.display = 'none';
+        });
+        
+        // Server selection
+        document.querySelectorAll('.server-option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.server-option-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                localStorage.setItem('selectedServer', this.dataset.server);
+                
+                // Show toast
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = '✓ Server: ' + this.querySelector('.server-option-name').textContent;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+                
+                // Close modal after short delay
+                setTimeout(() => {
+                    $('serversModal').style.display = 'none';
+                }, 500);
+            });
+        });
+        
+        // Settings
+        $('darkModeToggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            const isDark = this.classList.contains('active');
+            if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            else document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('gdm', isDark);
+        });
+        
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                const color = this.dataset.color;
+                if (color !== 'black') document.documentElement.setAttribute('data-accent', color);
+                else document.documentElement.removeAttribute('data-accent');
+                localStorage.setItem('gac', color);
+            });
+        });
+        
+        $('settingsLogoutButton').addEventListener('click', function() {
+            localStorage.removeItem('cu');
+            showScreen('auth');
+        });
+        
+        // Dialer
+        let phoneNumber = '';
+        ['1','2','3','4','5','6','7','8','9','*','0','#'].forEach(n => {
+            const btn = document.createElement('button');
+            btn.className = 'dialer-button';
+            btn.textContent = n;
+            btn.addEventListener('click', () => {
+                phoneNumber += n;
+                $('dialerDisplay').textContent = phoneNumber;
+            });
+            $('dialerPad').appendChild(btn);
+        });
+        
+        $('clearButton').addEventListener('click', () => { phoneNumber = ''; $('dialerDisplay').textContent = ''; });
+        $('callButton').addEventListener('click', () => { if (phoneNumber) alert('Calling ' + phoneNumber + '...'); });
+        
+        // Chat
+        function sendMessage() {
+            const content = $('messageInput').value.trim();
+            if (!content) return;
+            const div = document.createElement('div');
+            div.className = 'message message-sent';
+            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">You</div>';
+            $('chatContainer').appendChild(div);
+            $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
+            $('messageInput').value = '';
         }
-
-        console.log('Servers system initialized');
+        
+        $('sendButton').addEventListener('click', sendMessage);
+        $('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+        
+        // Check for existing user on load (fix F5 white screen)
+        const savedUser = JSON.parse(localStorage.getItem('cu') || 'null');
+        if (savedUser) {
+            showScreen('home');
+        }
+        
+        // Load saved theme
+        if (localStorage.getItem('gdm') === 'true') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            $('darkModeToggle')?.classList.add('active');
+        }
+        
+        const savedAccent = localStorage.getItem('gac');
+        if (savedAccent && savedAccent !== 'black') {
+            document.documentElement.setAttribute('data-accent', savedAccent);
+        }
+        
+        // Load saved language
+        const savedLang = localStorage.getItem('glang');
+        if (savedLang) {
+            $('languageSelect').value = savedLang;
+        }
+        
+        // Load selected server
+        const selectedServer = localStorage.getItem('selectedServer');
+        if (selectedServer) {
+            document.querySelectorAll('.server-option-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.server === selectedServer);
+            });
+        }
+        
+        console.log('App initialized successfully');
     </script>
 </body>
 </html>
