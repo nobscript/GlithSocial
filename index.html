@@ -49,29 +49,7 @@
             overflow: hidden;
         }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: var(--bg-primary);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 2000;
-            animation: slideInRight 0.3s ease;
-            font-weight: 500;
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .toast.hide { animation: slideOutRight 0.3s ease forwards; }
-        @keyframes slideOutRight { to { opacity: 0; transform: translateX(100px); } }
-
-        .welcome-screen {
+        .welcome-screen, .auth-screen {
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
@@ -81,7 +59,9 @@
             z-index: 300;
         }
 
-        .welcome-container {
+        .auth-screen { display: none; z-index: 100; }
+
+        .welcome-container, .auth-container {
             background: var(--bg-primary);
             border-radius: 30px;
             padding: 50px 40px;
@@ -92,14 +72,14 @@
             text-align: center;
         }
 
-        .welcome-logo {
+        .welcome-logo, .auth-logo {
             font-family: 'Pacifico', cursive;
             font-size: 4rem;
             color: var(--accent);
             margin-bottom: 10px;
         }
 
-        .welcome-tagline {
+        .welcome-tagline, .auth-subtitle {
             font-size: 1rem;
             color: var(--text-secondary);
             margin-bottom: 30px;
@@ -125,7 +105,6 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.3s;
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
@@ -133,9 +112,7 @@
             background-position: right 16px center;
         }
 
-        .language-select:focus { outline: none; }
-
-        .continue-button {
+        .continue-button, .auth-button {
             background: var(--accent);
             color: var(--bg-primary);
             border: none;
@@ -147,47 +124,9 @@
             transition: all 0.3s;
             font-family: 'Inter', sans-serif;
             width: 100%;
-            position: relative;
-            z-index: 10;
         }
 
-        .continue-button:hover { background: var(--accent-hover); transform: translateY(-2px); }
-        .continue-button:active { transform: translateY(0); }
-
-        .auth-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .auth-container {
-            background: var(--bg-primary);
-            border-radius: 30px;
-            padding: 50px 40px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .auth-logo {
-            font-family: 'Pacifico', cursive;
-            font-size: 4rem;
-            color: var(--accent);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .auth-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-        }
+        .continue-button:hover, .auth-button:hover { background: var(--accent-hover); }
 
         .auth-tabs {
             display: flex;
@@ -207,7 +146,6 @@
             font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-secondary);
-            transition: all 0.3s;
             border-radius: 10px;
             font-family: 'Inter', sans-serif;
         }
@@ -215,7 +153,7 @@
         .auth-tab.active { background: var(--accent); color: var(--bg-primary); }
 
         .auth-form { display: flex; flex-direction: column; gap: 15px; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; text-align: left; }
         .form-label { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
 
         .form-input {
@@ -224,31 +162,12 @@
             border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.3s;
             background: var(--bg-input);
             color: var(--text-primary);
+            width: 100%;
         }
 
         .form-input:focus { outline: none; border-color: var(--accent); }
-
-        .auth-button {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            margin-top: 10px;
-        }
-
-        .auth-button:hover { background: var(--accent-hover); }
-
-        .error-message { color: var(--error); font-size: 0.75rem; display: none; }
-        .error-message.show { display: block; }
 
         .back-to-welcome {
             display: block;
@@ -766,11 +685,11 @@
                 <span class="edit-button" id="changePhotoLabel" style="cursor:pointer;margin-top:5px;display:inline-block;">Change</span>
                 <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
             </div>
-            <div class="profile-info-item"><span id="nameLabel">Name</span><span id="profileNameValue">-</span><button class="edit-button" id="editNameButton">Edit</button></div>
-            <div class="profile-info-item"><span id="birthLabel">Birth Date</span><span id="profileBirthValue">-</span><button class="edit-button" id="editBirthButton">Edit</button></div>
-            <div class="profile-info-item"><span id="cityLabel">City</span><span id="profileCityValue">-</span></div>
-            <div class="profile-info-item"><span id="countryLabel">Country</span><span id="profileCountryValue">-</span></div>
-            <div class="profile-info-item"><span id="usernameLabel">Username</span><span id="profileUsernameValue">-</span></div>
+            <div class="profile-info-item"><span>Name</span><span id="profileNameValue">-</span><button class="edit-button" id="editNameButton">Edit</button></div>
+            <div class="profile-info-item"><span>Birth Date</span><span id="profileBirthValue">-</span><button class="edit-button" id="editBirthButton">Edit</button></div>
+            <div class="profile-info-item"><span>City</span><span id="profileCityValue">-</span></div>
+            <div class="profile-info-item"><span>Country</span><span id="profileCountryValue">-</span></div>
+            <div class="profile-info-item"><span>Username</span><span id="profileUsernameValue">-</span></div>
         </div>
     </div>
 
@@ -797,11 +716,11 @@
             <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
         </div>
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received"><div class="message-content" id="welcomeMsg">Welcome!</div><div class="message-meta">system</div></div>
+            <div class="message message-received"><div class="message-content">Welcome!</div><div class="message-meta">system</div></div>
         </div>
         <div class="input-container">
             <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
-            <button class="send-button" id="sendButton" type="button" id="sendLabel">Send</button>
+            <button class="send-button" id="sendButton" type="button">Send</button>
         </div>
     </div>
 
@@ -813,9 +732,9 @@
         </div>
         <div class="settings-content">
             <div class="settings-section">
-                <div class="settings-title" id="appearanceTitle">Appearance</div>
-                <div class="settings-item"><span id="darkModeLabel">Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
-                <div class="settings-item"><span id="accentColorLabel">Accent Color</span></div>
+                <div class="settings-title">Appearance</div>
+                <div class="settings-item"><span>Dark Mode</span><div class="toggle-switch" id="darkModeToggle"></div></div>
+                <div class="settings-item"><span>Accent Color</span></div>
                 <div class="color-options">
                     <div class="color-option" data-color="black" style="background:#000;"></div>
                     <div class="color-option" data-color="blue" style="background:#06f;"></div>
@@ -825,14 +744,14 @@
                 </div>
             </div>
             <div class="settings-section">
-                <div class="settings-title" id="serversTitle">Servers</div>
+                <div class="settings-title">Servers</div>
                 <div class="server-option active" data-server="wss://echo.websocket.org">🌍 Global</div>
                 <div class="server-option" data-server="wss://ws.postman-echo.com/raw">🇪🇺 EU</div>
                 <div class="server-option" data-server="wss://socketsbay.com/wss/v2/1/demo/">🧪 Demo</div>
             </div>
             <div class="settings-section">
-                <div class="settings-title" id="accountTitle">Account</div>
-                <div class="settings-item"><span id="logoutLabel">Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
+                <div class="settings-title">Account</div>
+                <div class="settings-item"><span>Logout</span><button class="back-button" id="settingsLogoutButton">→</button></div>
             </div>
         </div>
     </div>
@@ -851,7 +770,7 @@
                 loginBtn: 'Entrar',
                 registerBtn: 'Cadastrar',
                 backToLang: '← Mudar Idioma',
-                onboardingText: '👋 Bem-vindo! Complete seu perfil:<br>📸 Foto • 👤 Nome • 🎂 Data de Nascimento • 📍 Cidade',
+                onboardingText: '👋 Bem-vindo! Complete seu perfil',
                 fullName: 'Nome Completo *',
                 birthDate: 'Data de Nascimento *',
                 city: 'Cidade *',
@@ -892,7 +811,7 @@
                 loginBtn: 'Login',
                 registerBtn: 'Register',
                 backToLang: '← Change Language',
-                onboardingText: '👋 Welcome! Complete your profile:<br>📸 Photo • 👤 Name • 🎂 Birth Date • 📍 City',
+                onboardingText: '👋 Welcome! Complete your profile',
                 fullName: 'Full Name *',
                 birthDate: 'Birth Date *',
                 city: 'City *',
@@ -933,7 +852,7 @@
                 loginBtn: 'Войти',
                 registerBtn: 'Зарегистрироваться',
                 backToLang: '← Сменить язык',
-                onboardingText: '👋 Добро пожаловать! Заполните профиль:<br>📸 Фото • 👤 Имя • 🎂 Дата рождения • 📍 Город',
+                onboardingText: '👋 Добро пожаловать! Заполните профиль',
                 fullName: 'Полное имя *',
                 birthDate: 'Дата рождения *',
                 city: 'Город *',
@@ -974,7 +893,7 @@
                 loginBtn: 'लॉगिन',
                 registerBtn: 'पंजीकरण',
                 backToLang: '← भाषा बदलें',
-                onboardingText: '👋 स्वागत है! अपनी प्रोफ़ाइल पूरी करें:<br>📸 फोटो • 👤 नाम • 🎂 जन्म तिथि • 📍 शहर',
+                onboardingText: '👋 स्वागत है! अपनी प्रोफ़ाइल पूरी करें',
                 fullName: 'पूरा नाम *',
                 birthDate: 'जन्म तिथि *',
                 city: 'शहर *',
@@ -1007,18 +926,15 @@
         };
 
         const $ = (id) => document.getElementById(id);
-        let currentLang = 'pt';
+        let currentLang = localStorage.getItem('glang') || 'pt';
 
         function applyLanguage(lang) {
             const t = I18N[lang] || I18N.en;
             currentLang = lang;
             
-            // Welcome
             $('welcomeTagline').textContent = t.tagline;
             $('languageLabel').textContent = t.languageLabel;
             $('continueButton').textContent = t.continueBtn;
-            
-            // Auth
             $('authSubtitle').textContent = t.tagline;
             $('loginTab').textContent = t.login;
             $('registerTab').textContent = t.register;
@@ -1029,15 +945,11 @@
             $('loginButton').textContent = t.loginBtn;
             $('registerButton').textContent = t.registerBtn;
             $('backToWelcome').textContent = t.backToLang;
-            
-            // Placeholders
             $('loginUsername').placeholder = t.usernamePlaceholder;
             $('loginPassword').placeholder = t.passwordPlaceholder;
             $('registerUsername').placeholder = t.chooseUsername;
             $('registerPassword').placeholder = t.createPassword;
-            
-            // Onboarding
-            $('onboardingText').innerHTML = t.onboardingText;
+            $('onboardingText').textContent = t.onboardingText;
             $('obNameLabel').textContent = t.fullName;
             $('obBirthLabel').textContent = t.birthDate;
             $('obCityLabel').textContent = t.city;
@@ -1047,36 +959,29 @@
             $('onboardName').placeholder = t.yourName;
             $('onboardCity').placeholder = t.yourCity;
             $('onboardCountry').placeholder = t.yourCountry;
-            
-            // Nav
             $('phoneLabel').textContent = t.phone;
             $('chatLabel').textContent = t.chat;
-            
-            // Profile
-            $('nameLabel').textContent = t.name;
-            $('birthLabel').textContent = t.birth;
-            $('cityLabel').textContent = t.city;
-            $('countryLabel').textContent = t.country;
-            $('usernameLabel').textContent = t.username;
-            $('editNameButton').textContent = t.edit;
-            $('editBirthButton').textContent = t.edit;
-            $('changePhotoLabel').textContent = t.change;
-            
-            // Chat
-            $('welcomeMsg').textContent = t.welcome;
-            $('sendButton').textContent = t.send;
-            $('messageInput').placeholder = t.typePlaceholder;
-            
-            // Settings
-            $('appearanceTitle').textContent = t.appearance;
-            $('darkModeLabel').textContent = t.darkMode;
-            $('accentColorLabel').textContent = t.accentColor;
-            $('serversTitle').textContent = t.servers;
-            $('accountTitle').textContent = t.account;
-            $('logoutLabel').textContent = t.logout;
         }
 
-        // Language change
+        function showScreen(screenId) {
+            $('welcomeScreen').style.display = 'none';
+            $('authScreen').style.display = 'none';
+            $('onboardingModal').style.display = 'none';
+            ['homeScreen', 'phoneScreen', 'chatScreen', 'settingsScreen', 'profileScreen'].forEach(id => {
+                $(id).classList.remove('active');
+            });
+            
+            if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
+            else if (screenId === 'auth') $('authScreen').style.display = 'flex';
+            else if (screenId === 'home') $('homeScreen').classList.add('active');
+            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
+            else if (screenId === 'chat') $('chatScreen').classList.add('active');
+            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
+            else if (screenId === 'profile') $('profileScreen').classList.add('active');
+            else if (screenId === 'onboarding') $('onboardingModal').style.display = 'flex';
+        }
+
+        // Language select change
         $('languageSelect').addEventListener('change', function() {
             applyLanguage(this.value);
         });
@@ -1084,8 +989,8 @@
         // Continue button
         $('continueButton').addEventListener('click', function() {
             const lang = $('languageSelect').value;
-            applyLanguage(lang);
             localStorage.setItem('glang', lang);
+            applyLanguage(lang);
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'flex';
         });
@@ -1117,31 +1022,22 @@
             const username = $('loginUsername').value.trim();
             const password = $('loginPassword').value;
             
-            if (!username || !password) {
-                alert('Fill all fields');
-                return;
-            }
+            if (!username || !password) { alert('Fill all fields'); return; }
             
             const users = JSON.parse(localStorage.getItem('gu') || '{}');
             const user = users[username];
             
-            if (!user) {
-                alert('User not found. Register first.');
-                return;
-            }
+            if (!user) { alert('User not found'); return; }
+            if (user.password !== password) { alert('Invalid password'); return; }
             
-            if (user.password !== password) {
-                alert('Invalid password');
-                return;
-            }
+            localStorage.setItem('cu', JSON.stringify({ username, ...user }));
+            $('loginForm').reset();
             
             if (!user.completed) {
                 showScreen('onboarding');
             } else {
                 showScreen('home');
             }
-            
-            $('loginForm').reset();
         });
 
         // Register
@@ -1150,34 +1046,26 @@
             const username = $('registerUsername').value.trim();
             const password = $('registerPassword').value;
             
-            if (!username) {
-                alert('Username required');
-                return;
-            }
+            if (!username) { alert('Username required'); return; }
             
             const users = JSON.parse(localStorage.getItem('gu') || '{}');
-            
-            if (users[username]) {
-                alert('Username exists');
-                return;
-            }
-            
-            if (!password || password.length < 6) {
-                alert('Password min 6 chars');
-                return;
-            }
+            if (users[username]) { alert('Username exists'); return; }
+            if (!password || password.length < 6) { alert('Password min 6 chars'); return; }
             
             users[username] = { password, completed: false };
             localStorage.setItem('gu', JSON.stringify(users));
-            
             $('registerForm').reset();
-            document.querySelector('[data-tab="login"]').click();
+            
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="login"]').classList.add('active');
+            $('loginForm').style.display = 'flex';
+            $('registerForm').style.display = 'none';
             $('loginUsername').value = username;
             
             alert('Account created! Please login.');
         });
 
-        // Onboarding
+        // Onboarding photo
         $('photoLabel').addEventListener('click', () => $('photoInput').click());
         $('photoPreview').addEventListener('click', () => $('photoInput').click());
         
@@ -1186,15 +1074,17 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
-                    $('photoPreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+                    $('photoPreview').innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
                     localStorage.setItem('tempPhoto', ev.target.result);
                 };
                 reader.readAsDataURL(file);
             }
         });
-        
+
+        // Complete onboarding
         $('onboardingForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const name = $('onboardName').value.trim();
             const birthDate = $('onboardBirthDate').value;
             const city = $('onboardCity').value.trim();
@@ -1204,13 +1094,31 @@
             if (!birthDate) { alert('Birth date required'); return; }
             if (!city) { alert('City required'); return; }
             
-            const username = JSON.parse(localStorage.getItem('cu') || '{}').username || $('loginUsername').value;
+            const currentUser = JSON.parse(localStorage.getItem('cu') || '{}');
+            const username = currentUser.username;
+            
+            if (!username) {
+                alert('Error: No user found. Please login again.');
+                showScreen('auth');
+                return;
+            }
+            
             const users = JSON.parse(localStorage.getItem('gu') || '{}');
             const photo = localStorage.getItem('tempPhoto');
             
-            users[username] = { ...users[username], name, birthDate, city, country, photo, completed: true };
+            const updatedUser = {
+                ...users[username],
+                name,
+                birthDate,
+                city,
+                country,
+                photo,
+                completed: true
+            };
+            
+            users[username] = updatedUser;
             localStorage.setItem('gu', JSON.stringify(users));
-            localStorage.setItem('cu', JSON.stringify({ username, name, birthDate, city, country, photo, completed: true }));
+            localStorage.setItem('cu', JSON.stringify({ username, ...updatedUser }));
             localStorage.removeItem('tempPhoto');
             
             $('onboardingModal').style.display = 'none';
@@ -1219,22 +1127,6 @@
         });
 
         // Navigation
-        function showScreen(screenId) {
-            document.querySelectorAll('.welcome-screen, .auth-screen, .home-screen, .phone-screen, .chat-screen, .settings-screen, .profile-screen, .onboarding-modal').forEach(el => {
-                el.style.display = 'none';
-                el.classList.remove('active');
-            });
-            
-            if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
-            else if (screenId === 'auth') $('authScreen').style.display = 'flex';
-            else if (screenId === 'home') $('homeScreen').classList.add('active');
-            else if (screenId === 'phone') $('phoneScreen').classList.add('active');
-            else if (screenId === 'chat') $('chatScreen').classList.add('active');
-            else if (screenId === 'settings') $('settingsScreen').classList.add('active');
-            else if (screenId === 'profile') $('profileScreen').classList.add('active');
-            else if (screenId === 'onboarding') $('onboardingModal').style.display = 'flex';
-        }
-
         $('phoneOption').addEventListener('click', () => showScreen('phone'));
         $('chatOption').addEventListener('click', () => showScreen('chat'));
         $('phoneBackButton').addEventListener('click', () => showScreen('home'));
@@ -1274,8 +1166,7 @@
 
         // Dialer
         let phoneNumber = '';
-        const nums = ['1','2','3','4','5','6','7','8','9','*','0','#'];
-        nums.forEach(n => {
+        ['1','2','3','4','5','6','7','8','9','*','0','#'].forEach(n => {
             const btn = document.createElement('button');
             btn.className = 'dialer-button';
             btn.textContent = n;
@@ -1286,40 +1177,30 @@
             $('dialerPad').appendChild(btn);
         });
 
-        $('clearButton').addEventListener('click', () => {
-            phoneNumber = '';
-            $('dialerDisplay').textContent = '';
-        });
-
-        $('callButton').addEventListener('click', () => {
-            if (phoneNumber) alert('Calling ' + phoneNumber + '...');
-        });
+        $('clearButton').addEventListener('click', () => { phoneNumber = ''; $('dialerDisplay').textContent = ''; });
+        $('callButton').addEventListener('click', () => { if (phoneNumber) alert('Calling ' + phoneNumber + '...'); });
 
         // Chat
-        $('sendButton').addEventListener('click', sendMessage);
-        $('messageInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
         function sendMessage() {
             const content = $('messageInput').value.trim();
             if (!content) return;
             const div = document.createElement('div');
             div.className = 'message message-sent';
-            div.innerHTML = `<div class="message-content">${content}</div><div class="message-meta">You</div>`;
+            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">You</div>';
             $('chatContainer').appendChild(div);
             $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
             $('messageInput').value = '';
         }
 
+        $('sendButton').addEventListener('click', sendMessage);
+        $('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+
         // Load saved language
-        const savedLang = localStorage.getItem('glang');
-        if (savedLang) {
-            $('languageSelect').value = savedLang;
-            applyLanguage(savedLang);
+        if (currentLang) {
+            $('languageSelect').value = currentLang;
+            applyLanguage(currentLang);
         }
 
         // Check for existing user
@@ -1340,7 +1221,7 @@
             document.documentElement.setAttribute('data-accent', savedAccent);
         }
 
-        console.log('App initialized with translations');
+        console.log('App initialized');
     </script>
 </body>
 </html>
