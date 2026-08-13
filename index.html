@@ -3,613 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glith - Chat Simples</title>
+    <title>Glith - Diagnóstico</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js">
+    </script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: monospace;
             background: #0a0a0a;
             color: #e0e0e0;
-            height: 100vh;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
-
-        .app {
+        .container {
+            max-width: 600px;
             width: 100%;
-            max-width: 480px;
-            height: 100vh;
-            max-height: 800px;
             background: #1a1a1a;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        .log-area {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 13px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .log-entry.success {
+            color: #4ade80;
+        }
+        .log-entry.error {
+            color: #f87171;
+        }
+        .log-entry.info {
+            color: #60a5fa;
+        }
+        .log-entry.warning {
+            color: #fbbf24;
+        }
+        .input-group {
             display: flex;
-            flex-direction: column;
-            position: relative;
+            gap: 10px;
+            margin-bottom: 10px;
         }
-
-        .screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            padding: 20px;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        .login-container {
+        input {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 16px;
-            padding: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-size: 14px;
         }
-
-        .logo {
-            text-align: center;
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
         }
-
-        .logo .icon {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 4px;
+        button:hover {
+            transform: scale(1.05);
         }
-
-        .logo h1 {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        button.danger {
+            background: #f87171;
         }
-
-        .subtitle {
-            text-align: center;
-            color: #888;
-            font-size: 13px;
+        button.success {
+            background: #4ade80;
+            color: #000;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group label {
-            font-size: 13px;
-            color: #aaa;
-            font-weight: 500;
-        }
-
-        .id-display {
-            background: #2a2a2a;
-            padding: 12px 16px;
-            border-radius: 10px;
+        .id-box {
+            background: #0a0a0a;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 10px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #333;
         }
-
-        .id-display span {
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
+        .id-box span {
             color: #667eea;
+            font-size: 14px;
             word-break: break-all;
         }
-
-        input[type="text"] {
-            background: #2a2a2a;
-            border: 1px solid #333;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: #e0e0e0;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-            background: #303030;
-        }
-
-        .btn-primary,
-        .btn-secondary {
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #667eea;
-            border: 1px solid #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .btn-icon {
-            background: transparent;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-
-        .btn-icon:hover {
-            background: #333;
-            color: #e0e0e0;
-        }
-
-        .status {
-            text-align: center;
-            font-size: 13px;
-            padding: 6px;
+        .status-box {
+            padding: 10px;
             border-radius: 8px;
-            min-height: 30px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: 600;
         }
-
-        .status.connected {
-            color: #4ade80;
+        .status-box.online {
             background: rgba(74, 222, 128, 0.1);
-        }
-
-        .status.error {
-            color: #f87171;
-            background: rgba(248, 113, 113, 0.1);
-        }
-
-        .status.info {
-            color: #60a5fa;
-            background: rgba(96, 165, 250, 0.1);
-        }
-
-        .chat-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid #2a2a2a;
-            margin-bottom: 12px;
-        }
-
-        .btn-back {
-            background: transparent;
-            border: none;
-            color: #888;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 4px 8px;
-            transition: color 0.3s;
-        }
-
-        .btn-back:hover {
-            color: #e0e0e0;
-        }
-
-        .chat-info {
-            flex: 1;
-        }
-
-        .chat-name {
-            font-weight: 600;
-            font-size: 16px;
-            display: block;
-        }
-
-        .status-dot {
-            font-size: 12px;
             color: #4ade80;
         }
-
-        .status-dot.offline {
+        .status-box.offline {
+            background: rgba(248, 113, 113, 0.1);
             color: #f87171;
         }
-
-        .messages-container {
+        .status-box.connecting {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-group button {
             flex: 1;
+            min-width: 100px;
+        }
+        .chat-box {
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+        .messages {
+            max-height: 200px;
             overflow-y: auto;
-            padding: 8px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            margin-bottom: 10px;
         }
-
-        .messages-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .messages-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .messages-container::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 2px;
-        }
-
-        .message {
-            max-width: 80%;
+        .msg {
             padding: 8px 12px;
-            border-radius: 14px;
-            animation: slideIn 0.2s ease;
-            word-wrap: break-word;
-            position: relative;
-        }
-
-        .message .sender-name {
-            font-size: 11px;
-            font-weight: 600;
-            opacity: 0.8;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .message.sent {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message.received {
-            background: #2a2a2a;
-            color: #e0e0e0;
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message .time {
-            font-size: 9px;
-            opacity: 0.6;
-            margin-top: 2px;
-            display: block;
-            text-align: right;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .input-area {
-            display: flex;
-            gap: 8px;
-            padding: 12px 0;
-            border-top: 1px solid #2a2a2a;
-        }
-
-        .input-area input {
-            flex: 1;
-            padding: 10px 16px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            background: #2a2a2a;
-            color: #e0e0e0;
-            font-size: 14px;
-        }
-
-        .input-area input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-send {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .btn-send:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-send:active {
-            transform: scale(0.95);
-        }
-
-        @media (max-width: 480px) {
-            .app {
-                max-height: 100vh;
-                border-radius: 0;
-            }
-        }
-
-        .name-input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .name-input-group input {
-            flex: 1;
-        }
-
-        .name-input-group button {
-            padding: 0 16px;
-            white-space: nowrap;
-        }
-
-        .my-name-display {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .status-bar {
-            background: #2a2a2a;
-            padding: 8px 12px;
+            margin: 4px 0;
             border-radius: 8px;
-            font-size: 12px;
-            color: #888;
+            max-width: 80%;
+        }
+        .msg.sent {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+        .msg.received {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        .msg.system {
             text-align: center;
-            min-height: 36px;
+            color: #666;
+            font-style: italic;
+            font-size: 12px;
+            max-width: 100%;
+        }
+        .chat-input {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
-
-        .status-bar .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #f87171;
+        .chat-input input {
+            flex: 1;
         }
-
-        .status-bar .dot.online {
-            background: #4ade80;
-        }
-
-        .status-bar .dot.connecting {
-            background: #fbbf24;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="app" id="app">
-        <!-- Tela de Login -->
-        <div id="loginScreen" class="screen active">
-            <div class="login-container">
-                <div class="logo">
-                    <span class="icon">💬</span>
-                    <h1>Glith</h1>
-                </div>
-                <p class="subtitle">Chat P2P simples e rápido</p>
+    <div class="container">
+        <h1>🔍 Glith - Diagnóstico</h1>
 
-                <div class="form-group">
-                    <label>Seu Nome</label>
-                    <div class="name-input-group">
-                        <input type="text" id="myNameInput" placeholder="Digite seu nome" maxlength="20">
-                        <button onclick="setMyName()" class="btn-primary" style="padding: 12px 16px;">Definir</button>
-                    </div>
-                    <div id="myNameDisplay" class="my-name-display"></div>
-                </div>
+        <!-- Status -->
+        <div id="statusBox" class="status-box offline">⛔ Desconectado</div>
 
-                <div class="form-group">
-                    <label>Seu ID (copie e envie para seu amigo)</label>
-                    <div class="id-display">
-                        <span id="myId">Carregando...</span>
-                        <button onclick="copyId()" class="btn-icon" title="Copiar ID">📋</button>
-                    </div>
-                </div>
+        <!-- ID -->
+        <div class="id-box">
+            <span id="myIdDisplay">⏳ Carregando ID...</span>
+            <button onclick="copyId()">📋 Copiar</button>
+        </div>
 
-                <div class="form-group">
-                    <label>ID do amigo</label>
-                    <input type="text" id="friendId" placeholder="Cole o ID do seu amigo">
-                </div>
+        <!-- Inputs -->
+        <div class="input-group">
+            <input type="text" id="friendIdInput" placeholder="ID do amigo">
+            <button onclick="connectToFriend()" id="connectBtn">🔗 Conectar</button>
+        </div>
 
-                <button onclick="connectToFriend()" class="btn-primary" id="connectBtn">🔗 Conectar</button>
-                <button onclick="createNewId()" class="btn-secondary">🔄 Novo ID</button>
+        <div class="input-group">
+            <input type="text" id="nameInput" placeholder="Seu nome" maxlength="20">
+            <button onclick="setName()">📝 Definir Nome</button>
+        </div>
 
-                <div id="connectionStatus" class="status"></div>
+        <!-- Botões de teste -->
+        <div class="btn-group">
+            <button onclick="testPeer()" class="success">🧪 Testar Peer</button>
+            <button onclick="testConnection()">🔍 Testar Conexão</button>
+            <button onclick="recreatePeer()" class="danger">🔄 Recriar Peer</button>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-box" id="chatBox">
+            <div class="messages" id="messagesContainer">
+                <div class="msg system">💬 Aguardando conexão...</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Digite sua mensagem..." disabled>
+                <button onclick="sendMessage()" id="sendBtn" disabled>➤</button>
             </div>
         </div>
 
-        <!-- Tela do Chat -->
-        <div id="chatScreen" class="screen">
-            <div class="chat-header">
-                <button onclick="disconnect()" class="btn-back">←</button>
-                <div class="chat-info">
-                    <span class="chat-name" id="friendNameDisplay">Amigo</span>
-                    <span id="friendStatus" class="status-dot online">● Online</span>
-                </div>
-                <button onclick="clearChat()" class="btn-icon">🗑️</button>
+        <!-- Log -->
+        <div style="margin-top: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <strong>📋 Log de Diagnóstico</strong>
+                <button onclick="clearLog()" style="padding: 4px 12px; font-size: 12px;">Limpar</button>
             </div>
-
-            <div id="messagesContainer" class="messages-container">
-                <div style="text-align: center; color: #666; padding: 20px; font-size: 14px;">
-                    💬 Conecte-se para começar
-                </div>
-            </div>
-
-            <div class="input-area">
-                <input type="text" id="messageInput" placeholder="Digite sua mensagem..." disabled>
-                <button onclick="sendMessage()" class="btn-send" id="sendButton" disabled>➤</button>
+            <div class="log-area" id="logArea">
+                <div class="log-entry info">🚀 Iniciando diagnóstico...</div>
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js">
-    </script>
     <script>
-        // ==================== CONFIGURAÇÃO ====================
-        console.log('🚀 Glith iniciando...');
-
+        // ==================== VARIÁVEIS GLOBAIS ====================
         let peer = null;
         let conn = null;
         let myId = '';
         let myName = 'Você';
-        let friendName = 'Amigo';
         let isConnected = false;
         let isConnecting = false;
 
-        // Elementos
-        const loginScreen = document.getElementById('loginScreen');
-        const chatScreen = document.getElementById('chatScreen');
-        const myIdDisplay = document.getElementById('myId');
-        const myNameInput = document.getElementById('myNameInput');
-        const myNameDisplay = document.getElementById('myNameDisplay');
-        const friendIdInput = document.getElementById('friendId');
-        const messagesContainer = document.getElementById('messagesContainer');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const connectionStatus = document.getElementById('connectionStatus');
-        const friendStatus = document.getElementById('friendStatus');
-        const friendNameDisplay = document.getElementById('friendNameDisplay');
+        // ==================== LOG ====================
+        function log(msg, type = 'info') {
+            const area = document.getElementById('logArea');
+            const div = document.createElement('div');
+            div.className = 'log-entry ' + type;
+            const time = new Date().toLocaleTimeString();
+            div.textContent = `[${time}] ${msg}`;
+            area.appendChild(div);
+            area.scrollTop = area.scrollHeight;
+
+            // Também mostra no console
+            console.log(`[${time}]`, msg);
+
+            // Mostra alerta se for erro
+            if (type === 'error') {
+                // Não usar alert para não travar
+            }
+        }
+
+        function clearLog() {
+            document.getElementById('logArea').innerHTML = '';
+            log('📋 Log limpo');
+        }
+
+        // ==================== STATUS ====================
+        function setStatus(text, type) {
+            const box = document.getElementById('statusBox');
+            box.textContent = text;
+            box.className = 'status-box ' + type;
+        }
 
         // ==================== INICIALIZAR PEER ====================
         function initPeer() {
-            console.log('📡 Inicializando Peer...');
+            log('📡 Inicializando PeerJS...');
 
             try {
+                // Verifica se PeerJS carregou
+                if (typeof Peer === 'undefined') {
+                    log('❌ PeerJS NÃO CARREGOU! Verifique sua internet.', 'error');
+                    setStatus('❌ Erro: PeerJS não carregou', 'offline');
+                    return;
+                }
+
+                log('✅ PeerJS está disponível', 'success');
+
+                // Destroi peer antigo se existir
+                if (peer) {
+                    peer.destroy();
+                    peer = null;
+                }
+
                 peer = new Peer(undefined, {
-                    debug: 0,
+                    debug: 2,
                     config: {
                         'iceServers': [
                             { urls: 'stun:stun.l.google.com:19302' },
-                            { urls: 'stun:stun1.l.google.com:19302' }
+                            { urls: 'stun:stun1.l.google.com:19302' },
+                            { urls: 'stun:stun2.l.google.com:19302' }
                         ]
                     }
                 });
 
+                log('✅ Peer criado, aguardando ID...', 'success');
+
                 peer.on('open', function(id) {
                     myId = id;
-                    myIdDisplay.textContent = id;
-                    console.log('✅ ID gerado:', id);
-                    showStatus('✅ Seu ID: ' + id, 'connected');
+                    document.getElementById('myIdDisplay').textContent = id;
+                    log('✅ ID gerado: ' + id, 'success');
+                    setStatus('✅ ID: ' + id, 'online');
                     loadName();
                 });
 
                 peer.on('connection', function(incomingConn) {
-                    console.log('📞 Conexão recebida de:', incomingConn.peer);
+                    log('📞 Conexão RECEBIDA de: ' + incomingConn.peer, 'info');
                     handleConnection(incomingConn);
                 });
 
                 peer.on('error', function(err) {
-                    console.error('❌ Erro:', err);
-                    showStatus('❌ Erro: ' + err.message, 'error');
+                    log('❌ Erro no Peer: ' + err.message, 'error');
+                    setStatus('❌ Erro: ' + err.message, 'offline');
+
+                    // Se for erro de ID, tenta recriar
+                    if (err.message.includes('ID')) {
+                        log('🔄 Tentando recriar Peer...', 'warning');
+                        setTimeout(() => {
+                            recreatePeer();
+                        }, 2000);
+                    }
                 });
 
-                console.log('✅ Peer inicializado');
+                peer.on('disconnected', function() {
+                    log('⚠️ Peer desconectado do servidor', 'warning');
+                    setStatus('⚠️ Desconectado do servidor', 'offline');
+                });
+
+                log('✅ Peer inicializado com sucesso!', 'success');
+
             } catch (e) {
-                console.error('❌ Erro ao criar Peer:', e);
-                showStatus('❌ Erro ao iniciar: ' + e.message, 'error');
+                log('❌ Erro ao criar Peer: ' + e.message, 'error');
+                setStatus('❌ Erro: ' + e.message, 'offline');
             }
         }
 
         // ==================== CONEXÃO ====================
         function connectToFriend() {
-            const friendId = friendIdInput.value.trim();
+            const friendId = document.getElementById('friendIdInput').value.trim();
+
+            log('🔗 Tentando conectar a: ' + friendId);
 
             if (!friendId) {
-                showStatus('❌ Digite o ID do amigo!', 'error');
+                log('❌ ID do amigo vazio!', 'error');
+                setStatus('❌ Digite um ID', 'offline');
                 return;
             }
 
             if (friendId === myId) {
-                showStatus('❌ Não pode se conectar com você mesmo!', 'error');
+                log('❌ Não pode conectar com você mesmo!', 'error');
+                setStatus('❌ É você mesmo!', 'offline');
                 return;
             }
 
             if (isConnected) {
-                showStatus('⚠️ Já está conectado!', 'info');
+                log('⚠️ Já está conectado!', 'warning');
                 return;
             }
 
             if (isConnecting) {
-                showStatus('⏳ Já está conectando...', 'info');
+                log('⏳ Já está conectando...', 'warning');
                 return;
             }
 
-            console.log('🔗 Conectando a:', friendId);
+            if (!peer) {
+                log('❌ Peer não inicializado!', 'error');
+                setStatus('❌ Peer não iniciado', 'offline');
+                return;
+            }
+
             isConnecting = true;
-            showStatus('⏳ Conectando a ' + friendId + '...', 'info');
+            setStatus('⏳ Conectando...', 'connecting');
+            log('⏳ Conectando a ' + friendId + '...', 'info');
 
             try {
                 const newConn = peer.connect(friendId, {
                     reliable: true
                 });
 
+                log('📤 Tentativa de conexão enviada', 'info');
+
+                // Timeout de conexão
+                const timeout = setTimeout(() => {
+                    if (!isConnected && isConnecting) {
+                        log('⏰ Timeout de conexão!', 'error');
+                        setStatus('⏰ Timeout', 'offline');
+                        isConnecting = false;
+                        if (newConn) {
+                            newConn.close();
+                        }
+                    }
+                }, 15000);
+
                 newConn.on('open', function() {
-                    console.log('✅ Conectado a:', friendId);
+                    clearTimeout(timeout);
+                    log('✅ CONECTADO a ' + friendId + '!', 'success');
                     isConnecting = false;
                     isConnected = true;
-                    handleConnection(newConn);
-                    switchToChat();
-                    showStatus('✅ Conectado!', 'connected');
+                    conn = newConn;
+                    setStatus('✅ Conectado', 'online');
+                    enableChat(true);
+                    document.getElementById('messagesContainer').innerHTML = '';
+                    addSystemMessage('✅ Conectado ao amigo!');
+                    showStatus('✅ Conectado!');
                 });
 
                 newConn.on('error', function(err) {
-                    console.error('❌ Erro na conexão:', err);
+                    clearTimeout(timeout);
+                    log('❌ Erro na conexão: ' + err.message, 'error');
                     isConnecting = false;
-                    showStatus('❌ Erro ao conectar: ' + err.message, 'error');
+                    setStatus('❌ Erro: ' + err.message, 'offline');
+                });
+
+                newConn.on('close', function() {
+                    log('🔌 Conexão fechada', 'warning');
+                    isConnected = false;
+                    isConnecting = false;
+                    setStatus('🔌 Desconectado', 'offline');
+                    enableChat(false);
+                    addSystemMessage('🔌 Conexão perdida');
                 });
 
                 conn = newConn;
+
             } catch (e) {
-                console.error('❌ Erro:', e);
+                log('❌ Erro ao conectar: ' + e.message, 'error');
                 isConnecting = false;
-                showStatus('❌ Erro: ' + e.message, 'error');
+                setStatus('❌ Erro: ' + e.message, 'offline');
             }
         }
 
@@ -617,75 +447,62 @@
             conn = incomingConn;
 
             conn.on('open', function() {
-                console.log('✅ Conexão estabelecida com:', conn.peer);
+                log('✅ Conexão estabelecida com: ' + conn.peer, 'success');
                 isConnected = true;
+                setStatus('✅ Conectado', 'online');
+                enableChat(true);
+                document.getElementById('messagesContainer').innerHTML = '';
+                addSystemMessage('✅ Conectado ao amigo!');
 
-                // Envia o nome
                 if (myName) {
                     conn.send({
                         type: 'name',
                         name: myName
                     });
                 }
-
-                switchToChat();
-                showStatus('✅ Conectado!', 'connected');
-                friendStatus.textContent = '● Online';
-                friendStatus.className = 'status-dot online';
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                messageInput.focus();
-
-                addSystemMessage('✅ Conectado ao amigo!');
             });
 
             conn.on('data', function(data) {
-                console.log('📩 Dados recebidos:', data);
+                log('📩 Dados recebidos: ' + JSON.stringify(data).substring(0, 50), 'info');
 
                 if (data.type === 'message') {
                     addMessage(data.text, 'received', data.time, data.sender);
                 } else if (data.type === 'name') {
-                    friendName = data.name || 'Amigo';
-                    friendNameDisplay.textContent = friendName;
-                    addSystemMessage('👤 ' + friendName + ' entrou no chat');
+                    log('👤 Amigo se chama: ' + data.name, 'success');
+                    addSystemMessage('👤 ' + data.name + ' entrou no chat');
                 }
             });
 
             conn.on('close', function() {
-                console.log('🔌 Conexão fechada');
+                log('🔌 Conexão fechada', 'warning');
                 isConnected = false;
-                friendStatus.textContent = '● Offline';
-                friendStatus.className = 'status-dot offline';
-                messageInput.disabled = true;
-                sendButton.disabled = true;
-                showStatus('🔌 Desconectado', 'error');
+                setStatus('🔌 Desconectado', 'offline');
+                enableChat(false);
                 addSystemMessage('🔌 Conexão perdida');
             });
 
             conn.on('error', function(err) {
-                console.error('❌ Erro:', err);
-                showStatus('❌ Erro: ' + err.message, 'error');
+                log('❌ Erro: ' + err.message, 'error');
             });
         }
 
         // ==================== ENVIAR MENSAGEM ====================
         function sendMessage() {
-            console.log('📤 Tentando enviar mensagem...');
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
 
-            const text = messageInput.value.trim();
+            log('📤 Tentando enviar: "' + text + '"');
 
             if (!text) {
-                console.log('⚠️ Mensagem vazia');
+                log('⚠️ Mensagem vazia', 'warning');
                 return;
             }
 
             if (!conn || !isConnected) {
-                console.log('⚠️ Não conectado');
-                showStatus('❌ Não está conectado!', 'error');
+                log('❌ Não conectado!', 'error');
+                setStatus('❌ Não conectado', 'offline');
                 return;
             }
-
-            console.log('📤 Enviando:', text);
 
             const data = {
                 type: 'message',
@@ -696,108 +513,156 @@
 
             try {
                 conn.send(data);
+                log('✅ Mensagem enviada!', 'success');
                 addMessage(text, 'sent', data.time, myName);
-                messageInput.value = '';
-                messageInput.focus();
-                console.log('✅ Mensagem enviada!');
+                input.value = '';
+                input.focus();
             } catch (e) {
-                console.error('❌ Erro ao enviar:', e);
-                showStatus('❌ Erro ao enviar: ' + e.message, 'error');
+                log('❌ Erro ao enviar: ' + e.message, 'error');
+                setStatus('❌ Erro: ' + e.message, 'offline');
             }
         }
 
-        // ==================== ADICIONAR MENSAGEM ====================
+        // ==================== UI ====================
         function addMessage(text, type, time, sender) {
+            const container = document.getElementById('messagesContainer');
             const div = document.createElement('div');
-            div.className = 'message ' + type;
+            div.className = 'msg ' + type;
 
             if (type === 'received' && sender) {
-                div.innerHTML = `
-                    <span class="sender-name">${sender}</span>
-                    ${text}
-                    <span class="time">${time}</span>
-                `;
+                div.innerHTML = `<strong>${sender}:</strong> ${text}`;
             } else if (type === 'sent') {
-                div.innerHTML = `
-                    <span class="sender-name">Você</span>
-                    ${text}
-                    <span class="time">${time}</span>
-                `;
+                div.innerHTML = `<strong>Você:</strong> ${text}`;
             } else {
                 div.textContent = text;
             }
 
-            messagesContainer.appendChild(div);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
         }
 
         function addSystemMessage(text) {
+            const container = document.getElementById('messagesContainer');
             const div = document.createElement('div');
-            div.style.cssText = `
-                text-align: center;
-                color: #666;
-                font-size: 12px;
-                padding: 6px;
-                font-style: italic;
-            `;
+            div.className = 'msg system';
             div.textContent = text;
-            messagesContainer.appendChild(div);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
         }
 
-        // ==================== UI ====================
-        function switchToChat() {
-            loginScreen.classList.remove('active');
-            chatScreen.classList.add('active');
+        function enableChat(enabled) {
+            document.getElementById('messageInput').disabled = !enabled;
+            document.getElementById('sendBtn').disabled = !enabled;
+            if (enabled) {
+                document.getElementById('messageInput').focus();
+            }
+        }
+
+        function showStatus(msg) {
+            // Mostra no status por 3 segundos
+            const original = document.getElementById('statusBox').textContent;
             setTimeout(() => {
-                messageInput.focus();
-            }, 300);
+                // Não faz nada, o status já é atualizado pelo setStatus
+            }, 3000);
         }
 
-        function disconnect() {
+        // ==================== TESTES ====================
+        function testPeer() {
+            log('🧪 Testando Peer...');
+
+            if (!peer) {
+                log('❌ Peer é null', 'error');
+                setStatus('❌ Peer não existe', 'offline');
+                return;
+            }
+
+            log('✅ Peer existe', 'success');
+            log('📋 Peer ID: ' + (peer.id || 'não gerado'), 'info');
+            log('📋 Conexões ativas: ' + (peer.connections ? Object.keys(peer.connections).length : 0), 'info');
+
+            if (myId) {
+                log('✅ Meu ID: ' + myId, 'success');
+                setStatus('✅ ID: ' + myId, 'online');
+            } else {
+                log('⚠️ ID ainda não gerado', 'warning');
+                setStatus('⏳ Aguardando ID...', 'connecting');
+            }
+
+            if (conn) {
+                log('✅ Conexão ativa com: ' + (conn.peer || 'desconhecido'), 'success');
+            } else {
+                log('⚠️ Nenhuma conexão ativa', 'warning');
+            }
+
+            log('✅ Teste concluído', 'success');
+        }
+
+        function testConnection() {
+            log('🧪 Testando conexão...');
+
+            if (isConnected && conn) {
+                log('✅ CONECTADO!', 'success');
+                setStatus('✅ Conectado', 'online');
+                // Tenta enviar um ping
+                try {
+                    conn.send({
+                        type: 'ping',
+                        time: new Date().toISOString()
+                    });
+                    log('📤 Ping enviado!', 'success');
+                } catch (e) {
+                    log('❌ Erro ao enviar ping: ' + e.message, 'error');
+                }
+            } else {
+                log('❌ NÃO CONECTADO', 'error');
+                setStatus('❌ Desconectado', 'offline');
+                log('🔍 isConnected: ' + isConnected, 'info');
+                log('🔍 conn: ' + (conn ? 'existe' : 'null'), 'info');
+            }
+        }
+
+        function recreatePeer() {
+            log('🔄 Recriando Peer...', 'warning');
+
             if (conn) {
                 conn.close();
                 conn = null;
             }
+
+            if (peer) {
+                peer.destroy();
+                peer = null;
+            }
+
             isConnected = false;
             isConnecting = false;
-            loginScreen.classList.add('active');
-            chatScreen.classList.remove('active');
-            messagesContainer.innerHTML = '';
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            friendName = 'Amigo';
-            friendNameDisplay.textContent = 'Amigo';
-            showStatus('🔌 Desconectado', '');
+            myId = '';
+            document.getElementById('myIdDisplay').textContent = '⏳ Carregando...';
+            setStatus('🔄 Recriando...', 'connecting');
+            enableChat(false);
+
+            setTimeout(() => {
+                initPeer();
+            }, 500);
         }
 
-        function clearChat() {
-            if (confirm('Limpar todas as mensagens?')) {
-                messagesContainer.innerHTML = '';
-            }
-        }
-
-        function setMyName() {
-            const name = myNameInput.value.trim();
+        // ==================== NOME ====================
+        function setName() {
+            const name = document.getElementById('nameInput').value.trim();
             if (name) {
                 myName = name;
-                myNameDisplay.textContent = '👤 ' + myName;
-                localStorage.setItem('glith_name', myName);
-                showStatus('✅ Nome definido: ' + myName, 'connected');
+                localStorage.setItem('glith_name', name);
+                log('📝 Nome definido: ' + name, 'success');
 
-                // Envia para o amigo se estiver conectado
                 if (conn && isConnected) {
                     conn.send({
                         type: 'name',
-                        name: myName
+                        name: name
                     });
+                    log('📤 Nome enviado para o amigo', 'success');
                 }
-
-                setTimeout(() => {
-                    if (connectionStatus.textContent.includes('Nome definido')) {
-                        showStatus('', '');
-                    }
-                }, 2000);
+            } else {
+                log('⚠️ Digite um nome!', 'warning');
             }
         }
 
@@ -805,98 +670,73 @@
             const saved = localStorage.getItem('glith_name');
             if (saved) {
                 myName = saved;
-                myNameInput.value = saved;
-                myNameDisplay.textContent = '👤 ' + myName;
+                document.getElementById('nameInput').value = saved;
+                log('📝 Nome carregado: ' + saved, 'success');
             }
         }
 
+        // ==================== COPIAR ID ====================
         function copyId() {
             if (!myId) {
-                showStatus('⏳ Aguarde o ID ser gerado...', 'info');
+                log('⏳ Aguarde o ID ser gerado...', 'warning');
                 return;
             }
 
             navigator.clipboard.writeText(myId).then(() => {
-                showStatus('✅ ID copiado!', 'connected');
-                setTimeout(() => showStatus('', ''), 2000);
+                log('📋 ID copiado!', 'success');
             }).catch(() => {
-                // Fallback
                 const ta = document.createElement('textarea');
                 ta.value = myId;
                 document.body.appendChild(ta);
                 ta.select();
                 document.execCommand('copy');
                 document.body.removeChild(ta);
-                showStatus('✅ ID copiado!', 'connected');
-                setTimeout(() => showStatus('', ''), 2000);
+                log('📋 ID copiado (fallback)!', 'success');
             });
         }
 
-        function createNewId() {
-            if (conn) {
-                conn.close();
-                conn = null;
-            }
-            if (peer) {
-                peer.destroy();
-                peer = null;
-            }
-            isConnected = false;
-            isConnecting = false;
-            showStatus('🔄 Gerando novo ID...', 'info');
-            setTimeout(() => {
-                location.reload();
-            }, 500);
-        }
-
-        function showStatus(msg, type) {
-            connectionStatus.textContent = msg;
-            connectionStatus.className = 'status ' + (type || '');
-        }
-
         // ==================== EVENTOS ====================
-        // Botão enviar
-        document.getElementById('sendButton').addEventListener('click', function(e) {
-            e.preventDefault();
-            sendMessage();
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Página carregada!');
+            log('📦 Inicializando...');
 
-        // Enter no input
-        document.getElementById('messageInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendMessage();
+            // Iniciar Peer
+            initPeer();
+
+            // Eventos de teclado
+            document.getElementById('messageInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            document.getElementById('friendIdInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    connectToFriend();
+                }
+            });
+
+            document.getElementById('nameInput').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    setName();
+                }
+            });
+
+            // Carregar último ID do amigo
+            const lastFriend = localStorage.getItem('glith_friend_id');
+            if (lastFriend) {
+                document.getElementById('friendIdInput').value = lastFriend;
+                log('📋 ID do amigo carregado: ' + lastFriend, 'info');
             }
+
+            log('✅ Pronto! Use os botões para testar.', 'success');
+            log('💡 Dica: Abra em 2 navegadores diferentes', 'info');
         });
 
-        // Enter no nome
-        document.getElementById('myNameInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                setMyName();
-            }
-        });
-
-        // Carregar último ID do amigo
-        const lastFriend = localStorage.getItem('glith_friend_id');
-        if (lastFriend) {
-            document.getElementById('friendId').value = lastFriend;
-        }
-
-        // Salvar ID do amigo
-        document.getElementById('friendId').addEventListener('change', function() {
-            localStorage.setItem('glith_friend_id', this.value);
-        });
-
-        // ==================== INICIAR ====================
-        // Desabilitar input até conectar
-        messageInput.disabled = true;
-        sendButton.disabled = true;
-
-        // Iniciar Peer
-        initPeer();
-
-        console.log('✅ Glith pronto!');
-        console.log('💡 Defina seu nome e conecte a um amigo');
+        // ==================== INICIALIZAÇÃO ====================
+        console.log('🚀 Glith - Modo Diagnóstico');
+        console.log('📝 Abra o console para ver os logs detalhados');
     </script>
 </body>
 </html>
