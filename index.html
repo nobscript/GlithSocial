@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>glitch - Chat</title>
+    <title>glitch - Servers</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -70,8 +70,7 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* Welcome Screen */
-        .welcome-screen {
+        .welcome-screen, .auth-screen {
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
@@ -81,7 +80,9 @@
             z-index: 300;
         }
 
-        .welcome-container {
+        .auth-screen { display: none; z-index: 100; }
+
+        .welcome-container, .auth-container {
             background: var(--bg-primary);
             border-radius: 30px;
             padding: 50px 40px;
@@ -92,28 +93,20 @@
             text-align: center;
         }
 
-        .welcome-logo {
+        .welcome-logo, .auth-logo {
             font-family: 'Pacifico', cursive;
             font-size: 4rem;
             color: var(--accent);
             margin-bottom: 10px;
         }
 
-        .welcome-tagline {
+        .welcome-tagline, .auth-subtitle {
             font-size: 1rem;
             color: var(--text-secondary);
             margin-bottom: 30px;
         }
 
         .language-selector { margin-bottom: 30px; }
-
-        .language-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-            display: block;
-        }
 
         .language-select {
             width: 100%;
@@ -127,12 +120,9 @@
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
         }
 
-        .continue-button {
+        .continue-button, .auth-button {
             background: var(--accent);
             color: var(--bg-primary);
             border: none;
@@ -146,43 +136,7 @@
             width: 100%;
         }
 
-        .continue-button:hover { background: var(--accent-hover); }
-
-        /* Auth Screen */
-        .auth-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .auth-container {
-            background: var(--bg-primary);
-            border-radius: 30px;
-            padding: 50px 40px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .auth-logo {
-            font-family: 'Pacifico', cursive;
-            font-size: 4rem;
-            color: var(--accent);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .auth-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-        }
+        .continue-button:hover, .auth-button:hover { background: var(--accent-hover); }
 
         .auth-tabs {
             display: flex;
@@ -225,20 +179,6 @@
 
         .form-input:focus { outline: none; border-color: var(--accent); }
 
-        .auth-button {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-            width: 100%;
-        }
-
         .back-to-welcome {
             display: block;
             text-align: center;
@@ -253,7 +193,6 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Home Screen */
         .home-screen {
             display: none;
             height: 100%;
@@ -321,8 +260,6 @@
             border: none;
         }
 
-        .nav-item:hover { color: var(--accent); }
-
         .nav-icon { font-size: 1.4rem; }
         .nav-label { font-size: 0.7rem; font-weight: 600; }
 
@@ -341,7 +278,6 @@
             border: none;
         }
 
-        /* Globe button - left bottom */
         .globe-fab {
             position: fixed;
             bottom: 85px;
@@ -359,10 +295,7 @@
             box-shadow: 0 4px 12px var(--shadow);
             z-index: 40;
             font-size: 1.2rem;
-            transition: all 0.3s;
         }
-
-        .globe-fab:hover { transform: scale(1.1); }
 
         .settings-fab {
             position: fixed;
@@ -383,7 +316,6 @@
             font-size: 1.1rem;
         }
 
-        /* Servers Modal */
         .servers-modal {
             position: fixed;
             inset: 0;
@@ -419,40 +351,52 @@
             cursor: pointer;
             border: 2px solid var(--border);
             transition: all 0.3s;
+            position: relative;
         }
 
-        .server-option-card:hover {
-            border-color: var(--accent);
+        .server-option-card:hover { border-color: var(--accent); }
+        .server-option-card.active { border-color: var(--accent); background: var(--bg-input); }
+        .server-option-card.full { opacity: 0.5; cursor: not-allowed; }
+
+        .server-option-name { font-weight: 700; font-size: 1rem; }
+        .server-option-desc { font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px; }
+        
+        .server-capacity {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
         }
 
-        .server-option-card.active {
-            border-color: var(--accent);
-            background: var(--bg-input);
+        .capacity-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
         }
 
-        .server-option-name {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-primary);
+        .capacity-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s;
         }
 
-        .server-option-desc {
-            font-size: 0.8rem;
+        .capacity-text {
+            font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-top: 5px;
+            font-weight: 600;
         }
 
-        /* Phone, Chat, Settings, Profile screens */
-        .phone-screen, .chat-screen, .settings-screen, .profile-screen {
+        .chat-screen {
             display: none;
             height: 100%;
             flex-direction: column;
             background: var(--bg-primary);
         }
 
-        .phone-screen.active, .chat-screen.active, .settings-screen.active, .profile-screen.active {
-            display: flex;
-        }
+        .chat-screen.active { display: flex; }
 
         .screen-header {
             padding: 15px 25px;
@@ -478,55 +422,6 @@
             background: none;
             border: none;
         }
-
-        .dialer-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-            padding-bottom: 90px;
-        }
-
-        .dialer-display {
-            width: 280px;
-            height: 50px;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .dialer-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-
-        .dialer-button {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            background: var(--bg-primary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .dialer-actions { display: flex; gap: 25px; }
-        .call-button, .clear-button {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        .call-button { background: var(--accent); color: var(--bg-primary); }
-        .clear-button { background: #ff4757; color: white; }
 
         .chat-container {
             flex: 1;
@@ -580,7 +475,16 @@
             font-weight: 600;
         }
 
-        .settings-content {
+        .settings-screen, .profile-screen {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .settings-screen.active, .profile-screen.active { display: flex; }
+
+        .settings-content, .profile-content {
             flex: 1;
             overflow-y: auto;
             padding: 25px;
@@ -644,15 +548,6 @@
         }
         .color-option.active { border-color: var(--accent); }
 
-        .profile-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 30px;
-            max-width: 400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
         .profile-photo {
             width: 100px;
             height: 100px;
@@ -667,7 +562,6 @@
             cursor: pointer;
             font-size: 2.5rem;
         }
-        .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
 
         .profile-info-item {
             display: flex;
@@ -679,16 +573,62 @@
             margin-bottom: 10px;
         }
 
-        .edit-button {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .phone-screen {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            background: var(--bg-primary);
         }
+        .phone-screen.active { display: flex; }
+
+        .dialer-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            padding-bottom: 90px;
+        }
+
+        .dialer-display {
+            width: 280px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .dialer-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+        .dialer-button {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .dialer-actions { display: flex; gap: 25px; }
+        .call-button, .clear-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .call-button { background: var(--accent); color: var(--bg-primary); }
+        .clear-button { background: #ff4757; color: white; }
     </style>
 </head>
 <body>
@@ -698,39 +638,9 @@
             <div class="welcome-logo">glitch</div>
             <div class="welcome-tagline">Your Chat Experience</div>
             <div class="language-selector">
-                <label class="language-label">Choose Language</label>
                 <select class="language-select" id="languageSelect">
                     <option value="pt">🇧🇷 Português</option>
                     <option value="en">🇺🇸 English</option>
-                    <option value="ru">🇷🇺 Русский</option>
-                    <option value="hi">🇮🇳 हिन्दी</option>
-                    <option value="es">🇪🇸 Español</option>
-                    <option value="fr">🇫🇷 Français</option>
-                    <option value="de">🇩🇪 Deutsch</option>
-                    <option value="it">🇮🇹 Italiano</option>
-                    <option value="ja">🇯🇵 日本語</option>
-                    <option value="ko">🇰🇷 한국어</option>
-                    <option value="zh">🇨🇳 中文</option>
-                    <option value="ar">🇸🇦 العربية</option>
-                    <option value="tr">🇹🇷 Türkçe</option>
-                    <option value="nl">🇳🇱 Nederlands</option>
-                    <option value="pl">🇵🇱 Polski</option>
-                    <option value="sv">🇸🇪 Svenska</option>
-                    <option value="no">🇳🇴 Norsk</option>
-                    <option value="da">🇩🇰 Dansk</option>
-                    <option value="fi">🇫🇮 Suomi</option>
-                    <option value="el">🇬🇷 Ελληνικά</option>
-                    <option value="cs">🇨🇿 Čeština</option>
-                    <option value="hu">🇭🇺 Magyar</option>
-                    <option value="ro">🇷🇴 Română</option>
-                    <option value="uk">🇺🇦 Українська</option>
-                    <option value="th">🇹🇭 ไทย</option>
-                    <option value="vi">🇻🇳 Tiếng Việt</option>
-                    <option value="id">🇮🇩 Indonesia</option>
-                    <option value="ms">🇲🇾 Melayu</option>
-                    <option value="fa">🇮🇷 فارسی</option>
-                    <option value="he">🇮🇱 עברית</option>
-                    <option value="sw">🇰🇪 Kiswahili</option>
                 </select>
             </div>
             <button class="continue-button" id="continueButton" type="button">Continue</button>
@@ -768,7 +678,7 @@
                 </div>
                 <button type="submit" class="auth-button">Register</button>
             </form>
-            <button class="back-to-welcome" id="backToWelcome" type="button">← Change Language</button>
+            <button class="back-to-welcome" id="backToWelcome" type="button">← Back</button>
         </div>
     </div>
 
@@ -785,9 +695,7 @@
             <button class="nav-g-logo" id="navGLogo" type="button">g</button>
             <button class="nav-item" id="chatOption" type="button"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
         </div>
-        <!-- Globe button bottom left -->
         <button class="globe-fab" id="globeFab" type="button">🌐</button>
-        <!-- Settings button bottom right -->
         <button class="settings-fab" id="settingsFab" type="button">⚙️</button>
     </div>
 
@@ -796,33 +704,21 @@
         <div class="servers-overlay" id="serversOverlay"></div>
         <div class="servers-content-modal">
             <div style="font-family:'Pacifico',cursive;font-size:1.5rem;color:var(--accent);margin-bottom:20px;text-align:center;">Select Server</div>
-            <div class="server-option-card active" data-server="server1">
+            <div class="server-option-card" data-server="server1" id="server1Card">
                 <div class="server-option-name">🌍 Global Server</div>
-                <div class="server-option-desc">Global server for all users</div>
+                <div class="server-option-desc">Chat global - Máx 6 participantes</div>
+                <div class="server-capacity">
+                    <div class="capacity-bar"><div class="capacity-fill" id="server1Fill" style="width:0%"></div></div>
+                    <span class="capacity-text" id="server1Text">0/6</span>
+                </div>
             </div>
-            <div class="server-option-card" data-server="server2">
+            <div class="server-option-card" data-server="server2" id="server2Card">
                 <div class="server-option-name">🇪🇺 Europe Server</div>
-                <div class="server-option-desc">European server</div>
-            </div>
-            <div class="server-option-card" data-server="server3">
-                <div class="server-option-name">🧪 Demo Server</div>
-                <div class="server-option-desc">Demo server for testing</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Phone Screen -->
-    <div class="phone-screen" id="phoneScreen">
-        <div class="screen-header">
-            <button class="back-button" id="phoneBackButton" type="button">←</button>
-            <button class="header-logo" id="phoneLogoSettings" type="button">glitch</button>
-        </div>
-        <div class="dialer-container">
-            <div class="dialer-display" id="dialerDisplay"></div>
-            <div class="dialer-pad" id="dialerPad"></div>
-            <div class="dialer-actions">
-                <button class="call-button" id="callButton" type="button">📞</button>
-                <button class="clear-button" id="clearButton" type="button">✕</button>
+                <div class="server-option-desc">Chat europeu - Máx 6 participantes</div>
+                <div class="server-capacity">
+                    <div class="capacity-bar"><div class="capacity-fill" id="server2Fill" style="width:0%"></div></div>
+                    <span class="capacity-text" id="server2Text">0/6</span>
+                </div>
             </div>
         </div>
     </div>
@@ -832,13 +728,30 @@
         <div class="screen-header">
             <button class="back-button" id="chatBackButton" type="button">←</button>
             <button class="header-logo" id="chatLogoSettings" type="button">glitch</button>
+            <span id="currentServerName" style="font-size:0.8rem;color:var(--text-secondary);"></span>
         </div>
         <div class="chat-container" id="chatContainer">
-            <div class="message message-received"><div class="message-content">Welcome!</div><div class="message-meta">system</div></div>
+            <div class="message message-received"><div class="message-content">Welcome to the server!</div><div class="message-meta">system</div></div>
         </div>
         <div class="input-container">
             <textarea class="message-input" id="messageInput" placeholder="Type..."></textarea>
             <button class="send-button" id="sendButton" type="button">Send</button>
+        </div>
+    </div>
+
+    <!-- Phone Screen -->
+    <div class="phone-screen" id="phoneScreen">
+        <div class="screen-header">
+            <button class="back-button" id="phoneBackButton" type="button">←</button>
+            <button class="header-logo" type="button">glitch</button>
+        </div>
+        <div class="dialer-container">
+            <div class="dialer-display" id="dialerDisplay"></div>
+            <div class="dialer-pad" id="dialerPad"></div>
+            <div class="dialer-actions">
+                <button class="call-button" id="callButton" type="button">📞</button>
+                <button class="clear-button" id="clearButton" type="button">✕</button>
+            </div>
         </div>
     </div>
 
@@ -877,23 +790,106 @@
         <div class="profile-content">
             <div style="text-align:center;margin-bottom:20px;">
                 <div class="profile-photo" id="profilePhotoDisplay">👤</div>
-                <span class="edit-button" id="changePhotoLabel" style="cursor:pointer;margin-top:5px;display:inline-block;">Change</span>
-                <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
             </div>
-            <div class="profile-info-item"><span>Name</span><span id="profileNameValue">-</span><button class="edit-button" id="editNameButton">Edit</button></div>
-            <div class="profile-info-item"><span>Birth Date</span><span id="profileBirthValue">-</span><button class="edit-button" id="editBirthButton">Edit</button></div>
-            <div class="profile-info-item"><span>City</span><span id="profileCityValue">-</span></div>
-            <div class="profile-info-item"><span>Country</span><span id="profileCountryValue">-</span></div>
+            <div class="profile-info-item"><span>Name</span><span id="profileNameValue">-</span></div>
             <div class="profile-info-item"><span>Username</span><span id="profileUsernameValue">-</span></div>
+            <div class="profile-info-item"><span>Server</span><span id="profileServerValue">-</span></div>
         </div>
     </div>
 
     <script>
         const $ = (id) => document.getElementById(id);
         
-        // Show screen function
+        // Server state
+        const MAX_PARTICIPANTS = 6;
+        let currentUser = JSON.parse(localStorage.getItem('cu') || 'null');
+        let selectedServer = localStorage.getItem('selectedServer') || 'server1';
+        let ws = null;
+        
+        // Get server participants from localStorage
+        function getServerParticipants(serverId) {
+            return JSON.parse(localStorage.getItem('server_' + serverId) || '[]');
+        }
+        
+        // Save server participants
+        function saveServerParticipants(serverId, participants) {
+            localStorage.setItem('server_' + serverId, JSON.stringify(participants));
+        }
+        
+        // Join server
+        function joinServer(serverId) {
+            if (!currentUser) {
+                alert('Please login first');
+                return;
+            }
+            
+            const participants = getServerParticipants(serverId);
+            
+            // Check if already in server
+            if (participants.includes(currentUser.username)) {
+                return true;
+            }
+            
+            // Check if server is full
+            if (participants.length >= MAX_PARTICIPANTS) {
+                alert('Server is full! Maximum ' + MAX_PARTICIPANTS + ' participants.');
+                return false;
+            }
+            
+            // First participant becomes admin
+            if (participants.length === 0) {
+                participants.push({ username: currentUser.username, role: 'admin', name: currentUser.name || currentUser.username });
+            } else {
+                participants.push({ username: currentUser.username, role: 'member', name: currentUser.name || currentUser.username });
+            }
+            
+            saveServerParticipants(serverId, participants);
+            updateServerUI();
+            return true;
+        }
+        
+        // Leave server
+        function leaveServer(serverId) {
+            if (!currentUser) return;
+            
+            let participants = getServerParticipants(serverId);
+            participants = participants.filter(p => p.username !== currentUser.username);
+            
+            // If admin left, promote next person
+            if (participants.length > 0 && !participants.some(p => p.role === 'admin')) {
+                participants[0].role = 'admin';
+            }
+            
+            saveServerParticipants(serverId, participants);
+            updateServerUI();
+        }
+        
+        // Update server UI (capacity bars)
+        function updateServerUI() {
+            ['server1', 'server2'].forEach(serverId => {
+                const participants = getServerParticipants(serverId);
+                const count = participants.length;
+                const fillPercent = (count / MAX_PARTICIPANTS) * 100;
+                
+                const fillEl = $(serverId + 'Fill');
+                const textEl = $(serverId + 'Text');
+                const cardEl = $(serverId + 'Card');
+                
+                if (fillEl) fillEl.style.width = fillPercent + '%';
+                if (textEl) textEl.textContent = count + '/' + MAX_PARTICIPANTS;
+                
+                if (cardEl) {
+                    if (count >= MAX_PARTICIPANTS) {
+                        cardEl.classList.add('full');
+                    } else {
+                        cardEl.classList.remove('full');
+                    }
+                }
+            });
+        }
+        
+        // Show screen
         function showScreen(screenId) {
-            // Hide all
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'none';
             $('serversModal').style.display = 'none';
@@ -901,19 +897,105 @@
                 $(id).classList.remove('active');
             });
             
-            // Show requested
             if (screenId === 'welcome') $('welcomeScreen').style.display = 'flex';
             else if (screenId === 'auth') $('authScreen').style.display = 'flex';
             else if (screenId === 'home') $('homeScreen').classList.add('active');
             else if (screenId === 'phone') $('phoneScreen').classList.add('active');
-            else if (screenId === 'chat') $('chatScreen').classList.add('active');
+            else if (screenId === 'chat') {
+                $('chatScreen').classList.add('active');
+                connectToServer();
+            }
             else if (screenId === 'settings') $('settingsScreen').classList.add('active');
-            else if (screenId === 'profile') $('profileScreen').classList.add('active');
+            else if (screenId === 'profile') {
+                $('profileScreen').classList.add('active');
+                updateProfileUI();
+            }
+        }
+        
+        // Connect to WebSocket
+        function connectToServer() {
+            if (ws) ws.close();
+            
+            const serverUrls = {
+                server1: 'wss://echo.websocket.org',
+                server2: 'wss://ws.postman-echo.com/raw'
+            };
+            
+            $('currentServerName').textContent = selectedServer === 'server1' ? '🌍 Global' : '🇪🇺 Europe';
+            
+            try {
+                ws = new WebSocket(serverUrls[selectedServer]);
+                
+                ws.onopen = function() {
+                    console.log('Connected to', selectedServer);
+                    if (currentUser) {
+                        ws.send(JSON.stringify({
+                            type: 'join',
+                            server: selectedServer,
+                            user: currentUser.username
+                        }));
+                    }
+                };
+                
+                ws.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.content) {
+                            displayMessage(data.content, false, data.sender);
+                        }
+                    } catch(e) {
+                        displayMessage(event.data, false, 'Server');
+                    }
+                };
+                
+                ws.onclose = function() {
+                    console.log('Disconnected');
+                    if (currentUser) leaveServer(selectedServer);
+                };
+            } catch(e) {
+                console.error('Connection error:', e);
+            }
+        }
+        
+        // Send message
+        function sendMessage() {
+            const content = $('messageInput').value.trim();
+            if (!content) return;
+            
+            displayMessage(content, true);
+            
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'message',
+                    server: selectedServer,
+                    content: content,
+                    sender: currentUser?.name || currentUser?.username || 'Anonymous'
+                }));
+            }
+            
+            $('messageInput').value = '';
+        }
+        
+        // Display message
+        function displayMessage(content, sent, sender = null) {
+            const div = document.createElement('div');
+            div.className = 'message ' + (sent ? 'message-sent' : 'message-received');
+            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">' + (sent ? 'You' : sender || 'Peer') + '</div>';
+            $('chatContainer').appendChild(div);
+            $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
+        }
+        
+        // Update profile
+        function updateProfileUI() {
+            if (currentUser) {
+                $('profileNameValue').textContent = currentUser.name || currentUser.username;
+                $('profileUsernameValue').textContent = '@' + currentUser.username;
+                $('profileServerValue').textContent = selectedServer === 'server1' ? '🌍 Global' : '🇪🇺 Europe';
+            }
         }
         
         // Continue button
         $('continueButton').addEventListener('click', function() {
-            localStorage.setItem('glang', $('languageSelect').value);
             $('welcomeScreen').style.display = 'none';
             $('authScreen').style.display = 'flex';
         });
@@ -948,7 +1030,8 @@
             if (!user) { alert('User not found'); return; }
             if (user.password !== password) { alert('Invalid password'); return; }
             
-            localStorage.setItem('cu', JSON.stringify({ username, ...user }));
+            currentUser = { username, ...user };
+            localStorage.setItem('cu', JSON.stringify(currentUser));
             $('loginForm').reset();
             showScreen('home');
         });
@@ -965,7 +1048,7 @@
             if (users[username]) { alert('Username exists'); return; }
             if (!password || password.length < 6) { alert('Password min 6 chars'); return; }
             
-            users[username] = { password, completed: true, name: username };
+            users[username] = { password, name: username, completed: true };
             localStorage.setItem('gu', JSON.stringify(users));
             $('registerForm').reset();
             
@@ -982,17 +1065,21 @@
         $('phoneOption').addEventListener('click', () => showScreen('phone'));
         $('chatOption').addEventListener('click', () => showScreen('chat'));
         $('phoneBackButton').addEventListener('click', () => showScreen('home'));
-        $('chatBackButton').addEventListener('click', () => showScreen('home'));
+        $('chatBackButton').addEventListener('click', () => {
+            if (ws) ws.close();
+            if (currentUser) leaveServer(selectedServer);
+            showScreen('home');
+        });
         $('settingsFab').addEventListener('click', () => showScreen('settings'));
         $('settingsBackButton').addEventListener('click', () => showScreen('home'));
         $('profileBackButton').addEventListener('click', () => showScreen('home'));
         $('homeLogoSettings').addEventListener('click', () => showScreen('profile'));
-        $('phoneLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('chatLogoSettings').addEventListener('click', () => showScreen('profile'));
         $('navGLogo').addEventListener('click', () => showScreen('profile'));
         
-        // Globe button - opens servers modal
+        // Globe button
         $('globeFab').addEventListener('click', function() {
+            updateServerUI();
             $('serversModal').style.display = 'flex';
         });
         
@@ -1004,22 +1091,45 @@
         // Server selection
         document.querySelectorAll('.server-option-card').forEach(card => {
             card.addEventListener('click', function() {
+                const serverId = this.dataset.server;
+                const participants = getServerParticipants(serverId);
+                
+                if (participants.length >= MAX_PARTICIPANTS && !participants.includes(currentUser?.username)) {
+                    alert('Server is full! Maximum ' + MAX_PARTICIPANTS + ' participants.');
+                    return;
+                }
+                
+                // Leave old server
+                if (selectedServer && selectedServer !== serverId) {
+                    leaveServer(selectedServer);
+                }
+                
+                selectedServer = serverId;
+                localStorage.setItem('selectedServer', selectedServer);
+                
+                // Join new server
+                joinServer(serverId);
+                
                 document.querySelectorAll('.server-option-card').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
-                localStorage.setItem('selectedServer', this.dataset.server);
                 
-                // Show toast
+                const serverName = this.querySelector('.server-option-name').textContent;
                 const toast = document.createElement('div');
                 toast.className = 'toast';
-                toast.textContent = '✓ Server: ' + this.querySelector('.server-option-name').textContent;
+                toast.textContent = '✓ Joined ' + serverName;
                 document.body.appendChild(toast);
                 setTimeout(() => toast.remove(), 2000);
                 
-                // Close modal after short delay
                 setTimeout(() => {
                     $('serversModal').style.display = 'none';
                 }, 500);
             });
+        });
+        
+        // Chat
+        $('sendButton').addEventListener('click', sendMessage);
+        $('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
         });
         
         // Settings
@@ -1043,7 +1153,10 @@
         });
         
         $('settingsLogoutButton').addEventListener('click', function() {
+            if (ws) ws.close();
+            if (currentUser) leaveServer(selectedServer);
             localStorage.removeItem('cu');
+            currentUser = null;
             showScreen('auth');
         });
         
@@ -1063,55 +1176,25 @@
         $('clearButton').addEventListener('click', () => { phoneNumber = ''; $('dialerDisplay').textContent = ''; });
         $('callButton').addEventListener('click', () => { if (phoneNumber) alert('Calling ' + phoneNumber + '...'); });
         
-        // Chat
-        function sendMessage() {
-            const content = $('messageInput').value.trim();
-            if (!content) return;
-            const div = document.createElement('div');
-            div.className = 'message message-sent';
-            div.innerHTML = '<div class="message-content">' + content + '</div><div class="message-meta">You</div>';
-            $('chatContainer').appendChild(div);
-            $('chatContainer').scrollTop = $('chatContainer').scrollHeight;
-            $('messageInput').value = '';
-        }
+        // Initialize
+        updateServerUI();
         
-        $('sendButton').addEventListener('click', sendMessage);
-        $('messageInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-        });
-        
-        // Check for existing user on load (fix F5 white screen)
-        const savedUser = JSON.parse(localStorage.getItem('cu') || 'null');
-        if (savedUser) {
+        if (currentUser) {
             showScreen('home');
         }
         
-        // Load saved theme
+        // Load theme
         if (localStorage.getItem('gdm') === 'true') {
             document.documentElement.setAttribute('data-theme', 'dark');
             $('darkModeToggle')?.classList.add('active');
         }
         
-        const savedAccent = localStorage.getItem('gac');
-        if (savedAccent && savedAccent !== 'black') {
-            document.documentElement.setAttribute('data-accent', savedAccent);
-        }
+        // Highlight selected server
+        document.querySelectorAll('.server-option-card').forEach(card => {
+            card.classList.toggle('active', card.dataset.server === selectedServer);
+        });
         
-        // Load saved language
-        const savedLang = localStorage.getItem('glang');
-        if (savedLang) {
-            $('languageSelect').value = savedLang;
-        }
-        
-        // Load selected server
-        const selectedServer = localStorage.getItem('selectedServer');
-        if (selectedServer) {
-            document.querySelectorAll('.server-option-card').forEach(card => {
-                card.classList.toggle('active', card.dataset.server === selectedServer);
-            });
-        }
-        
-        console.log('App initialized successfully');
+        console.log('App initialized with 2 servers, max 6 participants each');
     </script>
 </body>
 </html>
