@@ -382,6 +382,13 @@
             text-align: center;
             margin-top: -8px;
         }
+
+        .friend-id-hint {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: -4px;
+        }
     </style>
 </head>
 <body>
@@ -405,7 +412,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Seu ID</label>
+                    <label>Seu ID (copie e envie para seu amigo)</label>
                     <div class="id-display">
                         <span id="myId">Carregando...</span>
                         <button onclick="copyId()" class="btn-icon" title="Copiar ID">📋</button>
@@ -413,11 +420,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label>ID do amigo</label>
+                    <label>ID do amigo (cole o ID que ele te enviou)</label>
                     <input type="text" id="friendId" placeholder="Digite o ID do seu amigo">
+                    <div class="friend-id-hint">Exemplo: abc123-def-456</div>
                 </div>
 
-                <button onclick="connectToFriend()" class="btn-primary">Conectar</button>
+                <button onclick="connectToFriend()" class="btn-primary" id="connectBtn">Conectar</button>
                 <button onclick="createNewId()" class="btn-secondary">Novo ID</button>
 
                 <div id="connectionStatus" class="status"></div>
@@ -436,12 +444,14 @@
             </div>
 
             <div id="messagesContainer" class="messages-container">
-                <!-- Mensagens aparecerão aqui -->
+                <div style="text-align: center; color: #666; padding: 20px; font-size: 14px;">
+                    Conectado! Comece a conversar 💬
+                </div>
             </div>
 
             <div class="input-area">
                 <input type="text" id="messageInput" placeholder="Digite sua mensagem..." 
-                       onkeypress="if(event.key === 'Enter') sendMessage()">
+                       onkeydown="if(event.key === 'Enter') { event.preventDefault(); sendMessage(); }">
                 <button onclick="sendMessage()" class="btn-send" id="sendButton">➤</button>
             </div>
         </div>
@@ -479,6 +489,7 @@
         const friendStatus = document.getElementById('friendStatus');
         const friendNameDisplay = document.getElementById('friendNameDisplay');
         const sendButton = document.getElementById('sendButton');
+        const connectBtn = document.getElementById('connectBtn');
 
         // ==================== PEER EVENTS ====================
         peer.on('open', (id) => {
@@ -509,13 +520,16 @@
                 myNameDisplay.textContent = `👤 ${myName}`;
                 localStorage.setItem('glith_my_name', myName);
                 
-                // Se estiver conectado, envia o nome para o amigo
                 if (currentConnection && isConnected) {
                     currentConnection.send({
                         type: 'name_update',
                         name: myName
                     });
                 }
+                showStatus('✅ Nome definido: ' + myName, 'connected');
+                setTimeout(() => showStatus('', ''), 2000);
+            } else {
+                showStatus('Digite um nome!', 'error');
             }
         }
 
@@ -548,9 +562,7 @@
                 return;
             }
 
-            // Salva o ID do amigo
             localStorage.setItem('glith_friend_id', id);
-
             showStatus('Conectando...', '');
             
             try {
@@ -574,15 +586,19 @@
                 showStatus('✅ Conectado!', 'connected');
                 friendStatus.textContent = '● Online';
                 friendStatus.className = 'status-dot online';
+                
+                // Limpa mensagem inicial
+                messagesContainer.innerHTML = '';
                 addSystemMessage('Conectado ao amigo!');
                 
-                // Envia seu nome para o amigo
                 if (myName) {
                     conn.send({
                         type: 'name_update',
                         name: myName
                     });
                 }
+                
+                messageInput.focus();
             });
 
             conn.on('data', (data) => {
@@ -592,7 +608,7 @@
                     receiveMessage(data.text, data.time, data.senderName);
                 } else if (data.type === 'name_update') {
                     updateFriendName(data.name);
-                    addSystemMessage(`✨ ${data.name} entrou no chat`);
+                    addSystemMessage(`✨ ${data.name} está online`);
                 }
             });
 
@@ -612,17 +628,28 @@
         }
 
         function sendMessage() {
+            console.log('🔵 Tentando enviar mensagem...');
             const text = messageInput.value.trim();
             
             if (!text) {
+                console.log('⚠️ Mensagem vazia');
                 return;
             }
             
-            if (!currentConnection || !isConnected) {
+            if (!currentConnection) {
+                console.log('⚠️ Sem conexão');
+                showStatus('Sem conexão!', 'error');
+                return;
+            }
+            
+            if (!isConnected) {
+                console.log('⚠️ Desconectado');
                 showStatus('Você está desconectado!', 'error');
                 return;
             }
 
+            console.log('📤 Enviando mensagem:', text);
+            
             const messageData = {
                 type: 'message',
                 text: text,
@@ -635,13 +662,15 @@
                 addMessage(text, 'sent', messageData.time, myName);
                 messageInput.value = '';
                 messageInput.focus();
+                console.log('✅ Mensagem enviada com sucesso!');
             } catch (error) {
-                console.error('Erro ao enviar:', error);
+                console.error('❌ Erro ao enviar:', error);
                 showStatus('Erro ao enviar mensagem', 'error');
             }
         }
 
         function receiveMessage(text, time, senderName) {
+            console.log('📩 Mensagem recebida de', senderName, ':', text);
             addMessage(text, 'received', time, senderName || 'Amigo');
         }
 
@@ -683,7 +712,10 @@
         function switchToChat() {
             loginScreen.classList.remove('active');
             chatScreen.classList.add('active');
-            setTimeout(() => messageInput.focus(), 100);
+            setTimeout(() => {
+                messageInput.focus();
+                console.log('🎯 Foco no input de mensagem');
+            }, 300);
         }
 
         function disconnect() {
@@ -753,35 +785,43 @@
         }
 
         // ==================== EVENT LISTENERS ====================
-        // Carregar último ID do amigo
         const lastFriendId = loadLastId();
         if (lastFriendId) {
             friendIdInput.value = lastFriendId;
         }
 
-        // Tecla Enter no campo de nome
         myNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 setMyName();
             }
         });
 
-        // Foco no input de mensagem ao entrar no chat
+        // EVENTO PRINCIPAL - GARANTE QUE O BOTÃO FUNCIONE
+        sendButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('🖱️ Botão de enviar clicado!');
+            sendMessage();
+        });
+
+        // Também garante que o Enter funcione
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                console.log('⌨️ Enter pressionado!');
+                sendMessage();
+            }
+        });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && chatScreen.classList.contains('active')) {
                 disconnect();
             }
         });
 
-        // Teste de clique no botão enviar (debug)
-        sendButton.addEventListener('click', function(e) {
-            console.log('Botão enviar clicado!');
-            sendMessage();
-        });
-
         console.log('🚀 Glith iniciado!');
         console.log('💡 Compartilhe seu ID com um amigo para conversar');
         console.log('📝 Defina seu nome para aparecer nas mensagens');
+        console.log('🔍 Teste: Clique no botão ➤ para enviar mensagens');
     </script>
 </body>
 </html>
